@@ -73,12 +73,6 @@
     <Compile Include="..\Malom3\Board.vb">
       <Link>Board.vb</Link>
     </Compile>
-    <Compile Include="..\Malom3\ComputerPlayer.vb">
-      <Link>ComputerPlayer.vb</Link>
-    </Compile>
-    <Compile Include="..\Malom3\Engine.vb">
-      <Link>Engine.vb</Link>
-    </Compile>
     <Compile Include="..\Malom3\Main.vb">
       <Link>Main.vb</Link>
     </Compile>

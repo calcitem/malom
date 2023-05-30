@@ -72,18 +72,10 @@ Public Class PerfectPlayer
     Inherits Player
 
     Dim secs As New Dictionary(Of id, Sector)
-    Const UseWRGM = False 'Ha ez True, akkor az engine-ben korlatozni kell a melyseget (ez mostmar automatikus)
-    Dim Eng As Engine
 
     Public Sub New()
         Debug.Assert(Sectors.HasDatabase)
         secs = Sectors.getsectors()
-
-        If UseWRGM Then
-            Debug.Assert(Rules.AlphaBetaAvailable)
-            Eng = New Engine(Nothing, Nothing, Nothing, True)
-            Eng.InitEngine()
-        End If
     End Sub
 
     Public Overrides Sub Enter(ByVal _g As Game)
