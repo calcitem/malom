@@ -72,7 +72,6 @@
   <ItemGroup>
     <Compile Include="..\Malom3\Board.vb">
       <Link>Board.vb</Link>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="..\Malom3\ComputerPlayer.vb">
       <Link>ComputerPlayer.vb</Link>

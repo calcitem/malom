@@ -60,37 +60,6 @@ Module UDP
             End If
             'RecordResult(s)
         End Sub
-        'Private Sub RecordResult(ByVal s As GameState)
-        '    Static w, d, l, sz As Integer
-        '    Static lastresult As Double = -1
-        '    If Port = 10000 Then
-        '        If s.nyertes = -1 Then
-        '            d += 1
-        '        Else
-        '            If Not Object.ReferenceEquals(G.Ply(s.nyertes), Me) Then
-        '                w += 1
-        '            Else
-        '                l += 1
-        '            End If
-        '        End If
-        '        sz += 1
-        '        Const matchlength = 40
-        '        If sz = matchlength Then
-        '            Dim result As Double = w + d / 2
-        '            CType(Opponent(), ComputerPlayer).LogParams(result)
-        '            If result > lastresult Then
-        '                CType(Opponent(), ComputerPlayer).NewParams()
-        '            Else
-        '                CType(Opponent(), ComputerPlayer).RevertParams()
-        '            End If
-        '            lastresult = result
-        '            sz = 0 : w = 0 : d = 0 : l = 0
-        '        End If
-        '    Else
-        '        CType(Opponent(), ComputerPlayer).RandomParams()
-        '    End If
-        'End Sub
-
         Private Sub Send(ByVal s As String)
             Dim cl As New System.Net.Sockets.UdpClient()
             Dim dg As Byte() = System.Text.Encoding.ASCII.GetBytes(s)
