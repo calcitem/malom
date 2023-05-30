@@ -24,8 +24,6 @@ Imports System.Threading
 Class ComputerPlayer
     Inherits Player
 
-    Dim Settings As FrmSettings
-    
     Protected E As Engine
 
     Public Overrides Sub Enter(ByVal _g As Game)
@@ -52,11 +50,11 @@ Class ComputerPlayer
         E.s = _s
 
         If StopThinkTimer IsNot Nothing Then StopThinkTimer.Change(Timeout.Infinite, 0) 'a régi timer-t kikapcsoljuk
-        StopThinkTimer = New Threading.Timer(New TimerCallback(AddressOf StopThinking), Nothing, CLng(Settings.timelimit * 1000 * 10 + 200), 0) '8000
+        StopThinkTimer = New Threading.Timer(New TimerCallback(AddressOf StopThinking), Nothing, CLng(1000 * 1000 * 10 + 200), 0) '8000
 
         E.ThinkThread = New System.Threading.Thread(AddressOf ThinkAndInvoke)
         E.ThinkThread.Name = "ThinkThread"
-        E.ThinkThread.Start(Tuple.Create(_s, Settings.timelimit))
+        E.ThinkThread.Start(Tuple.Create(_s, 1000))
     End Sub
 
     Public Sub ThinkAndInvoke(s0_idolimit As Tuple(Of GameState, Double))
@@ -71,7 +69,7 @@ Class ComputerPlayer
         E.OppTime = True
         If StopThinkTimer IsNot Nothing Then StopThinkTimer.Change(Timeout.Infinite, 0) 'a régi timer-t kikapcsoljuk
         E.ThinkThread = New System.Threading.Thread(AddressOf E.OppTimeThink)
-        E.ThinkThread.Start(Tuple.Create(_s, Settings.timelimit))
+        E.ThinkThread.Start(Tuple.Create(_s, 1000))
     End Sub
 
 

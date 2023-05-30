@@ -94,13 +94,6 @@
     <Compile Include="..\Malom3\Rules.vb">
       <Link>Rules.vb</Link>
     </Compile>
-    <Compile Include="..\Malom3\Settings.Designer.vb">
-      <Link>Settings.Designer.vb</Link>
-    </Compile>
-    <Compile Include="..\Malom3\Settings.vb">
-      <Link>Settings.vb</Link>
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="..\Malom3\UDP.vb">
       <Link>UDP.vb</Link>
     </Compile>

@@ -18,8 +18,6 @@
 ' You should have received a copy of the GNU General Public License
 ' along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Imports System.Windows.Forms
-
 Module Rules
     Public MillPos(,), StdLaskerMillPos(15, 2), MoraMillPos(19, 2) As Byte 'gives the sequence number of each field participating in StdLaskerMillPosition
     Public InvMillPos()(), StdLaskerInvMillPos(23)(), MoraInvMillPos(23)() As Integer 'ith element gives those indexes into MalomPoz where the ith field occurs
