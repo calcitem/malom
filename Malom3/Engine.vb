@@ -592,7 +592,6 @@ ujra:
             Throw New AbortThinkingException
         End If
         If KLe Then Klr(dd) = kleklr
-        'If WHRIPC Then If max > alfa And max < beta Then WrongProbCuts += 1 Else OkProbCuts += 1
         Return max
     End Function
     Private Function Lookup(ByVal d As Byte, ByRef alfa As Integer, ByRef beta As Integer, ByRef Bestmove As Short, ByRef Value As Integer) As Boolean 'Vajon miért push-olja itt az rbx-et?
@@ -666,10 +665,6 @@ ujra:
                 End If
             End If
         Else 'Koronglevétel
-            'If T(i) = 1 - AP AndAlso ((MPK(InvMalomPoz(i, 0), 1 - AP) <> 3 AndAlso MPK(InvMalomPoz(i, 1), 1 - AP) <> 3) OrElse KC(1 - AP) = 3) Then
-            '    M.honnan = i
-            '    M.flm = 1
-            'End If
             GetKLEMove(i, M)
         End If
         Return M
@@ -689,7 +684,6 @@ ujra:
             M.malome = Malome(M.hová)
             T(M.honnan) = AP
             T(M.hová) = -1
-            'If AP = CP Then If MPK(InvMalomPoz(M.hová, 0), 1 - AP) = 2 OrElse MPK(InvMalomPoz(M.hová, 1), 1 - AP) = 2 Then MdMd = -10000 Else MdMd = 10000
             Dim mhov As Byte = M.hová
             If AP = CP Then If MPK(InvMillPos(mhov)(0), 1 - AP) = 2 OrElse MPK(InvMillPos(mhov)(1), 1 - AP) = 2 Then MdMd = -10000 Else MdMd = 10000
         End If
@@ -745,7 +739,6 @@ ujra:
                 CalcMobKLe(M.honnan)
                 MPK(InvMillPos(M.honnan)(0), 1 - AP) -= 1
                 MPK(InvMillPos(M.honnan)(1), 1 - AP) -= 1
-                'If Settings.CalcNodeValues Then NV(1 - AP) -= MezőÉrtékek(M.honnan)
                 Key = Key Xor xorMezok(1 - AP, M.honnan)
                 Key = Key Xor xorMalome
             Case 2, 3
@@ -756,7 +749,6 @@ ujra:
                 MPK(InvMillPos(M.hová)(1), AP) += 1
                 MPK(InvMillPos(M.honnan)(0), AP) -= 1
                 MPK(InvMillPos(M.honnan)(1), AP) -= 1
-                'If Settings.CalcNodeValues Then NV(AP) += MezőÉrtékek(M.hová) - MezőÉrtékek(M.honnan)
                 Key = Key Xor xorMezok(AP, M.honnan)
                 Key = Key Xor xorMezok(AP, M.hová)
                 If M.malome Then Key = Key Xor xorMalome
