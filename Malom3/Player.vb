@@ -45,24 +45,3 @@ Public MustInherit Class Player
         Return If(Object.ReferenceEquals(G.Ply(0), Me), G.Ply(1), G.Ply(0))
     End Function
 End Class
-
-Class HumanPlayer
-    Inherits Player
-    Public Overrides Sub ToMove(ByVal s As GameState)
-    End Sub
-    Public Overrides Sub FollowMove(ByVal M As Object)
-    End Sub
-    Public Overrides Sub Quit()
-        MyBase.Quit()
-    End Sub
-    Public Overrides Sub Over(ByVal s As GameState)
-        'Return
-        If TypeOf Opponent() Is HumanPlayer AndAlso Not Object.ReferenceEquals(Me, G.Ply(1)) Then Exit Sub 'ha az ellenfél ember, és nem mi nyertük meg a játszmát, akkor ne csináljunk semmit (majd õ kiírja, amit kell)
-        Dim result As MsgBoxResult
-        If s.winner > -1 Then
-            result = MsgBox("The " & s.winner + 1 & ". player won." & If(s.block, " (because the other player can't move)", "") & " New game?", MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Game over")
-        Else
-            result = MsgBox("The game ended in a draw. New game?", MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Game over")
-        End If
-    End Sub
-End Class
