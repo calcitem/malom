@@ -93,15 +93,6 @@ Public Class Game
 
     Public Sub CopyMoveList()
         Throw New NotImplementedException
-
-        'this is buggy with undo
-
-        'Dim s = ""
-        'For i = 0 To MoveListCurIndex - 1
-        '    s &= MoveList(i).ToString
-        '    If i < MoveListCurIndex - 1 AndAlso Not TypeOf MoveList(i + 1) Is LeveszKorong Then s &= ", "
-        'Next
-        'Clipboard.SetText(s)
     End Sub
 End Class
 
@@ -143,12 +134,6 @@ Public Class GameState
 
     'Sets the state for Setup Mode: the placed stones are unchanged, but we switch to phase 2.
     Public Sub InitSetup()
-        'T is unchanged
-        'phase is unchanged
-        'SetStoneCount is unchanged
-        'StoneCount is unchanged, since T is unchanged
-        'KLE is unchanged
-        'SideToMove is unchanged
         MoveCount = 10 'majdnem mindegy, csak ne legyen tul kicsi, ld. mashol comment
         over = False
         'Winner can be undefined, as over = False

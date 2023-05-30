@@ -26,10 +26,6 @@ Public Class Board
     Private LastJeloltMezok() As Integer = {}
     Public Advisor As PerfectPlayer
 
-    Private Sub SelectMezo(ByVal m As Integer)
-        If m = SelectedMezo Then SelectedMezo = -1 Else SelectedMezo = m
-        UpdateGameState()
-    End Sub
     Public Sub ClearMezoSelection()
         SelectedMezo = -1
     End Sub
@@ -39,10 +35,6 @@ Public Class Board
         If m.Length > 0 Then
             LastJeloltMezok = JelöltMezok.ToArray() 'deep copy
         End If
-    End Sub
-    Private Sub ClearJeloltMezok() 'eltünteti a pöttyös jelölést
-        JelolMezo(New Integer() {})
-        UpdateGameState()
     End Sub
     Public Sub ShowLastJeloltMezok()
         JelolMezo(LastJeloltMezok)

@@ -351,34 +351,9 @@ Public Class PerfectPlayer
     <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute>
     Public Overrides Sub ToMove(ByVal s As GameState)
         Try
-            'Dim mh = GoodMoves(s)(0)
-            'Dim mh = ChooseRandom(GoodMoves(s))
-            'Dim mh = MinNGMMoves(s)(0)
-            'Dim mh = RecWRGM(s).m
-            'Dim mh = If(UseWRGM, ChooseRandom(MinWRGMMoves(s)), ChooseRandom(MinNGMMoves(s)))
-            'Dim mh = MinNGMMoves(s)(0)
-
-            'Dim mh As Move
-            'If s.LépésCount > 6 Then
-            '    mh = MinNGMMoves(s)(0)
-            'Else
-            '    mh = ChooseNonNTREKSMoveIfPossible(s)
-            'End If
-
-            'Dim mh = ChooseNonNTREKS8998MoveIfPossible(s)
-
-
             Dim mh = ChooseRandom(GoodMoves(s))
-            'Dim mh = ChooseRandom(MinNGMMoves(s))
-
-
-            'Dim ma = MoveValue(s, mh)
-
-            'Main.LblPerfEval.Text = "Ev: " & ma
-
             SendMoveToGUI(mh)
         Catch ex As KeyNotFoundException
-            'Debug.Assert(Not s.KLE) 'kivettuk, de nem tudjuk, hogy miert volt bent
             SendMoveToGUI(ChooseRandom(GetMoveList(s)))
         Catch ex As Exception
             MsgBox("Exception in ToMove" & vbCrLf & ex.ToString, MsgBoxStyle.Critical)
