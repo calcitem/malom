@@ -333,37 +333,6 @@ Public Class PerfectPlayer
         Return AllMaxBy(Function(m) -NGMAfterMove(s, m), GoodMoves(s), Integer.MinValue)
     End Function
 
-    Private Function WRGMAfterMove(ByVal s As GameState, ByVal m As Move) As Integer
-        Return WRGM(MakeMoveInState(s, m))
-    End Function
-
-    'Private Function ChooseNonNTREKSMoveIfPossible(s As GameState) As Move
-    '    Dim ml = GetMoveList(s)
-    '    Dim filtered = ml.Where(Function(m) Not MoveValue(s, m).is_ntreks() And Not MoveValue(s, m).is_loss()).ToList 'nem NTREKS vagy veszto lepesek
-    '    If filtered.Count > 0 Then 'ha van, akkor a max ertekuek kozul random valasztunk, egyebkent MinNGM-et valasztunk
-    '        Return ChooseRandom(AllMaxBy(Function(m) MoveValue(s, m), filtered, gui_eval_elem2.min_value(GetSec(s))))
-    '    Else
-    '        'Return ChooseRandom(MinNGMMoves(s))
-    '        Return ChooseRandom(GoodMoves(s))
-    '    End If
-    'End Function
-
-    'Private Function ChooseNonNTREKS8998MoveIfPossible(s As GameState) As Move
-    '    Dim ml = GetMoveList(s)
-    '    Dim filtered = ml.Where(Function(m) Not MoveValue(s, m).is_ntreks_or_89_98() And Not MoveValue(s, m).is_loss()).ToList
-    '    If filtered.Count > 0 Then 'ha van, akkor a max ertekuek kozul random valasztunk, egyebkent MinNGM-et valasztunk
-    '        Return ChooseRandom(AllMaxBy(Function(m) MoveValue(s, m), filtered, gui_eval_elem2.min_value(GetSec(s))))
-    '    Else
-    '        'Return ChooseRandom(MinNGMMoves(s))
-    '        Return ChooseNonNTREKSMoveIfPossible(s)
-    '    End If
-    'End Function
-
-
-    Private Function MinWRGMMoves(s As GameState) As List(Of Move)
-        Return AllMaxBy(Function(m) -WRGMAfterMove(s, m), GoodMoves(s), Integer.MinValue)
-    End Function
-
     Private Shared rnd As New Random()
     Public Function ChooseRandom(Of T)(ByVal l As List(Of T)) As T
         Return l(rnd.Next(l.Count))
@@ -442,79 +411,12 @@ Public Class PerfectPlayer
         Return c
     End Function
 
-    Private Function WRGM(ByVal s As GameState) As Double
-        If Not UseWRGM Then Throw New Exception("Turn on UseWRGM")
-
-        If FutureKorongCount(s) < 3 Then Return 0
-        Dim ma = gui_eval_elem2.min_value(GetSec(s)), mh As Move
-        Dim Numer As Double = 0, Denom As Double = 0
-        Dim MoveList = GetMoveList(s)
-        For Each m In MoveList
-            Dim e = MoveValue(s, m)
-
-            Dim h As Double = Eng.Think(Tuple.Create(s, 0.1)).ev '1000000 
-            h /= 1000000
-            If h > 10 Then h = 10
-            If h < 0.1 Then h = 0.1
-            Const a As Double = 20 '9 '6
-            Dim weight = Math.Exp(a * Math.Log(h))
-
-            If e > ma Then
-                ma = e
-                mh = m
-                Numer = weight
-            Else
-                If e = ma Then Numer += weight
-            End If
-            Denom += weight
-        Next
-        If MoveList.Count = 0 Then
-            Return 1
-        Else
-            Return Numer / Denom
-        End If
-    End Function
-
     Dim cp As Integer
     Structure MoveValuePair
         Dim m As Move
         Dim val As Double
     End Structure
     Const WRGMInf As Double = 2 'jo ez?
-    Private Function RecWRGMInner(s As GameState, d As Integer, alpha As Double, beta As Double) As MoveValuePair
-        If d = 0 Then
-            Debug.Assert(s.SideToMove = 1 - cp)
-            Return New MoveValuePair With {.val = WRGM(s)}
-        End If
-        Dim ma = New MoveValuePair With {.val = -WRGMInf}
-        Dim ml = GoodMoves(s)
-        Dim w = If(s.SideToMove = 1 - cp, WRGM(s), 1)
-        For Each m In ml
-            Dim s2 = MakeMoveInState(s, m)
-            Dim a = RecWRGMInner(s2, d - 1, -beta / w, -Math.Max(alpha, ma.val) / w)
-            a.val *= -1
-            If a.val > ma.val Then ma = New MoveValuePair With {.val = a.val, .m = m}
-            If a.val > beta Then
-                GoTo cutoff
-            End If
-        Next
-cutoff:
-        ma.val *= w
-        Return ma
-    End Function
-
-    Private Function RecWRGM(s As GameState) As MoveValuePair
-        Throw New Exception("a RecWRGM meg nincs atirva a dontetlenek megkulonboztetesehez")
-        'Dim d As Integer
-        ''d = If(s.LépésCount < 6, 7, If(s.LépésCount < 14, 9, 11)) - 4
-        'd = 5
-        'cp = s.SideToMove
-        'If Eval(s) = 0 Then
-        '    Return RecWRGMInner(s, d, -WRGMInf, WRGMInf) '(csak paratlan d-vel van ertelme a dolognak)
-        'Else
-        '    Return New MoveValuePair With {.m = OkMoves(s)(0)}
-        'End If
-    End Function
 
     Private Shared EvalLock As New Object
     <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute>
