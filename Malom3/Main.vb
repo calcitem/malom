@@ -91,22 +91,6 @@ Public Class Game
         Return True
     End Function
 
-    Public Function ClpString(s As GameState) As String
-        Return s.ToString() & "," & If(TypeOf Ply(0) Is CombinedPlayer, 4, If(TypeOf Ply(0) Is ComputerPlayer, 2, If(TypeOf Ply(0) Is PerfectPlayer, 3, 0))) & "," & If(TypeOf Ply(1) Is CombinedPlayer, 4, If(TypeOf Ply(1) Is ComputerPlayer, 2, If(TypeOf Ply(1) Is PerfectPlayer, 3, 0))) & ",malom2" 'sorrend az ifekben!
-    End Function
-    Public Sub SwitchPlayers()
-        If TypeOf Ply(0) Is ComputerPlayer And TypeOf Ply(1) Is ComputerPlayer Then Return
-
-        CancelThinking()
-
-        Dim p0 = Ply(0)
-        Dim p1 = Ply(1)
-        Ply(0) = Nothing
-        Ply(1) = Nothing
-        Ply(0) = p1
-        Ply(1) = p0
-    End Sub
-
     Public Sub CopyMoveList()
         Throw New NotImplementedException
 
