@@ -19,7 +19,7 @@
 ' along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-Public Class Board
+Public Class BBoard
     Private s As GameState
     Private SelectedMezo As Integer = -1
     Private JelöltMezok() As Integer = {}

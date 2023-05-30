@@ -70,9 +70,6 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Malom3\Board.vb">
-      <Link>Board.vb</Link>
-    </Compile>
     <Compile Include="..\Malom3\Main.vb">
       <Link>Main.vb</Link>
     </Compile>
