@@ -22,8 +22,6 @@
 Imports System.Threading
 
 Class Engine
-
-    'Dim xorMezők(1, 23) As Int64
     Dim xorMalome, xorAP As Int64
     Dim xorStage As Int64
     Dim St2Moves(63) As Move
@@ -164,9 +162,6 @@ Class Engine
             End If
             'MsgBox("Not enough physical memory for MaxTTSize.")
         End If
-        'Main.Text &= " TTSize: " & TTSize
-        'TTSize = Math.Pow(10, 6)
-        'TTSize = 1
         GC.Collect()
 ujra:
         Try
@@ -178,16 +173,6 @@ ujra:
         End Try
 
         ResetTT()
-        ' ''Dim kh As Int64
-        ' ''kh = 1
-        ' ''For i = 0 To 23
-        ' ''    xorMezők(0, i) = kh
-        ' ''    kh *= 2
-        ' ''Next
-        ' ''For i = 0 To 23
-        ' ''    xorMezők(1, i) = kh
-        ' ''    kh *= 2
-        ' ''Next
         xorMalome = xorMezok(1, 23) * 2
         xorAP = xorMalome * 2
         xorStage = xorAP * 2
@@ -270,19 +255,6 @@ ujra:
     Public NN As Int64 'vizsgált csúcsok száma
     Public Klr(KlrSize) As Integer
     Const KlrSize = 32
-
-    'Dim _MPK(15, 1) As Byte
-    'Dim MPCov(1) As Byte
-    'Private Property MPK(i As Integer, j As Integer)
-    '    Get
-    '        Return _MPK(i, j)
-    '    End Get
-    '    Set(x)
-    '        If x = 0 AndAlso _MPK(i, j) <> 0 Then MPCov(j) -= 1
-    '        If x <> 0 AndAlso _MPK(i, j) = 0 Then MPCov(j) += 1
-    '        _MPK(i, j) = x
-    '    End Set
-    'End Property
 
     Public Sub PreThinkInit()
         T = Array.CreateInstance(GetType(Integer), 24)
@@ -562,15 +534,7 @@ ujra:
                 End If
             Next
         End If
-        '
-        '
-        'Dim WHRIPC As Boolean = False  'probcut miatt tért volna vissza
-        'If d = 8 Then
-        '    Dim far As Integer = 0.1 * 1000000 '0.1 * 1000000
-        '    Dim e = NegaMax(4, alfa - far, beta + far, dd + 1, False)
-        '    If e <= alfa - far Or e >= beta + far Then Return e 'WHRIPC = True
-        'End If
-        '
+
         Dim kleklr As Integer
         If Not etc Then
             'For i = If(Bestmove = -1, 0, -1) To LLc
@@ -698,24 +662,6 @@ ujra:
                         If MPK(InvMPozSld(M.honnan, M.hová), AP) = 2 Then M.malome = True
                     End If
                 Else 'ugrálás
-                    'If T(FlyMoves(i).honnan) = AP AndAlso T(FlyMoves(i).hová) = -1 AndAlso _
-                    '    (NoCheck OrElse (KC(1 - AP) > 3 OrElse If(SMalomPoz(FlyMoves(i).honnan, FlyMoves(i).hová), _
-                    '    (MPK(InvMPozSld(FlyMoves(i).honnan, FlyMoves(i).hová), AP) >= 1 AndAlso MPK(InvMPozSld(FlyMoves(i).honnan, FlyMoves(i).hová), 1 - AP) = 0) OrElse MPK(InvMPozSld(FlyMoves(i).honnan, FlyMoves(i).hová), 1 - AP) = 2, _
-                    '    (MPK(InvMalomPoz(FlyMoves(i).hová, 0), AP) >= 1 AndAlso MPK(InvMalomPoz(FlyMoves(i).hová, 0), 1 - AP) = 0) OrElse MPK(InvMalomPoz(FlyMoves(i).hová, 0), 1 - AP) = 2 OrElse _
-                    '    (MPK(InvMalomPoz(FlyMoves(i).hová, 1), AP) >= 1 AndAlso MPK(InvMalomPoz(FlyMoves(i).hová, 1), 1 - AP) = 0) OrElse MPK(InvMalomPoz(FlyMoves(i).hová, 1), 1 - AP) = 2))) Then
-                    '    M = FlyMoves(i)
-                    '    'M.malome = MalomeHov(M.hová) 'így hibás lenne
-                    '    'If MPK(InvMalomPoz(M.hová, 0), AP) = 2 Then M.malome = True
-                    '    'If MPK(InvMalomPoz(M.hová, 1), AP) = 2 Then M.malome = True
-                    '    T(M.hová) = AP
-                    '    T(M.honnan) = -1
-                    '    M.malome = Malome(M.hová)
-                    '    T(M.honnan) = AP
-                    '    T(M.hová) = -1
-                    '    'If AP = CP Then If MPK(InvMalomPoz(M.hová, 0), 1 - AP) = 2 OrElse MPK(InvMalomPoz(M.hová, 1), 1 - AP) = 2 Then MdMd = -10000 Else MdMd = 10000
-                    '    Dim mhov As Byte = M.hová
-                    '    If AP = CP Then If MPK(InvMalomPoz(mhov, 0), 1 - AP) = 2 OrElse MPK(InvMalomPoz(mhov, 1), 1 - AP) = 2 Then MdMd = -10000 Else MdMd = 10000
-                    'End If
                     GetFlyMove(i, M) 'ezt, és a GetKLEMove-ot azért érdemes kiemelni külön függvénybe, mert különben egy csomó register-t push-ol a függvény elején fölöslegesen, ahelyett, hogy csak ezekben a blokkokban push-olná (akkor is, ha az egyik már ki van emelve)
                 End If
             End If
@@ -729,10 +675,10 @@ ujra:
         Return M
     End Function
     Private Sub GetFlyMove(ByVal i As Integer, ByRef M As Move)
-        If T(FlyMoves(i).honnan) = AP AndAlso T(FlyMoves(i).hová) = -1 AndAlso _
-                        (NoCheck OrElse (KC(1 - AP) > 3 OrElse If(SMalomPoz(FlyMoves(i).honnan, FlyMoves(i).hová), _
-                        (MPK(InvMPozSld(FlyMoves(i).honnan, FlyMoves(i).hová), AP) >= 1 AndAlso MPK(InvMPozSld(FlyMoves(i).honnan, FlyMoves(i).hová), 1 - AP) = 0) OrElse MPK(InvMPozSld(FlyMoves(i).honnan, FlyMoves(i).hová), 1 - AP) = 2, _
-                        (MPK(InvMillPos(FlyMoves(i).hová)(0), AP) >= 1 AndAlso MPK(InvMillPos(FlyMoves(i).hová)(0), 1 - AP) = 0) OrElse MPK(InvMillPos(FlyMoves(i).hová)(0), 1 - AP) = 2 OrElse _
+        If T(FlyMoves(i).honnan) = AP AndAlso T(FlyMoves(i).hová) = -1 AndAlso
+                        (NoCheck OrElse (KC(1 - AP) > 3 OrElse If(SMalomPoz(FlyMoves(i).honnan, FlyMoves(i).hová),
+                        (MPK(InvMPozSld(FlyMoves(i).honnan, FlyMoves(i).hová), AP) >= 1 AndAlso MPK(InvMPozSld(FlyMoves(i).honnan, FlyMoves(i).hová), 1 - AP) = 0) OrElse MPK(InvMPozSld(FlyMoves(i).honnan, FlyMoves(i).hová), 1 - AP) = 2,
+                        (MPK(InvMillPos(FlyMoves(i).hová)(0), AP) >= 1 AndAlso MPK(InvMillPos(FlyMoves(i).hová)(0), 1 - AP) = 0) OrElse MPK(InvMillPos(FlyMoves(i).hová)(0), 1 - AP) = 2 OrElse
                         (MPK(InvMillPos(FlyMoves(i).hová)(1), AP) >= 1 AndAlso MPK(InvMillPos(FlyMoves(i).hová)(1), 1 - AP) = 0) OrElse MPK(InvMillPos(FlyMoves(i).hová)(1), 1 - AP) = 2))) Then
             M = FlyMoves(i)
             'M.malome = MalomeHov(M.hová) 'így hibás lenne
@@ -902,9 +848,6 @@ ujra:
                 'If Settings.CalcNodeValues Then NV(AP) -= MezőÉrtékek(M.hová) - MezőÉrtékek(M.honnan)
         End Select
     End Sub
-    'Private Sub UndoMoveETC(ByVal M As Move, ByVal UD As UndoDataETC) 'Be van inline-olva, mert a JIT compiler nem teszi meg
-    '    Key = UD.key
-    'End Sub
 
     Const NMMask As Integer = 21760 '101 0101 0000 0000
 
@@ -950,9 +893,6 @@ ujra:
     End Sub
     Private Function Eval() As Integer
         Dim r As Integer
-        'r = (KC(CP) - KC(1 - CP)) * 1000
-        'r += -Math.Sign(r) * KC(CP)
-        'r += (Mob(CP) - Mob(1 - CP)) * 500
 
         If KC(0) = 0 Or KC(1) = 0 Then
             KC(0) += 1
@@ -966,65 +906,9 @@ ujra:
         If BCalcLLNum Then
             If Stage = 1 Then
                 r = 500000 * KC(CP) \ KC(1 - CP) + 500000 * Mob(CP) \ Mob(1 - CP) 'ez az alap
-
-                'r = 444445 * KC(CP) \ KC(1 - CP) + 444444 * Mob(CP) \ Mob(1 - CP) + 111111 * MPCov(CP) \ MPCov(1 - CP)
-
-                'r = (500000 + md2) * KC(CP) \ KC(1 - CP) + (500000 - md2) * Mob(CP) \ Mob(1 - CP)
-
-                'r = 666666 * KC(CP) \ KC(1 - CP) + 333333 * Mob(CP) \ Mob(1 - CP)
-
-                'r = 600000 * KC(CP) \ KC(1 - CP) + 400000 * Mob(CP) \ Mob(1 - CP)
-                'r = 400000 * KC(CP) \ KC(1 - CP) + 600000 * Mob(CP) \ Mob(1 - CP)
-                'If AP = 0 Then
-                '    r = 500000 * KC(CP) \ KC(1 - CP) + 500000 * Mob(CP) \ Mob(1 - CP)
-                'Else
-                '    KC(1) += 1
-                '    Mob(1) += 1
-                '    r = 500000 * KC(CP) \ KC(1 - CP) + 500000 * Mob(CP) \ Mob(1 - CP)
-                '    Mob(1) -= 1
-                '    KC(1) -= 1
-                'End If
-                'r = 1000000 * KC(CP) \ KC(1 - CP)
             Else
                 If KC(1 - CP) > 3 And KC(CP) > 3 Then
-                    'If TudMalmotBezárni() Then 'ez talán bugos lehet, vagy legalábbis gyengíteni látszik
-                    '    KC(1 - AP) -= 1
-                    '    r = 666666 * KC(CP) \ KC(1 - CP) + 333333 * Mob(CP) \ Mob(1 - CP)
-                    '    KC(1 - AP) += 1
-                    'Else
-
                     r = 666666 * KC(CP) \ KC(1 - CP) + 333333 * Mob(CP) \ Mob(1 - CP) 'ennyi itt az alap
-
-                    'r = 555556 * KC(CP) \ KC(1 - CP) + 333333 * Mob(CP) \ Mob(1 - CP) + 111111 * MPCov(CP) \ MPCov(1 - CP)
-
-                    'If KC(1 - CP) >= 6 And KC(CP) >= 6 Then
-                    '    Static rnd As New Random()
-                    '    Static bb As Boolean
-                    '    If Not bb Then
-                    '        bb = True
-                    '        If rnd.Next(10000) = 0 Then System.IO.File.AppendAllText("teszt.txt", -NegaMax(8, -inf + 1, inf - 1, 10) & " " & 1000000 * KC(CP) \ KC(1 - CP) & " " & 1000000 * Mob(CP) \ Mob(1 - CP) & vbCrLf)
-                    '        bb = False
-                    '    End If
-                    'End If
-
-                    'Dim oMob = 1000000 * Mob(CP) \ Mob(1 - CP)
-                    'Dim normMob = (oMob - 1000000) / 1.4 + 1000000
-                    'r = (1000000 * KC(CP) \ KC(1 - CP) + normMob) \ 2
-
-
-                    'újevaluate-es rész
-                    'If KC(1 - CP) >= 6 And KC(CP) >= 6 Then
-                    '    'r = (666666 * KC(CP) \ KC(1 - CP) + 333333 * Mob(CP) \ Mob(1 - CP) + UjEvaluate()) \ 2
-                    '    'r = UjEvaluate()
-                    '    'r = (666666 * KC(CP) \ KC(1 - CP) + 333333 * Mob(CP) \ Mob(1 - CP) + 2 * UjEvaluate()) \ 3
-                    '    r = (6 * (666666 * KC(CP) \ KC(1 - CP) + 333333 * Mob(CP) \ Mob(1 - CP)) + 4 * UjEvaluate()) \ 10 'ez a legjobb ezek közül
-                    '    'r = (500000 + md1) * KC(CP) \ KC(1 - CP) + (500000 - md1) * Mob(CP) \ Mob(1 - CP)
-                    'Else
-                    '    r = 666666 * KC(CP) \ KC(1 - CP) + 333333 * Mob(CP) \ Mob(1 - CP)
-                    'End If
-
-                    'End If
-                    'r = 500000 * KC(CP) \ KC(1 - CP) + 500000 * Mob(CP) \ Mob(1 - CP)
                 Else
                     r = 1000000 * KC(CP) \ KC(1 - CP)
                 End If
@@ -1049,73 +933,4 @@ ujra:
         End If
         Return r
     End Function
-
-    'Private Function UjEvaluate() As Integer
-    '    Dim index As Integer
-    '    index = Key And 255 '1111 1111
-    '    index = index Xor ((Key And 4278190080) >> 12) '1111 1111 0000 0000 0000 0000 0000 0000
-
-    '    'fehér 4-esek
-    '    index = index Xor (Key And 256) '1 0000 0000
-    '    index = index Xor ((Key And 1024) >> 1) '100 0000 0000
-    '    index = index Xor ((Key And 4096) >> 2) '1 0000 0000 0000
-    '    index = index Xor ((Key And 16384) >> 3) '100 0000 0000 0000
-
-    '    'fekete 4-esek
-    '    index = index Xor ((Key And 4294967296) >> (33 - 21)) '1 0000 0000 0000 0000 0000 0000 0000 0000
-    '    index = index Xor ((Key And 17179869184) >> (35 - 22)) '100 0000 0000 0000 0000 0000 0000 0000 0000
-    '    index = index Xor ((Key And 68719476736) >> (37 - 23)) '1 0000 0000 0000 0000 0000 0000 0000 0000 0000
-    '    index = index Xor ((Key And 274877906944) >> (39 - 24)) '100 0000 0000 0000 0000 0000 0000 0000 0000 0000
-
-    '    Dim eval1 = Main.UjEval(index)
-
-    '    'kivesszük a külső négyzetet
-    '    index = index Xor (Key And 255) '1111 1111
-    '    index = index Xor ((Key And 4278190080) >> 12) '1111 1111 0000 0000 0000 0000 0000 0000
-
-    '    'betesszük belsőt
-    '    index = index Xor ((Key And 16711680) >> 16) '1111 1111 0000 0000 0000 0000
-    '    index = index Xor ((Key And 280375465082880) >> (48 - 20)) '1111 1111 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
-
-    '    Dim eval2 = Main.UjEval(index)
-    '    Dim ret As Integer = (eval1 + eval2) \ 2
-    '    If CP = 1 Then ret = 1000000 / CDbl(ret) * 1000000
-
-    '    'Static bb As Boolean
-    '    'If Not bb Then
-    '    '    bb = True
-    '    '    System.IO.File.AppendAllText("teszt.txt", -NegaMax(6, -inf + 1, inf - 1, 7) & " " & ret & " " & 666666 * KC(CP) \ KC(1 - CP) + 333333 * Mob(CP) \ Mob(1 - CP) & vbCrLf)
-    '    '    bb = False
-    '    'End If
-
-    '    Return ret
-    'End Function
-
-    'Dim md1, md2, lastmd1, lastmd2 As Integer
-    'Dim rnd As New System.Random()
-    'Public Sub NewParams()
-    '    lastmd1 = md1
-    '    lastmd2 = md2
-    '    Const delta = 400000
-    '    md1 += rnd.Next(2 * delta) - delta
-    '    md2 += rnd.Next(2 * delta) - delta
-    '    If md1 < -500000 + 1 Then md1 = -500000 + 1
-    '    If md1 > 500000 - 1 Then md1 = 500000 - 1
-    '    If md2 < -500000 + 1 Then md2 = -500000 + 1
-    '    If md2 > 500000 - 1 Then md2 = 500000 - 1
-    '    SetMainText(md1 & " " & md2)
-    'End Sub
-    'Public Sub RevertParams()
-    '    md1 = lastmd1
-    '    md2 = lastmd2
-    '    SetMainText(md1 & " " & md2)
-    'End Sub
-    'Public Sub LogParams(ByVal result As Double)
-    '    System.IO.File.AppendAllText("params.txt", result & " " & md1 & " " & md2 & vbCrLf)
-    'End Sub
-    'Public Sub RandomParams()
-    '    md1 = rnd.Next(800000) + 100000
-    '    md2 = rnd.Next(800000) + 100000
-    '    SetMainText(md1 & " " & md2)
-    'End Sub
 End Class
