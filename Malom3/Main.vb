@@ -19,9 +19,6 @@
 ' along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-Imports System.Drawing
-Imports System.Windows.Forms
-
 Public Class Game
     Private _Ply(1) As Player 'players in the game
     Public history As New LinkedList(Of GameState) 'GameStates in this (and previous) games
@@ -371,106 +368,4 @@ Class InvalidGameStateException
     Public Sub New(ByVal msg As String)
         Me.mymsg = msg
     End Sub
-End Class
-
-
-' https://docs.microsoft.com/en-us/dotnet/framework/winforms/controls/how-to-wrap-a-windows-forms-control-with-toolstripcontrolhost
-Public Class ToolStripNumericUpDown
-    Inherits ToolStripControlHost
-
-    Public Sub New()
-        MyBase.New(New NumericUpDown With {.Minimum = 0, .Maximum = Rules.MaxKSZ})
-    End Sub
-
-    Public ReadOnly Property NumericUpDownControl() As NumericUpDown
-        Get
-            Return CType(Control, NumericUpDown)
-        End Get
-    End Property
-
-    Public Property Value() As Integer
-        Get
-            Return CInt(NumericUpDownControl.Value)
-        End Get
-        Set(value As Integer)
-            NumericUpDownControl.Value = value
-        End Set
-    End Property
-
-    Protected Overrides Sub OnSubscribeControlEvents(ByVal c As Control)
-        MyBase.OnSubscribeControlEvents(c)
-        Dim numericUpDownControl As NumericUpDown = CType(c, NumericUpDown)
-        AddHandler numericUpDownControl.ValueChanged, AddressOf HandleValueChanged
-    End Sub
-
-    Protected Overrides Sub OnUnsubscribeControlEvents(ByVal c As Control)
-        MyBase.OnUnsubscribeControlEvents(c)
-        Dim numericUpDownControl As NumericUpDown = CType(c, NumericUpDown)
-        RemoveHandler numericUpDownControl.ValueChanged, AddressOf HandleValueChanged
-    End Sub
-
-    Public Event ValueChanged As EventHandler
-
-    Private Sub HandleValueChanged(ByVal sender As Object, ByVal e As EventArgs)
-        RaiseEvent ValueChanged(Me, e)
-    End Sub
-End Class
-
-Public Class ToolStripCheckBox
-    Inherits ToolStripControlHost
-
-    Public Sub New(text As String, toolTipText As String)
-        MyBase.New(New CheckBox() With {.Checked = True, .Text = text})
-        Dim tooltip As New ToolTip
-        tooltip.SetToolTip(Control, toolTipText)
-    End Sub
-
-    Public ReadOnly Property CheckBoxControl() As CheckBox
-        Get
-            Return CType(Control, CheckBox)
-        End Get
-    End Property
-
-    Public Property Checked() As Boolean
-        Get
-            Return CheckBoxControl.Checked
-        End Get
-        Set(value As Boolean)
-            CheckBoxControl.Checked = value
-        End Set
-    End Property
-
-    Protected Overrides Sub OnSubscribeControlEvents(ByVal c As Control)
-        MyBase.OnSubscribeControlEvents(c)
-        Dim checkBoxControl As CheckBox = CType(c, CheckBox)
-        AddHandler checkBoxControl.CheckedChanged, AddressOf HandleCheckedChanged
-    End Sub
-
-    Protected Overrides Sub OnUnsubscribeControlEvents(ByVal c As Control)
-        MyBase.OnUnsubscribeControlEvents(c)
-        Dim checkBoxControl As CheckBox = CType(c, CheckBox)
-        RemoveHandler checkBoxControl.CheckedChanged, AddressOf HandleCheckedChanged
-    End Sub
-
-    Public Event CheckedChanged As EventHandler
-
-    Private Sub HandleCheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        RaiseEvent CheckedChanged(Me, e)
-    End Sub
-End Class
-
-Public Class ToolStripButton
-    Inherits ToolStripControlHost
-
-    Public Sub New(text As String, toolTipText As String)
-        MyBase.New(New Button With {.Text = text})
-        Dim tooltip As New ToolTip
-        tooltip.SetToolTip(Control, toolTipText)
-    End Sub
-
-    Public ReadOnly Property ButtonControl() As Button
-        Get
-            Return CType(Control, Button)
-        End Get
-    End Property
 End Class
