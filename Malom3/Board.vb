@@ -24,7 +24,6 @@ Imports System.Windows.Forms
 
 Public Class Board
     Inherits PictureBox
-    Private frm As FrmMain
     Private s As GameState
     Private offScrBmp As New Bitmap(Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height)
     Private g As Graphics = Graphics.FromImage(offScrBmp) 'ezzel rajzolunk
@@ -35,54 +34,6 @@ Public Class Board
     Private WithEvents MutatTimer As New Timer
     Public Advisor As PerfectPlayer
 
-    <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute>
-    Private Sub ClickHandler(sender As Object, e As MouseEventArgs) Handles MyBase.MouseClick 'megnézi a state-et, és kigondolja, hogy milyen lépést kell konstruálni és meghívja a MakeMove-ot, vagy a selectmezõt
-        Try
-            If Not frm.SetupMode AndAlso (s.over Or Not TypeOf frm.Game.Ply(s.SideToMove) Is HumanPlayer) Then Return
-            Dim mezo As Integer = 100
-            Dim MoX As Integer = Control.MousePosition.X - (frm.Width - frm.ClientSize.Width) / 2 - frm.Left - 3
-            Dim MoY As Integer = Control.MousePosition.Y - (frm.Height - frm.ClientSize.Height - (frm.Width - frm.ClientSize.Width) / 2 + frm.MenuStrip.Height) - frm.Top - 3
-            mezo = MelyikMezo(MoX, MoY)
-            Dim M As Move
-            If (mezo <> 100) Then
-                If Main.SetupMode Then
-                    Debug.Assert(s Is Main.SetupGameState)
-                    s.SetupClick(e.Button, mezo)
-                    Main.UpdateUI(s)
-                Else
-                    If s.KLE Then
-                        If s.T(mezo) > -1 Then
-                            Dim Lehet As Boolean = True
-                            If Malome(mezo, s) > -1 And Not MindenEllensegesKorongMalomban(s) Then Lehet = False
-                            If Not Lehet Then frm.LblKov.Text = "You mustn't take a stone from a mill."
-                            If s.T(mezo) = s.SideToMove Then frm.LblKov.Text = "Choose from the opponent's stones!"
-                            If s.T(mezo) <> s.SideToMove And Lehet Then M = New LeveszKorong(mezo)
-                        End If
-                    Else
-                        If SelectedMezo = -1 And s.T(mezo) = -1 And s.SetStoneCount(s.SideToMove) < MaxKSZ Then
-                            M = New SetKorong(mezo)
-                        Else
-                            If s.SetStoneCount(s.SideToMove) = MaxKSZ Or Wrappers.Constants.Variant = Wrappers.Constants.Variants.lask Then
-                                If s.T(mezo) = s.SideToMove Then SelectMezo(mezo)
-                                If s.T(mezo) = -1 And SelectedMezo > -1 AndAlso (BoardGraph(SelectedMezo, mezo) Or s.FutureStoneCount(s.SideToMove) = 3) Then
-                                    M = New MoveKorong(SelectedMezo, mezo)
-                                    SelectedMezo = -1
-                                End If
-                            End If
-                        End If
-                    End If
-                End If
-            End If
-            If M IsNot Nothing Then 'ha érvényes lépést csinál a kattintás
-                Me.Enabled = False 'Enabled in HumanPlayer.ToMove and EnterSetupMode
-                frm.Game.MakeMove(M)
-            End If
-        Catch ex As Exception
-            If TypeOf ex Is KeyNotFoundException Then Throw
-            MsgBox("Exception in ClickHandler" & vbCrLf & ex.ToString, MsgBoxStyle.Critical)
-            Environment.Exit(1)
-        End Try
-    End Sub
     Private Function MelyikMezo(ByVal x As Integer, ByVal y As Integer) As Integer 'megadja, hogy egy pont melyik mezõhöz tartozik (100-at ad, ha semelyikhez)
         Dim k As Rectangle
         MelyikMezo = 100
@@ -107,11 +58,9 @@ Public Class Board
     End Sub
 
     Public Sub JelolMezo(ByVal m As Integer()) 'pöttyös jelölés
-        If frm.Settings.UDShowInterval.Value = 0 Then Return
         JelöltMezok = m
         If m.Length > 0 Then
             MutatTimer.Stop()
-            MutatTimer.Interval = frm.Settings.UDShowInterval.Value
             MutatTimer.Start()
             LastJeloltMezok = JelöltMezok.ToArray() 'deep copy
         End If
@@ -129,18 +78,7 @@ Public Class Board
         UpdateGameState() 'ez azért csak ide kell, mert normál esetben a MakeMove meghívja az UpdateUI-t
     End Sub
 
-    Private Sub PaintHandler(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles MyBase.Paint
-        e.Graphics.DrawImage(offScrBmp, 0, 0)
-    End Sub
-    Private Sub ResizeHandler(ByVal sender As System.Object, ByVal e As EventArgs) Handles MyBase.Resize
-        tg = Me.CreateGraphics()
-        If Not frm.Loaded Then Return 'ez azért ide kell, és nem egy sorral följebb, mert föl szeretnénk használni a resizehandler-t a tg inicializálásra, mert ha fönt inicializáljuk, akkor externalexception-t dob, amikor használni szeretnénk
-        UpdateGameState()
-    End Sub
-
-    Public Sub New(ByVal _frm As FrmMain)
-        frm = _frm
-        Me.BorderStyle = BorderStyle.Fixed3D
+    Public Sub New()
     End Sub
     Private TáblaVonalSzín As Color = Color.Blue
     Private Function TáblaVonal() As Pen
@@ -148,23 +86,11 @@ Public Class Board
     End Function
     Public Sub UpdateGameState(ByVal _s As GameState) 'átállítja a state-et, és rendereli
         s = _s
-        RedrawBoard()
-    End Sub
-    Public Sub RedrawBoard()
-        g.Clear(frm.BackColor)
-        DrawGameState()
     End Sub
     Public Sub UpdateGameState()
         UpdateGameState(s)
     End Sub
     Public BoardNodes(23) As Point 'a mezõk pozíciói
-    Private Sub DrawGameState()
-        If frm.WindowState = FormWindowState.Minimized Then Return
-        DrawBoard()
-        DrawMezok()
-        DrawMutat()
-        tg.DrawImage(offScrBmp, 0, 0)
-    End Sub
     Private Sub DrawBoard()
         Dim p As Pen = TáblaVonal()
         Dim r As New Rectangle
@@ -361,40 +287,5 @@ Public Class Board
             g.DrawString(str, New Font("Arial", CSng(12 * Me.Width / 1000), FontStyle.Bold), brush, New Point(AktKorong.X + offs, AktKorong.Y + offs))
         End If
     End Sub
-    Private Sub DrawMutat()
-        If frm.Settings.ShowLastMove Then
-            For Each i In JelöltMezok
-                If i > -1 Then
-                    Dim AktKorong As Rectangle
-                    AktKorong.Height = (Me.Height + Me.Width) / 2 / 20 * 0.5
-                    AktKorong.Width = AktKorong.Height
-                    AktKorong.X = BoardNodes(i).X - AktKorong.Width / 2
-                    AktKorong.Y = BoardNodes(i).Y - AktKorong.Height / 2
-                    Dim b As Brush = (If(s.T(i) = 0, New SolidBrush(Color.Green), New SolidBrush(Color.Green)))
-                    Try
-                        g.FillEllipse(b, AktKorong)
-                    Catch ex As Exception
 
-                    End Try
-                End If
-            Next
-        End If
-    End Sub
-
-    Public Sub SwitchAdvisor()
-        If Not Sectors.HasDatabase Then
-            frm.AdvisorToolStripMenuItem.Text = "&Advisor"
-            MsgBox("Database files not found. Advisor is not available. Malom.exe should be in the same directory as the database files. (.sec or .sec2 files)", MsgBoxStyle.Exclamation)
-            Return
-        End If
-
-        If Advisor Is Nothing Then
-            Advisor = New PerfectPlayer
-            frm.AdvisorToolStripMenuItem.Text = "&Advisor [ON]"
-        Else
-            Advisor = Nothing
-            frm.AdvisorToolStripMenuItem.Text = "&Advisor"
-        End If
-        RedrawBoard()
-    End Sub
 End Class

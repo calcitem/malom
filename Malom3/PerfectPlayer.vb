@@ -71,8 +71,6 @@ End Class
 Public Class PerfectPlayer
     Inherits Player
 
-    Public Main As FrmMain
-
     Dim secs As New Dictionary(Of id, Sector)
     Const UseWRGM = False 'Ha ez True, akkor az engine-ben korlatozni kell a melyseget (ez mostmar automatikus)
     Dim Eng As Engine
@@ -90,12 +88,9 @@ Public Class PerfectPlayer
 
     Public Overrides Sub Enter(ByVal _g As Game)
         MyBase.Enter(_g)
-        Main = G.frm
     End Sub
 
     Public Overrides Sub Quit()
-        If Main IsNot Nothing Then Main.LblPerfEvalSetText("")
-
         MyBase.Quit()
     End Sub
 
@@ -134,25 +129,6 @@ Public Class PerfectPlayer
         r.SetStoneCount(1) = s.SetStoneCount(0)
         Return r
     End Function
-
-    <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute>
-    Public Overrides Sub OppToMove(s As GameState)
-        MyBase.OppToMove(s)
-        Try
-            Main.LblPerfEval.Visible = Main.Settings.ShowEv
-            If Not s.KLE Then 'mert a korongleveteles allasok nem leteznek kulon
-                Main.LblPerfEvalSetText("Eval: " & ToHumanReadableEval(Eval(s)) & ", NGM: " & NumGoodMoves(s))
-            Else
-                'Main.LblPerfEvalSetText("Eval: KLE (last: " & Main.LblPerfEval.Text & ")") 'ez ugyebar pl. olyankor nem pontos, ha rosszat lep az ember a malombecsukassal
-                Main.LblPerfEvalSetText("Eval: " & ToHumanReadableEval(MoveValue(s, GoodMoves(s).First)) & ", NGM: " & NumGoodMoves(s))
-            End If
-        Catch ex As KeyNotFoundException
-            Main.LblPerfEvalSetText("NO DATABASE FILE; NOT PLAYING PERFECTLY", True)
-        Catch ex As Exception
-            MsgBox("An error happened in OppToMove" & vbCrLf & ex.ToString, MsgBoxStyle.Critical)
-            Environment.Exit(1)
-        End Try
-    End Sub
 
     <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute>
     Public Shared Function ToHumanReadableEval(e As gui_eval_elem2) As String
@@ -442,7 +418,6 @@ Public Class PerfectPlayer
             SendMoveToGUI(mh)
         Catch ex As KeyNotFoundException
             'Debug.Assert(Not s.KLE) 'kivettuk, de nem tudjuk, hogy miert volt bent
-            Main.LblPerfEvalSetText("NO DATABASE FILE; NOT PLAYING PERFECTLY", True)
             SendMoveToGUI(ChooseRandom(GetMoveList(s)))
         Catch ex As Exception
             MsgBox("Exception in ToMove" & vbCrLf & ex.ToString, MsgBoxStyle.Critical)

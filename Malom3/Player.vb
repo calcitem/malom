@@ -49,14 +49,10 @@ End Class
 Class HumanPlayer
     Inherits Player
     Public Overrides Sub ToMove(ByVal s As GameState)
-        G.frm._Board.Enabled = True
     End Sub
     Public Overrides Sub FollowMove(ByVal M As Object)
-        G.frm._Board.JelolMezo(M.GetMezok())
     End Sub
     Public Overrides Sub Quit()
-        If G Is Nothing Then Return
-        G.frm._Board.ClearMezoSelection()
         MyBase.Quit()
     End Sub
     Public Overrides Sub Over(ByVal s As GameState)
@@ -67,10 +63,6 @@ Class HumanPlayer
             result = MsgBox("The " & s.winner + 1 & ". player won." & If(s.block, " (because the other player can't move)", "") & " New game?", MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Game over")
         Else
             result = MsgBox("The game ended in a draw. New game?", MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Game over")
-        End If
-        If result = MsgBoxResult.Yes Then
-            'G.frm.NewGame()
-            G.frm.BeginInvoke(New Action(AddressOf G.frm.NewGame))
         End If
     End Sub
 End Class

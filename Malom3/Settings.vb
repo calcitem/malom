@@ -73,7 +73,6 @@ Public Class FrmSettings
 
     Private Sub SaveSettings()
         Try
-            If Not Main.Loaded Then Return
             SaveSetting(My.Application.Info.AssemblyName, "Appearance", "ShowInterval", UDShowInterval.Value)
             SaveSetting(My.Application.Info.AssemblyName, "Appearance", "ChkShowLastIrrev", ChkShowLastIrrev.Checked)
             SaveSetting(My.Application.Info.AssemblyName, "Computer", "Difficulty", AIStrength)
@@ -92,11 +91,11 @@ Public Class FrmSettings
         Else
             ShowLastMove = False
         End If
-        Main.AdjustStatusStrip1Visibility()
+
         CalcNodeValues = ChkCalcNodeValues.Checked
         ShowEv = ChkShowEv.Checked
         'FrmMain.LblEv.Visible = ChkShowEv.Checked
-        FrmMain.sing.LblEv.Visible = ChkShowEv.Checked
+
         timelimit = UDIncTimeLimit.Value
         Wrappers.gui_eval_elem2.ignore_DD = ChkIgnoreDD.Checked
     End Sub

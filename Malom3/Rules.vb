@@ -204,8 +204,6 @@ Module Rules
 
     Public MaxKSZ As Integer
 
-    Public Main As FrmMain
-
     Public Function AlphaBetaAvailable() As Boolean
         Return Wrappers.Constants.Variant = Wrappers.Constants.Variants.std And Not Wrappers.Constants.Extended
     End Function
@@ -221,7 +219,6 @@ Module Rules
                 ALBoardGraph = StdLaskerALBoardGraph
                 MaxKSZ = 9
                 VariantName = "std"
-                Main.Text = "Malom (Nine Men's Morris)"
             Case Wrappers.Constants.Variants.lask
                 MillPos = StdLaskerMillPos
                 InvMillPos = StdLaskerInvMillPos
@@ -229,7 +226,6 @@ Module Rules
                 ALBoardGraph = StdLaskerALBoardGraph
                 MaxKSZ = 10
                 VariantName = "lask"
-                Main.Text = "Malom (Lasker)"
             Case Wrappers.Constants.Variants.mora
                 MillPos = MoraMillPos
                 InvMillPos = MoraInvMillPos
@@ -237,43 +233,11 @@ Module Rules
                 ALBoardGraph = MoraALBoardGraph
                 MaxKSZ = 12
                 VariantName = "mora"
-                Main.Text = "Malom (Morabaraba)"
         End Select
 
         If Wrappers.Constants.Extended Then
             MaxKSZ = 12
-            Main.Text &= " (Extended)"
         End If
-
-        If MaxKSZ = 12 Then
-            If Wrappers.Constants.FBD Then
-                Main.Text &= " (FBD)"
-            Else
-                Main.Text &= " (no FBD)"
-            End If
-        End If
-
-        Main.MnuPly1Computer.Enabled = AlphaBetaAvailable()
-        Main.MnuPly2Computer.Enabled = AlphaBetaAvailable()
-        Main.MnuPly1Combined.Enabled = AlphaBetaAvailable()
-        Main.MnuPly2Combined.Enabled = AlphaBetaAvailable()
-
-        Main.PlayerTypeMenuItems.AddRange(New ToolStripMenuItem() {Main.MnuPl1, Main.MnuPl2, Main.MnuPly1Human, Main.MnuPly2Human, Main.MnuPly1Perfect, Main.MnuPly2Perfect})
-        If AlphaBetaAvailable() Then
-            Main.PlayerTypeMenuItems.AddRange(New ToolStripMenuItem() {Main.MnuPly1Combined, Main.MnuPly2Combined, Main.MnuPly1Computer, Main.MnuPly2Computer})
-        End If
-
-        If Sectors.HasDatabase Then
-            If Wrappers.Constants.dd Then
-                Main.Text &= " (Ultra-strong solution)"
-            Else
-                Main.Text &= " (Strong solution)"
-            End If
-        Else
-            Main.Text &= " (NO DATABASE FILES)"
-        End If
-
-        If Main.Loaded Then Main.NewGame()
     End Sub
 
 End Module

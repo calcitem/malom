@@ -24,38 +24,19 @@ Imports System.Threading
 Class ComputerPlayer
     Inherits Player
 
-    Dim Main As FrmMain
     Dim Settings As FrmSettings
     
     Protected E As Engine
 
-    
-    Sub New(Optional ByVal UseAdv As Boolean = False)
-        E = New Engine(AddressOf DepthKiír, AddressOf SetMainText, AddressOf SetLblPerfEvalText, False, UseAdv)
-    End Sub
-    
-   
-
     Public Overrides Sub Enter(ByVal _g As Game)
         MyBase.Enter(_g)
-        Main = G.frm
-        Settings = Main.Settings
         E.InitEngine()
-        If E.UseAdv Then
-            E.Advisor.Main = Main
-        End If
     End Sub
 
     Public Overrides Sub Quit()
         'ezek a blokkok csakis ebben a sorrendben lehetnek!
 
         If G Is Nothing Then Return
-
-        G.frm.LblCalcDepths.Text = ""
-        G.frm.LblEv.Text = ""
-        G.frm.LblSpeed.Text = ""
-        G.frm.LblTime.Text = ""
-        G.frm.LblPerfEvalSettext("")
 
         MyBase.Quit()
 
@@ -99,31 +80,16 @@ Class ComputerPlayer
         E.EndTh = True
     End Sub
 
-    Public Sub DepthKiír(ByVal sz As String)
-        Main.BeginInvoke(New FrmMain.DPrintDepth(AddressOf Main.PrintDepth), sz)
-    End Sub
-    Public Sub SetMainText(ByVal s As String)
-        Main.BeginInvoke(New FrmMain.DSetText(AddressOf Main.SetText), s) 'síma invoke-kal itt nagy baj történik (a főszál néha pont akkor hívja a join-t, amikor éppen itt tart a végrehajtás -> deadlock)
-    End Sub
-    Public Sub SetLblPerfEvalText(ByVal s As String)
-        Main.BeginInvoke(New FrmMain.DRegiLblPerfEvalSettext(AddressOf Main.RegiLblPerfEvalSettext), s)
-    End Sub
-
-
-
     Public Overrides Sub CancelThinking()
         E.CancelThinking()
     End Sub
 
     Sub InvokeUseThResult(result As Engine.ThinkResult)
         If E.cancel Then Return
-        Main.BeginInvoke(New Action(Of Engine.ThinkResult)(AddressOf UseThResult), result)
     End Sub
 
     Sub UseThResult(ThResult As Engine.ThinkResult)
         'Debug.Print(Microsoft.VisualBasic.Timer & " UseThResult") '
-
-        If Main.SetupMode Then Return
 
         If E.OppTime Then
             'OppTime = False
@@ -134,19 +100,7 @@ Class ComputerPlayer
         If G Is Nothing Then Return 'ha kileptettek kozben 
 
         Dim ThTime As Double = Math.Truncate((System.DateTime.Now - ThResult.st).TotalSeconds * 100) / 100
-        Main.LblCalcDepths.Text = "D: " & ThResult.d
-        Main.LblTime.Visible = True
-        Main.LblTime.Text = "Time: " & ThTime
-        If Settings.ShowEv Then Main.LblEv.Text = "Eval: " & CType(ThResult.ev, Double) / 1000000
-        'Main.Text = Main.LblEv.Text '
-        'Main.Text = WrongProbCuts & " / " & OkProbCuts
-        'Try
-        '    System.IO.File.AppendAllText("c:\WO.txt", WrongProbCuts & " / " & OkProbCuts & vbCrLf)
-        'Catch ex As Exception
-        'End Try
 
-        If ThTime > 0 Then Main.LblSpeed.Text = Math.Truncate(ThResult.NN / ThTime) & " N/s" Else Main.LblSpeed.Text = ""
-        'Main.LblSpeed.Text = ThResult.NN & " N"
 
         Select Case ThResult.BestMove.flm
             Case 0
@@ -163,10 +117,6 @@ End Class
 
 Class CombinedPlayer
     Inherits ComputerPlayer
-
-    Sub New(Optional ByVal UseAdv As Boolean = True)
-        E = New Engine(AddressOf DepthKiír, AddressOf SetMainText, AddressOf SetLblPerfEvalText, False, UseAdv)
-    End Sub
 
     Public Overrides Sub OppToMove(_s As GameState)
         MyBase.OppToMove(_s)

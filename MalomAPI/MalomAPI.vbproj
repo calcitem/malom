@@ -70,13 +70,6 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Malom3\AboutBox.Designer.vb">
-      <Link>AboutBox.Designer.vb</Link>
-    </Compile>
-    <Compile Include="..\Malom3\AboutBox.vb">
-      <Link>AboutBox.vb</Link>
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="..\Malom3\Board.vb">
       <Link>Board.vb</Link>
       <SubType>Component</SubType>
@@ -87,12 +80,8 @@
     <Compile Include="..\Malom3\Engine.vb">
       <Link>Engine.vb</Link>
     </Compile>
-    <Compile Include="..\Malom3\Main.Designer.vb">
-      <Link>Main.Designer.vb</Link>
-    </Compile>
     <Compile Include="..\Malom3\Main.vb">
       <Link>Main.vb</Link>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="..\Malom3\Move.vb">
       <Link>Move.vb</Link>

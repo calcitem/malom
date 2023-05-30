@@ -59,7 +59,6 @@ Module UDP
                 End If
             End If
             'RecordResult(s)
-            G.frm.NewGame()
         End Sub
         'Private Sub RecordResult(ByVal s As GameState)
         '    Static w, d, l, sz As Integer
@@ -112,11 +111,6 @@ Module UDP
             Do
                 Dim Bytes As Byte() = cl.Receive(ep)
                 Dim mv As String = System.Text.Encoding.ASCII.GetString(Bytes)
-                Select Case mv(0)
-                    Case "s" : G.frm.Invoke(New Action(Of Move)(AddressOf G.MakeMove), New SetKorong(mv.Split()(1)))
-                    Case "l" : G.frm.Invoke(New Action(Of Move)(AddressOf G.MakeMove), New LeveszKorong(mv.Split()(1)))
-                    Case "m" : G.frm.Invoke(New Action(Of Move)(AddressOf G.MakeMove), New MoveKorong(mv.Split()(1), mv.Split()(2)))
-                End Select
             Loop Until False
         End Sub
 
