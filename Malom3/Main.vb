@@ -62,8 +62,6 @@ Public Class Game
     <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute>
     Public Sub MakeMove(ByVal M As Move) 'called by player objects when they want to move
         Try
-            'Debug.Print(Microsoft.VisualBasic.Timer & " MakeMove, sidetomove: " & s.SideToMove) '
-
             Ply(1 - s.SideToMove).FollowMove(M)
 
             history.AddAfter(current, New GameState(s))

@@ -106,22 +106,6 @@ Public Class PerfectPlayer
         End Try
     End Function
 
-    Private Function NegateState(s As GameState) As GameState
-        Dim r As New GameState(s)
-        For i = 0 To 23
-            If r.T(i) = 0 Then
-                r.T(i) = 1
-            ElseIf r.T(i) = 1 Then
-                r.T(i) = 0
-            End If
-        Next
-        r.StoneCount(0) = s.StoneCount(1)
-        r.StoneCount(1) = s.StoneCount(0)
-        r.SetStoneCount(0) = s.SetStoneCount(1)
-        r.SetStoneCount(1) = s.SetStoneCount(0)
-        Return r
-    End Function
-
     <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute>
     Public Shared Function ToHumanReadableEval(e As gui_eval_elem2) As String
         Try
@@ -321,10 +305,6 @@ Public Class PerfectPlayer
         Return NumGoodMoves(MakeMoveInState(s, m))
     End Function
 
-    Private Function MinNGMMoves(ByVal s As GameState) As List(Of Move)
-        Return AllMaxBy(Function(m) -NGMAfterMove(s, m), GoodMoves(s), Integer.MinValue)
-    End Function
-
     Private Shared rnd As New Random()
     Public Function ChooseRandom(Of T)(ByVal l As List(Of T)) As T
         Return l(rnd.Next(l.Count))
@@ -419,7 +399,6 @@ Public Class PerfectPlayer
             Environment.Exit(1)
         End Try
     End Function
-
 
     Private Function BoardNegate(ByVal a As Int64) As Int64
         Const mask24 As Int64 = (1 << 24) - 1
