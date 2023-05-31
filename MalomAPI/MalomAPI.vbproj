@@ -85,9 +85,6 @@
     <Compile Include="..\Malom3\Rules.vb">
       <Link>Rules.vb</Link>
     </Compile>
-    <Compile Include="..\Malom3\UDP.vb">
-      <Link>UDP.vb</Link>
-    </Compile>
     <Compile Include="MalomSolutionAccess.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

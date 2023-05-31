@@ -117,8 +117,6 @@ Public Class PerfectPlayer
         End Try
     End Function
 
-
-
     Public Enum MoveType
         SetMove
         SlideMove 'should be renamed to SlideOrJumpMove
@@ -216,7 +214,6 @@ Public Class PerfectPlayer
 
         Return r
     End Function
-
 
     Public Function GetMoveList(ByVal s As GameState) As List(Of Move)
         Dim ms0, ms As List(Of Move)

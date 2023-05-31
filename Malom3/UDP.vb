@@ -18,7 +18,6 @@
 ' You should have received a copy of the GNU General Public License
 ' along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Imports System.Windows.Forms
 
 Module UDP
     Class UDPPlayer
@@ -81,19 +80,6 @@ Module UDP
                 Dim Bytes As Byte() = cl.Receive(ep)
                 Dim mv As String = System.Text.Encoding.ASCII.GetString(Bytes)
             Loop Until False
-        End Sub
-
-        Public Shared Sub ReportMatchResult()
-            Try
-                Dim l = System.IO.File.ReadAllLines(My.Application.Info.DirectoryPath & "\match.txt")
-                Dim win = l.Count(Function(s As String) s = PortSt.ToString)
-                Dim draw = l.Count(Function(s As String) s = "döntetlen")
-                Dim loss = l.Count(Function(s As String) s = (PortSt + 1).ToString)
-                Dim r = win & " : " & draw & " : " & loss & vbTab & "(" & Math.Round(100 * CDbl(win) / (win + draw + loss), 2, MidpointRounding.AwayFromZero) & "%)"
-                Clipboard.SetText(r)
-                MsgBox(r)
-            Catch ex As Exception
-            End Try
         End Sub
     End Class
 End Module
