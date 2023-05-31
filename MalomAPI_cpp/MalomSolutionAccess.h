@@ -19,46 +19,34 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <memory> // for std::shared_ptr
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <unordered_map>
 
-#include "MalomSolutionAccess.h"
 #include "PerfectPlayer.h"
 #include "Player.h"
 #include "main.h"
 #include "move.h"
 #include "rules.h"
 
-// The object is informed to enter the specified game
-void Player::Enter(std::shared_ptr<Game> _g)
-{
-    G = _g;
-}
+class MalomSolutionAccess {
+private:
+    static PerfectPlayer* pp;
+    static std::exception* lastError;
 
-// The object is informed to exit from the game
-void Player::Quit()
-{
-    if (G == nullptr)
-        return;
-    G = nullptr;
-}
+public:
+    static int GetBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace, int blackStonesToPlace, int playerToMove, bool onlyStoneTaking);
 
-// The object is informed that it is its turn to move
-void Player::ToMove(GameState& s) = 0; // Assuming GameState is a pre-defined class
+    static int GetBestMoveNoException(int whiteBitboard, int blackBitboard, int whiteStonesToPlace, int blackStonesToPlace, int playerToMove, bool onlyStoneTaking);
 
-// Notifies about the opponent's move
-void Player::FollowMove(const Object& M) { } // Assuming Object is a pre-defined class or built-in type
+    static std::string GetLastError();
 
-// The object is informed that it is the opponent's turn to move
-void Player::OppToMove(GameState& s) { }
+    static int GetBestMoveStr(std::string args);
 
-// Game is over
-void Player::Over(GameState& s) { }
+    static void InitializeIfNeeded();
 
-// Cancel thinking
-void Player::CancelThinking() { }
+    static void MustBeBetween(std::string paramName, int value, int min, int max);
 
-// Determine the opponent player
-Player* Player::Opponent()
-{
-    return (G->Ply(0).get() == this) ? G->Ply(1).get() : G->Ply(0).get(); // Assuming Game has a Ply function
-}
+    static void SetVariantStripped();
+};

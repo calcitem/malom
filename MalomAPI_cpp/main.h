@@ -1,0 +1,126 @@
+// Malom, a Nine Men's Morris (and variants) player and solver program.
+// Copyright(C) 2007-2016  Gabor E. Gevay, Gabor Danner
+// Copyright (C) 2023 The Sanmill developers (see AUTHORS file)
+//
+// See our webpage (and the paper linked from there):
+// http://compalg.inf.elte.hu/~ggevay/mills/index.php
+//
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#ifndef MAIN_H_INCLUDED
+#define MAIN_H_INCLUDED
+
+#include <list>
+#include <stdexcept>
+#include <sstream>
+#include <stdexcept>
+#include <vector>
+#include <cassert>
+#include <string>
+
+#include "PerfectPlayer.h"
+#include "Player.h"
+#include "move.h"
+#include "rules.h"
+
+class Player; // forward declaration, implement this
+class GameState; // forward declaration, implement this
+class Move; // forward declaration, implement this
+
+class Game {
+private:
+    Player* _Ply[2]; // players in the game
+    std::list<GameState> history; // GameStates in this (and previous) games
+    std::list<GameState>::iterator current; // the node of the current GameState in history
+
+public:
+    const GameState& s() const
+    { // wrapper of current.value
+        return *current;
+    }
+
+    Game(Player* p1, Player* p2);
+
+    Player** Plys();
+
+    Player* Ply(int i) const;
+
+    void set_Ply(int i, Player* p);
+
+    void MakeMove(Move* M);
+
+    void ApplySetup(GameState toSet);
+
+    void CancelThinking();
+
+    bool PlayertypeChangingCmdAllowed();
+
+    void CopyMoveList();
+};
+
+class GameState {
+public:
+    // The board (-1: empty, 0: white piece, 1: black piece)
+    std::vector<int> T = std::vector<int>(24, -1);
+    int phase = 1;
+    // How many stones the players have set
+    std::vector<int> SetStoneCount = std::vector<int>(2, 0);
+    std::vector<int> StoneCount = std::vector<int>(2, 0);
+    bool KLE = false; // Is there a puck removal coming?
+    int SideToMove = 0;
+    int MoveCount = 0;
+    bool over = false;
+    int winner = 0; // (-1, if a draw)
+    bool block = false;
+    int LastIrrev = 0;
+
+    GameState() { } // start of game
+
+    GameState(const GameState& s);
+
+    int FutureStoneCount(int p);
+
+    // Sets the state for Setup Mode: the placed stones are unchanged, but we switch to phase 2.
+    void InitSetup();
+
+    void makeMove(Move* M);
+
+    void checkValidMove(BaseMove* M);
+
+    void checkInvariants();
+
+    // Called when applying a free setup. It sets over and checks whether the position is valid. Returns "" if valid, reason str otherwise.
+    // Also called when pasting a position.
+    std::string setOverAndCheckValidSetup();
+
+    // to paste from clipboard
+    GameState(const std::string& s);
+
+    // for clipboard
+    std::string toString();
+};
+
+class InvalidGameStateException : public std::exception {
+public:
+    std::string mymsg;
+    InvalidGameStateException(const std::string& msg)
+        : mymsg(msg)
+    {
+    }
+
+    virtual const char* what() const noexcept override;
+};
+
+#endif // MAIN_H_INCLUDED

@@ -19,46 +19,55 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <memory> // for std::shared_ptr
+#ifndef MOVE_H_INCLUDED
+#define MOVE_H_INCLUDED
 
-#include "MalomSolutionAccess.h"
 #include "PerfectPlayer.h"
 #include "Player.h"
 #include "main.h"
-#include "move.h"
 #include "rules.h"
 
-// The object is informed to enter the specified game
-void Player::Enter(std::shared_ptr<Game> _g)
-{
-    G = _g;
-}
+class Move { // Step
+public:
+    virtual std::vector<int> GetMezok() = 0; // Returns the fields included in the step
+protected:
+    std::string MezoToString[24] = { "a4", "a7", "d7", "g7", "g4", "g1", "d1", "a1",
+        "b4", "b6", "d6", "f6", "f4", "f2", "d2", "b2",
+        "c4", "c5", "d5", "e5", "e4", "e3", "d3", "c3" };
+};
 
-// The object is informed to exit from the game
-void Player::Quit()
-{
-    if (G == nullptr)
-        return;
-    G = nullptr;
-}
+class SetKorong : public Move {
+public:
+    int hov;
+    SetKorong(int m)
+        : hov(m)
+    {
+    }
+    std::vector<int> GetMezok() override;
+    std::string ToString();
+};
 
-// The object is informed that it is its turn to move
-void Player::ToMove(GameState& s) = 0; // Assuming GameState is a pre-defined class
+class MoveKorong : public Move {
+public:
+    int hon, hov; // from, to
+    MoveKorong(int m1, int m2)
+        : hon(m1)
+        , hov(m2)
+    {
+    }
+    std::vector<int> GetMezok() override;
+    std::string ToString();
+};
 
-// Notifies about the opponent's move
-void Player::FollowMove(const Object& M) { } // Assuming Object is a pre-defined class or built-in type
+class LeveszKorong : public Move {
+public:
+    int hon;
+    LeveszKorong(int m)
+        : hon(m)
+    {
+    }
+    std::vector<int> GetMezok() override;
+    std::string ToString();
+};
 
-// The object is informed that it is the opponent's turn to move
-void Player::OppToMove(GameState& s) { }
-
-// Game is over
-void Player::Over(GameState& s) { }
-
-// Cancel thinking
-void Player::CancelThinking() { }
-
-// Determine the opponent player
-Player* Player::Opponent()
-{
-    return (G->Ply(0).get() == this) ? G->Ply(1).get() : G->Ply(0).get(); // Assuming Game has a Ply function
-}
+#endif // MOVE_H_INCLUDED
