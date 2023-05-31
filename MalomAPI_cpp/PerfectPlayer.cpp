@@ -76,7 +76,7 @@ static std::map<id, Sector> Sectors::getsectors()
     }
 }
 
-static bool Sectors::HasDatabase()
+bool Sectors::HasDatabase()
 {
     return getsectors().size() > 0;
 }

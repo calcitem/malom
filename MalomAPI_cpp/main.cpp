@@ -202,7 +202,7 @@ void GameState::makeMove(Move* M)
     checkInvariants();
 }
 
-void GameState::checkValidMove(BaseMove* M)
+void GameState::checkValidMove(Move* M)
 {
     // Hard to ensure that the 'over and winner = -1' case never occurs. For example, the WithTaking case of PerfectPlayer.MakeMoveInState is tricky, because the previous MakeMove may have already made it a draw.
     assert(!over || winner == -1);
@@ -310,7 +310,7 @@ std::string GameState::setOverAndCheckValidSetup()
 }
 
 // to paste from clipboard
-GameState(const std::string& s)
+GameState::GameState(const std::string& s)
 {
     std::vector<std::string> ss;
     std::string temp;
@@ -353,7 +353,7 @@ GameState(const std::string& s)
 }
 
 // for clipboard
-std::string toString()
+std::string GameState::toString()
 {
     std::stringstream s;
     for (int i = 0; i < 24; i++) {

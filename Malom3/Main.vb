@@ -23,8 +23,7 @@ Public Class Game
     Private _Ply(1) As Player 'players in the game
     Public history As New LinkedList(Of GameState) 'GameStates in this (and previous) games
     Private current As LinkedListNode(Of GameState) 'the node of the current GameState in history
-    'Private MoveList As New List(Of Move)
-    'Private MoveListCurIndex As Integer = 0
+
     Public ReadOnly Property s As GameState 'wrapper of current.value
         Get
             Return current.Value

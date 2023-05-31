@@ -97,7 +97,7 @@ public:
 
     void makeMove(Move* M);
 
-    void checkValidMove(BaseMove* M);
+    void checkValidMove(Move* M);
 
     void checkInvariants();
 

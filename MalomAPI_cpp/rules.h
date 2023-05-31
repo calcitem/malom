@@ -32,6 +32,8 @@
 #include "main.h"
 #include "move.h"
 
+#include "wrappers.h"
+
 // Define byte as unsigned char
 typedef unsigned char byte;
 
@@ -80,7 +82,7 @@ public:
     // Checking if AlphaBeta is available
     bool AlphaBetaAvailable()
     {
-        return Wrappers.Constants.Variant == Wrappers.Constants.Variants.std && !Wrappers.Constants.Extended;
+        return Wrappers::Constants::Variant == Wrappers::Constants::Variants::std && !Wrappers::Constants::Extended;
     }
 
     void SetVariant();

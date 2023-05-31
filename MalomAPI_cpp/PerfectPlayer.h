@@ -41,6 +41,9 @@
 #include "main.h"
 #include "move.h"
 #include "rules.h"
+#include "sector.h"
+#include "common.h"
+#include "wrappers.h"
 
 class Sectors {
 public:
@@ -60,25 +63,18 @@ class PerfectPlayer : public Player {
 public:
     std::map<id, Sector> secs;
 
-    PerfectPlayer()
-    {
-        assert(Sectors::HasDatabase());
-        secs = Sectors::getsectors();
-    }
+    PerfectPlayer();
 
-    void Enter(Game _g) override
-    {
-        Player::Enter(_g);
-    }
+    void Enter(Game _g);
 
     void Quit() override
     {
         Player::Quit();
     }
 
-    Sector* PerfectPlayer::GetSec(GameState s);
+    Sector* GetSec(GameState s);
 
-    std::string PerfectPlayer::ToHumanReadableEval(gui_eval_elem2 e);
+    std::string ToHumanReadableEval(gui_eval_elem2 e);
 
     enum class MoveType {
         SetMove,
