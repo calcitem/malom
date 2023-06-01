@@ -39,7 +39,7 @@ class Move; // forward declaration, implement this
 
 extern int maxKSZ;
 
-const GameState& Game::s() const
+GameState& Game::s() const
 { // wrapper of current.value
     return *current;
 }
@@ -76,7 +76,7 @@ void Game::set_Ply(int i, Player* p)
     p->Enter(this);
 }
 
-void Game::MakeMove(Move* M)
+void Game::makeMove(Move* M)
 { // called by player objects when they want to move
     try {
         Ply(1 - s().sideToMove())->FollowMove(M);
@@ -87,7 +87,7 @@ void Game::MakeMove(Move* M)
         s().makeMove(M);
     } catch (std::exception& ex) {
         // If TypeOf ex Is KeyNotFoundException Then Throw
-        std::cerr << "Exception in MakeMove\n"
+        std::cerr << "Exception in makeMove\n"
                   << ex.what() << std::endl;
     }
 }
@@ -206,7 +206,7 @@ void GameState::makeMove(Move* M)
 
 void GameState::checkValidMove(Move* M)
 {
-    // Hard to ensure that the 'over and winner = -1' case never occurs. For example, the WithTaking case of PerfectPlayer.MakeMoveInState is tricky, because the previous MakeMove may have already made it a draw.
+    // Hard to ensure that the 'over and winner = -1' case never occurs. For example, the WithTaking case of PerfectPlayer.MakeMoveInState is tricky, because the previous makeMove may have already made it a draw.
     assert(!over || winner == -1);
 
     SetKorong* sk = dynamic_cast<SetKorong*>(M);
@@ -230,9 +230,9 @@ void GameState::checkValidMove(Move* M)
 void GameState::checkInvariants()
 {
     assert(setStoneCount[0] >= 0);
-    assert(setStoneCount[0] <= rules::maxKSZ);
+    assert(setStoneCount[0] <= Rules::maxKSZ);
     assert(setStoneCount[1] >= 0);
-    assert(setStoneCount[1] <= rules::maxKSZ);
+    assert(setStoneCount[1] <= Rules::maxKSZ);
     assert(phase == 1 || (phase == 2 && setStoneCount[0] == maxKSZ && setStoneCount[1] == maxKSZ));
 }
 
@@ -245,12 +245,12 @@ std::string GameState::setOverAndCheckValidSetup()
     // Validity checks:
     // Note: this should be before setting over, because we will deny applying the setup if the state is not valid, and we want to maintain the 'Not over and Not block' invariants.
 
-    int toBePlaced0 = rules::maxKSZ - setStoneCount[0];
-    if (stoneCount[0] + toBePlaced0 > rules::maxKSZ) {
+    int toBePlaced0 = Rules::maxKSZ - setStoneCount[0];
+    if (stoneCount[0] + toBePlaced0 > Rules::maxKSZ) {
         return "Too many white stones (on the board + to be placed). Please remove some white stones from the board and/or decrease the number of white stones to be placed.";
     }
-    int toBePlaced1 = rules::maxKSZ - setStoneCount[1];
-    if (stoneCount[1] + toBePlaced1 > rules::maxKSZ) {
+    int toBePlaced1 = Rules::maxKSZ - setStoneCount[1];
+    if (stoneCount[1] + toBePlaced1 > Rules::maxKSZ) {
         return "Too many black stones (on the board + to be placed). Please remove some black stones from the board and/or decrease the number of black stones to be placed.";
     }
 
@@ -297,7 +297,7 @@ std::string GameState::setOverAndCheckValidSetup()
         over = true;
         block = true;
         winner = 1 - sideToMove;
-        if (wrappers::constants::FBD && stoneCount[0] == 12 && stoneCount[1] == 12) {
+        if (Wrappers::Constants::FBD && stoneCount[0] == 12 && stoneCount[1] == 12) {
             winner = -1;
         }
     }
@@ -366,8 +366,6 @@ std::string GameState::toString()
       << "," << (KLE ? "True" : "False") << "," << moveCount << "," << lastIrrev;
     return s.str();
 }
-}
-;
 
 const char* InvalidGameStateException::what() const noexcept
 {

@@ -83,7 +83,7 @@ int MalomSolutionAccess::GetBestMove(int whiteBitboard, int blackBitboard, int w
     s.lastIrrev = 0;
 
     try {
-        return pp->ChooseRandom(pp->GoodMoves(s)).ToBitBoard();
+        return pp->chooseRandom(pp->goodMoves(s)).toBitBoard();
     } catch (std::out_of_range& e) {
         throw std::runtime_error("We don't have a database entry for this position. This can happen either if the database is corrupted (missing files), or sometimes when the position is not reachable from the starting position.");
     }
@@ -130,7 +130,7 @@ void MalomSolutionAccess::InitializeIfNeeded()
     if (pp != nullptr) {
         return;
     }
-    InitRules();
+    Rules::InitRules();
     SetVariantStripped();
     if (!Sectors::HasDatabase) {
         throw std::runtime_error("Database files not found in the current working directory (" + std::string(std::filesystem::current_path()) + ")");
@@ -150,29 +150,29 @@ void MalomSolutionAccess::SetVariantStripped()
     // copy-paste from Rules.cpp, but references to Main stripped
 
     switch (Wrappers::Constants::Variant) {
-    case Wrappers::Constants::Variants::std:
-        millPos = stdLaskerMillPos;
-        invMillPos = stdLaskerInvMillPos;
-        boardGraph = stdLaskerBoardGraph;
-        aLBoardGraph = stdLaskerALBoardGraph;
+    case (int)Wrappers::Constants::Variants::std:
+        std::memcpy(Rules::millPos, Rules::stdLaskerMillPos, sizeof(Rules::stdLaskerMillPos));
+        std::memcpy(Rules::invMillPos, Rules::stdLaskerInvMillPos, sizeof(Rules::stdLaskerInvMillPos));
+        std::memcpy(Rules::boardGraph, Rules::stdLaskerBoardGraph, sizeof(Rules::stdLaskerBoardGraph));
+        std::memcpy(Rules::aLBoardGraph, Rules::stdLaskerALBoardGraph, sizeof(Rules::stdLaskerALBoardGraph));
         maxKSZ = 9;
-        variantName = "std";
+        Rules::variantName = "std";
         break;
-    case Wrappers::Constants::Variants::lask:
-        millPos = stdLaskerMillPos;
-        invMillPos = stdLaskerInvMillPos;
-        boardGraph = stdLaskerBoardGraph;
-        aLBoardGraph = stdLaskerALBoardGraph;
+    case (int)Wrappers::Constants::Variants::lask:
+        std::memcpy(Rules::millPos, Rules::stdLaskerMillPos, sizeof(Rules::stdLaskerMillPos));
+        std::memcpy(Rules::invMillPos, Rules::stdLaskerInvMillPos, sizeof(Rules::stdLaskerInvMillPos));
+        std::memcpy(Rules::boardGraph, Rules::stdLaskerBoardGraph, sizeof(Rules::stdLaskerBoardGraph));
+        std::memcpy(Rules::aLBoardGraph, Rules::stdLaskerALBoardGraph, sizeof(Rules::stdLaskerALBoardGraph));
         maxKSZ = 10;
-        variantName = "lask";
+        Rules::variantName = "lask";
         break;
-    case Wrappers::Constants::Variants::mora:
-        millPos = moraMillPos;
-        invMillPos = moraInvMillPos;
-        boardGraph = moraBoardGraph;
-        aLBoardGraph = moraALBoardGraph;
+    case (int)Wrappers::Constants::Variants::mora:
+        std::memcpy(Rules::millPos, Rules::moraMillPos, sizeof(Rules::moraMillPos));
+        std::memcpy(Rules::invMillPos, Rules::moraInvMillPos, sizeof(Rules::moraInvMillPos));
+        std::memcpy(Rules::boardGraph, Rules::moraBoardGraph, sizeof(Rules::moraBoardGraph));
+        std::memcpy(Rules::aLBoardGraph, Rules::moraALBoardGraph, sizeof(Rules::moraALBoardGraph));
         maxKSZ = 12;
-        variantName = "mora";
+        Rules::variantName = "mora";
         break;
     }
 

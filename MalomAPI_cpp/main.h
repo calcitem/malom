@@ -46,10 +46,7 @@ private:
     std::list<GameState>::iterator current; // the node of the current GameState in history
 
 public:
-    GameState& s() const
-    { // wrapper of current.value
-        return *current;
-    }
+    GameState& s() const;
 
     Game(Player* p1, Player* p2);
 
@@ -59,7 +56,7 @@ public:
 
     void set_Ply(int i, Player* p);
 
-    void MakeMove(Move* M);
+    void makeMove(Move* M);
 
     void ApplySetup(GameState toSet);
 

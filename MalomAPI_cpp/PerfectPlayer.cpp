@@ -251,7 +251,8 @@ std::vector<Move> PerfectPlayer::getMoveList(GameState& s)
 {
     std::vector<Move> ms0, ms;
     if (!s.KLE) {
-        if (Wrappers.Constants.variant == Wrappers.Constants.Variants.std || Wrappers.Constants.variant == Wrappers.Constants.Variants.mora) {
+        if (Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::std || 
+            Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::mora) {
             if (s.setStoneCount(s.sideToMove) < Rules.maxKSZ) {
                 ms0 = setMoves(s);
             } else {
@@ -259,7 +260,7 @@ std::vector<Move> PerfectPlayer::getMoveList(GameState& s)
             }
         } else { // Lasker
             ms0 = slideMoves(s);
-            if (s.setStoneCount(s.sideToMove) < Rules.maxKS Z) {
+            if (s.setStoneCount(s.sideToMove) < Rules::maxKSZ) {
                 std::vector<Move> setMovesResult = setMoves(s);
                 ms0.insert(ms0.end(), setMovesResult.begin(), setMovesResult.end());
             }

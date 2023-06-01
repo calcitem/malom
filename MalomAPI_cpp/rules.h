@@ -34,30 +34,32 @@
 
 #include "wrappers.h"
 
+extern int maxKSZ;
+
 // Define byte as unsigned char
 typedef unsigned char byte;
 
 class Rules {
 public:
     // Define your byte arrays
-    byte millPos[16][3];
-    byte stdLaskerMillPos[16][3];
-    byte moraMillPos[20][3];
+    static byte millPos[16][3];
+    static byte stdLaskerMillPos[16][3];
+    static byte moraMillPos[20][3];
 
     // Define your integer arrays
-    int* invMillPos[24];
-    int* stdLaskerInvMillPos[24];
-    int* moraInvMillPos[24];
+    static int* invMillPos[24];
+    static int* stdLaskerInvMillPos[24];
+    static int* moraInvMillPos[24];
 
     // Define your boolean arrays
-    bool boardGraph[24][24];
-    bool stdLaskerBoardGraph[24][24];
-    bool moraBoardGraph[24][24];
+    static bool boardGraph[24][24];
+    static bool stdLaskerBoardGraph[24][24];
+    static bool moraBoardGraph[24][24];
 
     // Define your adjacency list byte arrays
-    byte aLBoardGraph[24][5];
-    byte stdLaskerALBoardGraph[24][5];
-    byte moraALBoardGraph[24][5];
+    static byte aLBoardGraph[24][5];
+    static byte stdLaskerALBoardGraph[24][5];
+    static byte moraALBoardGraph[24][5];
 
     // Define other variables
     static std::string variantName;
@@ -67,23 +69,20 @@ public:
 public:
     // Add your public methods here
 
-    void InitRules();
+    static void InitRules();
 
     // Returns -1 if there is no mill on the given field, otherwise returns the sequence number in StdLaskerMalomPoz
-    int Malome(int m, GameState s);
+    static int Malome(int m, GameState s);
 
     // Tells whether the next player can move '(doesn't handle the KLE case)
-    bool YouCanMove(GameState s);
+    static bool YouCanMove(GameState s);
 
-    bool MindenEllensegesKorongMalomban(GameState s);
+    static bool MindenEllensegesKorongMalomban(GameState s);
 
     // Checking if AlphaBeta is available
-    bool AlphaBetaAvailable()
-    {
-        return Wrappers::Constants::Variant == Wrappers::Constants::Variants::std && !Wrappers::Constants::Extended;
-    }
+    static bool AlphaBetaAvailable();
 
-    void SetVariant();
+    static void SetVariant();
 };
 
 #endif // RULES_H_INCLUDED

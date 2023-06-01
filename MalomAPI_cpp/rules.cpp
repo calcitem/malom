@@ -170,31 +170,37 @@ int maxKSZ;
 // Checking if AlphaBeta is available
 bool Rules::AlphaBetaAvailable()
 {
-    return Wrappers::Constants::Variant == Wrappers::Constants::Variants::std && !Wrappers::Constants::Extended;
+    return Wrappers::Constants::Variant == (int)Wrappers::Constants::Variants::std && !Wrappers::Constants::Extended;
 }
 
 void Rules::SetVariant()
 {
     // Part of this is copy-pasted in MalomAPI
-    if (Wrappers::Constants::Variant == Wrappers::Constants::Variants::std) {
-        millPos = stdLaskerMillPos;
-        invMillPos = stdLaskerInvMillPos;
-        boardGraph = stdLaskerBoardGraph;
-        aLBoardGraph = stdLaskerALBoardGraph;
+    if (Wrappers::Constants::Variant == (int)Wrappers::Constants::Variants::std) {
+        std::memcpy(millPos, stdLaskerMillPos, sizeof(stdLaskerMillPos));
+        for (int i = 0; i < 24; ++i) {
+            invMillPos[i] = stdLaskerInvMillPos[i];
+        }
+        std::memcpy(boardGraph, stdLaskerBoardGraph, sizeof(stdLaskerBoardGraph));
+        std::memcpy(aLBoardGraph, stdLaskerALBoardGraph, sizeof(stdLaskerALBoardGraph));
         maxKSZ = 9;
         variantName = "std";
-    } else if (Wrappers::Constants::Variant == Wrappers::Constants::Variants::lask) {
-        millPos = stdLaskerMillPos;
-        invMillPos = stdLaskerInvMillPos;
-        boardGraph = stdLaskerBoardGraph;
-        aLBoardGraph = stdLaskerALBoardGraph;
+    } else if (Wrappers::Constants::Variant == (int)Wrappers::Constants::Variants::lask) {
+        std::memcpy(millPos, stdLaskerMillPos, sizeof(stdLaskerMillPos));
+        for (int i = 0; i < 24; ++i) {
+            invMillPos[i] = stdLaskerInvMillPos[i];
+        }
+        std::memcpy(boardGraph, stdLaskerBoardGraph, sizeof(stdLaskerBoardGraph));
+        std::memcpy(aLBoardGraph, stdLaskerALBoardGraph, sizeof(stdLaskerALBoardGraph));
         maxKSZ = 10;
         variantName = "lask";
-    } else if (Wrappers::Constants::Variant == Wrappers::Constants::Variants::mora) {
-        millPos = moraMillPos;
-        invMillPos = moraInvMillPos;
-        boardGraph = moraBoardGraph;
-        aLBoardGraph = moraALBoardGraph;
+    } else if (Wrappers::Constants::Variant == (int)Wrappers::Constants::Variants::mora) {
+        std::memcpy(millPos, moraMillPos, sizeof(moraMillPos));
+        for (int i = 0; i < 24; ++i) {
+            invMillPos[i] = moraInvMillPos[i];
+        }
+        std::memcpy(boardGraph, moraBoardGraph, sizeof(moraBoardGraph));
+        std::memcpy(aLBoardGraph, moraALBoardGraph, sizeof(moraALBoardGraph));
         maxKSZ = 12;
         variantName = "mora";
     }
