@@ -38,9 +38,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <set>
 
+using namespace std;
+
 namespace Wrappers {
 
-std::unordered_map<int, int> sector_sizes;
+std::unordered_map<id, int> sector_sizes;
 static int f_inv_count[] { 1, 4, 30, 158, 757, 2830, 8774, 22188, 46879, 82880, 124124, 157668, 170854 };
 
 #include <cmath> // for factorial function
