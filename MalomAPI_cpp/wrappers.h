@@ -66,7 +66,7 @@ struct id {
 
     void negate(); // Declaration only
 
-    static id operator-(id s); // Declaration only
+    id operator-(id s); // Declaration only
 
     // ToString() replaced with a standard C++ function
     std::string to_string()
@@ -316,8 +316,8 @@ public:
 class Constants {
 public:
     static const int Variant = VARIANT;
-    static const std::string Fname_suffix = FNAME_SUFFIX;
-    static const std::string MovegenFname = movegen_file;
+    const std::string Fname_suffix = FNAME_SUFFIX;
+    const std::string MovegenFname = movegen_file;
 
     enum class Variants {
         std = STANDARD,

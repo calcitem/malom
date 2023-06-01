@@ -22,35 +22,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #pragma once
-#include "common.h"
-
-#include <set>
-#include <unordered_map>
-
-#define HAS_SECTOR_GRAPH //(the Analyzer doesn't have the sector graph (init_sec_vals() has an ifdef for this))
 
 
-extern unordered_map<id, vector<id> > sector_graph_t;
-vector<id> graph_func(id u, bool elim_loops=true);
+#ifndef WRAPPER
+	struct Log{ //ez azert nincs a masik agban, mert a wrapper projektben nincs benne a log.cpp (de amugy semmi akadalya nem lenne belerakni)
+		static bool log_to_file;
+		static FILE *logfile;
+		static void setup_logfile(string fname, string extension);
+		static string fname, fnamelogging, donefname;
+		static void close();
+	};
+#endif
 
-void init_sector_graph();
 
-
-
-struct wu{
-	id id;
-	bool twine;
-	set<wu*> parents;
-	int child_count;
-
-	wu(::id id):id(id),twine(false),child_count(0){};
-
-private:
-	wu(const wu &o){ assert(false); } //forbid copying
-};
-
-extern unordered_map<id,wu*> wus;
-
-extern vector<id> sector_list;
-
-extern set<id> wu_ids; //azok az id-k, amelyekre van olyan wu, aminek ez az id-je
+template<typename... Args>
+void LOG(Args... args){
+#ifndef WRAPPER
+	printf_s(args...);
+	fflush(stdout);
+	if(Log::log_to_file){
+		fprintf(Log::logfile, args...);
+		fflush(Log::logfile);
+	}
+#else //azert kell ez a hokuszpokusz, mert az alul levo debug ablakban csak az jelenik meg normalisan, amit ezzel irunk ki
+	char buf[255];
+	sprintf_s(buf, args...);
+	System::Diagnostics::Debug::Write(gcnew System::String(buf));
+#endif
+}

@@ -60,8 +60,8 @@ public:
     byte MoraALBoardGraph[24][5];
 
     // Define other variables
-    std::string VariantName;
-    int MaxKSZ;
+    static std::string VariantName;
+    static int MaxKSZ;
     const int LastIrrevLimit = 50;
 
 public:
@@ -77,7 +77,7 @@ public:
 
     bool MindenEllensegesKorongMalomban(GameState s);
 
-    int MaxKSZ;
+    static int MaxKSZ;
 
     // Checking if AlphaBeta is available
     bool AlphaBetaAvailable()

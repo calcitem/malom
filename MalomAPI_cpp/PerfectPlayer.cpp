@@ -41,7 +41,7 @@
 #include "move.h"
 #include "rules.h"
 
-static std::map<id, Sector> Sectors::getsectors()
+std::map<id, Sector> Sectors::getsectors()
 {
     try {
         if (!created) {

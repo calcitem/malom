@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "debug.h"
 
 #include <vector>
-
+#include <sstream>
 
 #pragma managed(push,off)
 const char* toclp(board b){

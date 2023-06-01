@@ -131,6 +131,7 @@
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="eval_elem.cpp" />
     <ClCompile Include="hash.cpp" />
+    <ClCompile Include="log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MalomSolutionAccess.cpp" />
     <ClCompile Include="move.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="debug.h" />
     <ClInclude Include="eval_elem.h" />
     <ClInclude Include="hash.h" />
+    <ClInclude Include="log.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MalomSolutionAccess.h" />
     <ClInclude Include="move.h" />
