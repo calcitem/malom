@@ -36,6 +36,7 @@
 #include <iostream> // for std::cerr
 #include <mutex> // for std::mutex and std::lock_guard
 #include <stdexcept> // for std::out_of_range
+#include <functional>
 
 #include "Player.h"
 #include "main.h"

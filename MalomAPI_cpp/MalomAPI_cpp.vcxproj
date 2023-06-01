@@ -143,6 +143,7 @@
     <ClCompile Include="sector_graph.cpp" />
     <ClCompile Include="sec_val.cpp" />
     <ClCompile Include="symmetries.cpp" />
+    <ClCompile Include="symmetries_slow.cpp" />
     <ClCompile Include="wrappers.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +163,7 @@
     <ClInclude Include="sector_graph.h" />
     <ClInclude Include="sec_val.h" />
     <ClInclude Include="symmetries.h" />
+    <ClInclude Include="symmetries_slow.h" />
     <ClInclude Include="wrappers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

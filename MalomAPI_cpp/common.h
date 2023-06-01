@@ -26,6 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <cassert>
 #include <string>
 #include <tuple>
+#include <sstream>
 
 using namespace std;
 

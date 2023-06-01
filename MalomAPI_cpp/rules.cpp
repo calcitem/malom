@@ -170,27 +170,27 @@ int maxKSZ;
 // Checking if AlphaBeta is available
 bool Rules::AlphaBetaAvailable()
 {
-    return Wrappers.Constants.Variant == Wrappers.Constants.Variants.std && !Wrappers.Constants.Extended;
+    return Wrappers::Constants::Variant == Wrappers::Constants::Variants::std && !Wrappers::Constants::Extended;
 }
 
 void Rules::SetVariant()
 {
     // Part of this is copy-pasted in MalomAPI
-    if (Wrappers.Constants.Variant == Wrappers.Constants.Variants.std) {
+    if (Wrappers::Constants::Variant == Wrappers::Constants::Variants::std) {
         millPos = stdLaskerMillPos;
         invMillPos = stdLaskerInvMillPos;
         boardGraph = stdLaskerBoardGraph;
         aLBoardGraph = stdLaskerALBoardGraph;
         maxKSZ = 9;
         variantName = "std";
-    } else if (Wrappers.Constants.Variant == Wrappers.Constants.Variants.lask) {
+    } else if (Wrappers::Constants::Variant == Wrappers::Constants::Variants::lask) {
         millPos = stdLaskerMillPos;
         invMillPos = stdLaskerInvMillPos;
         boardGraph = stdLaskerBoardGraph;
         aLBoardGraph = stdLaskerALBoardGraph;
         maxKSZ = 10;
         variantName = "lask";
-    } else if (Wrappers.Constants.Variant == Wrappers.Constants.Variants.mora) {
+    } else if (Wrappers::Constants::Variant == Wrappers::Constants::Variants::mora) {
         millPos = moraMillPos;
         invMillPos = moraInvMillPos;
         boardGraph = moraBoardGraph;
@@ -199,7 +199,7 @@ void Rules::SetVariant()
         variantName = "mora";
     }
 
-    if (Wrappers.Constants.Extended) {
+    if (Wrappers::Constants::Extended) {
         maxKSZ = 12;
     }
 }
