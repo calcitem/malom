@@ -47,29 +47,29 @@ int MalomSolutionAccess::GetBestMove(int whiteBitboard, int blackBitboard, int w
     for (int i = 0; i < 24; i++) {
         if ((whiteBitboard & (1 << i)) != 0) {
             s.T[i] = W;
-            s.StoneCount[W] += 1;
+            s.stoneCount[W] += 1;
         }
         if ((blackBitboard & (1 << i)) != 0) {
             s.T[i] = B;
-            s.StoneCount[B] += 1;
+            s.stoneCount[B] += 1;
         }
     }
 
     s.phase = ((whiteStonesToPlace == 0 && blackStonesToPlace == 0) ? 2 : 1);
-    MustBeBetween("whiteStonesToPlace", whiteStonesToPlace, 0, Rules::MaxKSZ);
-    MustBeBetween("blackStonesToPlace", blackStonesToPlace, 0, Rules::MaxKSZ);
-    s.SetStoneCount[W] = Rules::MaxKSZ - whiteStonesToPlace;
-    s.SetStoneCount[B] = Rules::MaxKSZ - blackStonesToPlace;
+    MustBeBetween("whiteStonesToPlace", whiteStonesToPlace, 0, Rules::maxKSZ);
+    MustBeBetween("blackStonesToPlace", blackStonesToPlace, 0, Rules::maxKSZ);
+    s.setStoneCount[W] = Rules::maxKSZ - whiteStonesToPlace;
+    s.setStoneCount[B] = Rules::maxKSZ - blackStonesToPlace;
     s.KLE = onlyStoneTaking;
     MustBeBetween("playerToMove", playerToMove, 0, 1);
-    s.SideToMove = playerToMove;
-    s.MoveCount = 10;
+    s.sideToMove = playerToMove;
+    s.moveCount = 10;
 
-    if (s.FutureStoneCount[W] > Rules::MaxKSZ) {
-        throw std::invalid_argument("Number of stones in whiteBitboard + whiteStonesToPlace > " + std::to_string(Rules::MaxKSZ));
+    if (s.FutureStoneCount[W] > Rules::maxKSZ) {
+        throw std::invalid_argument("Number of stones in whiteBitboard + whiteStonesToPlace > " + std::to_string(Rules::maxKSZ));
     }
-    if (s.FutureStoneCount[B] > Rules::MaxKSZ) {
-        throw std::invalid_argument("Number of stones in blackBitboard + blackStonesToPlace > " + std::to_string(Rules::MaxKSZ));
+    if (s.FutureStoneCount[B] > Rules::maxKSZ) {
+        throw std::invalid_argument("Number of stones in blackBitboard + blackStonesToPlace > " + std::to_string(Rules::maxKSZ));
     }
 
     std::string errorMsg = s.SetOverAndCheckValidSetup();
@@ -80,7 +80,7 @@ int MalomSolutionAccess::GetBestMove(int whiteBitboard, int blackBitboard, int w
         throw std::invalid_argument("Game is already over.");
     }
 
-    s.LastIrrev = 0;
+    s.lastIrrev = 0;
 
     try {
         return pp->ChooseRandom(pp->GoodMoves(s)).ToBitBoard();
@@ -151,32 +151,32 @@ void MalomSolutionAccess::SetVariantStripped()
 
     switch (Wrappers::Constants::Variant) {
     case Wrappers::Constants::Variants::std:
-        MillPos = StdLaskerMillPos;
-        InvMillPos = StdLaskerInvMillPos;
-        BoardGraph = StdLaskerBoardGraph;
-        ALBoardGraph = StdLaskerALBoardGraph;
-        MaxKSZ = 9;
-        VariantName = "std";
+        millPos = stdLaskerMillPos;
+        invMillPos = stdLaskerInvMillPos;
+        boardGraph = stdLaskerBoardGraph;
+        aLBoardGraph = stdLaskerALBoardGraph;
+        maxKSZ = 9;
+        variantName = "std";
         break;
     case Wrappers::Constants::Variants::lask:
-        MillPos = StdLaskerMillPos;
-        InvMillPos = StdLaskerInvMillPos;
-        BoardGraph = StdLaskerBoardGraph;
-        ALBoardGraph = StdLaskerALBoardGraph;
-        MaxKSZ = 10;
-        VariantName = "lask";
+        millPos = stdLaskerMillPos;
+        invMillPos = stdLaskerInvMillPos;
+        boardGraph = stdLaskerBoardGraph;
+        aLBoardGraph = stdLaskerALBoardGraph;
+        maxKSZ = 10;
+        variantName = "lask";
         break;
     case Wrappers::Constants::Variants::mora:
-        MillPos = MoraMillPos;
-        InvMillPos = MoraInvMillPos;
-        BoardGraph = MoraBoardGraph;
-        ALBoardGraph = MoraALBoardGraph;
-        MaxKSZ = 12;
-        VariantName = "mora";
+        millPos = moraMillPos;
+        invMillPos = moraInvMillPos;
+        boardGraph = moraBoardGraph;
+        aLBoardGraph = moraALBoardGraph;
+        maxKSZ = 12;
+        variantName = "mora";
         break;
     }
 
     if (Wrappers::Constants::Extended) {
-        MaxKSZ = 12;
+        maxKSZ = 12;
     }
 }

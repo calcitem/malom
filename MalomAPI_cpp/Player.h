@@ -35,7 +35,7 @@ protected:
 
 public:
     // The object is informed to enter the specified game
-    virtual void Enter(std::shared_ptr<Game> _g);
+    virtual void Enter(Game *_g);
 
     // The object is informed to exit from the game
     virtual void Quit();

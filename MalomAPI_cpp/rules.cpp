@@ -33,93 +33,93 @@
 
 void Rules::InitRules()
 {
-    StdLaskerMillPos[0][0] = 1;
-    StdLaskerMillPos[0][1] = 2;
-    StdLaskerMillPos[0][2] = 3;
-    StdLaskerMillPos[1][0] = 3;
-    StdLaskerMillPos[1][1] = 4;
-    StdLaskerMillPos[1][2] = 5;
-    StdLaskerMillPos[2][0] = 5;
-    StdLaskerMillPos[2][1] = 6;
-    StdLaskerMillPos[2][2] = 7;
-    StdLaskerMillPos[3][0] = 7;
-    StdLaskerMillPos[3][1] = 0;
-    StdLaskerMillPos[3][2] = 1;
+    stdLaskerMillPos[0][0] = 1;
+    stdLaskerMillPos[0][1] = 2;
+    stdLaskerMillPos[0][2] = 3;
+    stdLaskerMillPos[1][0] = 3;
+    stdLaskerMillPos[1][1] = 4;
+    stdLaskerMillPos[1][2] = 5;
+    stdLaskerMillPos[2][0] = 5;
+    stdLaskerMillPos[2][1] = 6;
+    stdLaskerMillPos[2][2] = 7;
+    stdLaskerMillPos[3][0] = 7;
+    stdLaskerMillPos[3][1] = 0;
+    stdLaskerMillPos[3][2] = 1;
     for (int i = 4; i <= 11; i++) {
-        StdLaskerMillPos[i][0] = StdLaskerMillPos[i - 4][0] + 8;
-        StdLaskerMillPos[i][1] = StdLaskerMillPos[i - 4][1] + 8;
-        StdLaskerMillPos[i][2] = StdLaskerMillPos[i - 4][2] + 8;
+        stdLaskerMillPos[i][0] = stdLaskerMillPos[i - 4][0] + 8;
+        stdLaskerMillPos[i][1] = stdLaskerMillPos[i - 4][1] + 8;
+        stdLaskerMillPos[i][2] = stdLaskerMillPos[i - 4][2] + 8;
     }
-    StdLaskerMillPos[12][0] = 0;
-    StdLaskerMillPos[13][0] = 2;
-    StdLaskerMillPos[14][0] = 4;
-    StdLaskerMillPos[15][0] = 6;
+    stdLaskerMillPos[12][0] = 0;
+    stdLaskerMillPos[13][0] = 2;
+    stdLaskerMillPos[14][0] = 4;
+    stdLaskerMillPos[15][0] = 6;
     for (int i = 12; i <= 15; i++) {
-        StdLaskerMillPos[i][1] = StdLaskerMillPos[i][0] + 8;
-        StdLaskerMillPos[i][2] = StdLaskerMillPos[i][0] + 16;
+        stdLaskerMillPos[i][1] = stdLaskerMillPos[i][0] + 8;
+        stdLaskerMillPos[i][2] = stdLaskerMillPos[i][0] + 16;
     }
-    // Since C++ arrays cannot be resized dynamically, we'll need to allocate memory for StdLaskerInvMillPos beforehand, and then populate it in this function.
+    // Since C++ arrays cannot be resized dynamically, we'll need to allocate memory for stdLaskerInvMillPos beforehand, and then populate it in this function.
     bool kell;
     for (int i = 0; i <= 23; i++) {
         std::vector<int> l;
         for (int j = 0; j <= 15; j++) {
             kell = false;
             for (int k = 0; k <= 2; k++) {
-                if (StdLaskerMillPos[j][k] == i)
+                if (stdLaskerMillPos[j][k] == i)
                     kell = true;
             }
             if (kell) {
                 l.push_back(j);
             }
         }
-        // Convert the vector into an array and store it in StdLaskerInvMillPos
-        StdLaskerInvMillPos[i] = new int[l.size()];
+        // Convert the vector into an array and store it in stdLaskerInvMillPos
+        stdLaskerInvMillPos[i] = new int[l.size()];
         for (int j = 0; j < l.size(); j++) {
-            StdLaskerInvMillPos[i][j] = l[j];
+            stdLaskerInvMillPos[i][j] = l[j];
         }
     }
-    // Initialize StdLaskerBoardGraph with false
+    // Initialize stdLaskerBoardGraph with false
     for (int i = 0; i <= 23; i++) {
         for (int j = 0; j <= 23; j++) {
-            StdLaskerBoardGraph[i][j] = false;
+            stdLaskerBoardGraph[i][j] = false;
         }
     }
     // Fill the board
     for (int i = 0; i <= 6; i++) {
-        StdLaskerBoardGraph[i][i + 1] = true;
+        stdLaskerBoardGraph[i][i + 1] = true;
     }
-    StdLaskerBoardGraph[7][0] = true;
+    stdLaskerBoardGraph[7][0] = true;
     for (int i = 8; i <= 14; i++) {
-        StdLaskerBoardGraph[i][i + 1] = true;
+        stdLaskerBoardGraph[i][i + 1] = true;
     }
-    StdLaskerBoardGraph[15][8] = true;
+    stdLaskerBoardGraph[15][8] = true;
     for (int i = 16; i <= 22; i++) {
-        StdLaskerBoardGraph[i][i + 1] = true;
+        stdLaskerBoardGraph[i][i + 1] = true;
     }
-    StdLaskerBoardGraph[23][16] = true;
+    stdLaskerBoardGraph[23][16] = true;
     for (int j = 0; j <= 6; j += 2) {
         for (int i = 0; i <= 8; i += 8) {
-            StdLaskerBoardGraph[j + i][j + i + 8] = true;
+            stdLaskerBoardGraph[j + i][j + i + 8] = true;
         }
     }
     // Fill the rest of the graph
     for (int i = 0; i <= 23; i++) {
         for (int j = 0; j <= 23; j++) {
-            if (StdLaskerBoardGraph[i][j] == true) {
-                StdLaskerBoardGraph[j][i] = true;
+            if (stdLaskerBoardGraph[i][j] == true) {
+                stdLaskerBoardGraph[j][i] = true;
             }
         }
     }
-    // Initialize StdLaskerALBoardGraph with 0
+    // Initialize stdLaskerALBoardGraph with 0
     for (int i = 0; i <= 23; i++) {
-        StdLaskerALBoardGraph[i][0] = 0;
+        stdLaskerALBoardGraph[i][0] = 0;
     }
     // Fill the rest of the graph
     for (int i = 0; i <= 23; i++) {
         for (int j = 0; j <= 23; j++) {
-            if (StdLaskerBoardGraph[i][j] == true) {
-                StdLaskerALBoardGraph[i][StdLaskerALBoardGraph[i][0] + 1] = j;
-                StdLaskerALBoardGraph[i][0] += 1;
+            if (stdLaskerBoardGraph[i][j] == true) {
+                stdLaskerALBoardGraph[i][stdLaskerALBoardGraph[i][0] + 1] = j;
+                stdLaskerALBoardGraph[i][0] += 1;
             }
         }
     }
@@ -129,9 +129,9 @@ void Rules::InitRules()
 int Rules::Malome(int m, GameState s)
 {
     int result = -1;
-    for (int i = 0; i < InvMillPos[m].size(); i++) {
-        if (s.T[MillPos[InvMillPos[m][i]][0]] == s.T[m] && s.T[MillPos[InvMillPos[m][i]][1]] == s.T[m] && s.T[MillPos[InvMillPos[m][i]][2]] == s.T[m]) {
-            result = InvMillPos[m][i];
+    for (int i = 0; i < invMillPos[m].size(); i++) {
+        if (s.T[millPos[invMillPos[m][i]][0]] == s.T[m] && s.T[millPos[invMillPos[m][i]][1]] == s.T[m] && s.T[millPos[invMillPos[m][i]][2]] == s.T[m]) {
+            result = invMillPos[m][i];
         }
     }
     return result;
@@ -141,11 +141,11 @@ int Rules::Malome(int m, GameState s)
 bool Rules::YouCanMove(GameState s)
 {
     assert(!s.KLE);
-    if (s.SetStoneCount(s.SideToMove) == MaxKSZ && s.StoneCount(s.SideToMove) > 3) {
+    if (s.setStoneCount(s.sideToMove) == maxKSZ && s.stoneCount(s.sideToMove) > 3) {
         for (int i = 0; i <= 23; i++) {
-            if (s.T[i] == s.SideToMove) {
-                for (int j = 1; j <= ALBoardGraph[i][0]; j++) {
-                    if (s.T[ALBoardGraph[i][j]] == -1)
+            if (s.T[i] == s.sideToMove) {
+                for (int j = 1; j <= aLBoardGraph[i][0]; j++) {
+                    if (s.T[aLBoardGraph[i][j]] == -1)
                         return true;
                 }
             }
@@ -159,13 +159,13 @@ bool Rules::YouCanMove(GameState s)
 bool Rules::MindenEllensegesKorongMalomban(GameState s)
 {
     for (int i = 0; i <= 23; i++) {
-        if (s.T[i] == 1 - s.SideToMove && Malome(i, s) == -1)
+        if (s.T[i] == 1 - s.sideToMove && Malome(i, s) == -1)
             return false;
     }
     return true;
 }
 
-int MaxKSZ;
+int maxKSZ;
 
 // Checking if AlphaBeta is available
 bool Rules::AlphaBetaAvailable()
@@ -177,29 +177,29 @@ void Rules::SetVariant()
 {
     // Part of this is copy-pasted in MalomAPI
     if (Wrappers.Constants.Variant == Wrappers.Constants.Variants.std) {
-        MillPos = StdLaskerMillPos;
-        InvMillPos = StdLaskerInvMillPos;
-        BoardGraph = StdLaskerBoardGraph;
-        ALBoardGraph = StdLaskerALBoardGraph;
-        MaxKSZ = 9;
-        VariantName = "std";
+        millPos = stdLaskerMillPos;
+        invMillPos = stdLaskerInvMillPos;
+        boardGraph = stdLaskerBoardGraph;
+        aLBoardGraph = stdLaskerALBoardGraph;
+        maxKSZ = 9;
+        variantName = "std";
     } else if (Wrappers.Constants.Variant == Wrappers.Constants.Variants.lask) {
-        MillPos = StdLaskerMillPos;
-        InvMillPos = StdLaskerInvMillPos;
-        BoardGraph = StdLaskerBoardGraph;
-        ALBoardGraph = StdLaskerALBoardGraph;
-        MaxKSZ = 10;
-        VariantName = "lask";
+        millPos = stdLaskerMillPos;
+        invMillPos = stdLaskerInvMillPos;
+        boardGraph = stdLaskerBoardGraph;
+        aLBoardGraph = stdLaskerALBoardGraph;
+        maxKSZ = 10;
+        variantName = "lask";
     } else if (Wrappers.Constants.Variant == Wrappers.Constants.Variants.mora) {
-        MillPos = MoraMillPos;
-        InvMillPos = MoraInvMillPos;
-        BoardGraph = MoraBoardGraph;
-        ALBoardGraph = MoraALBoardGraph;
-        MaxKSZ = 12;
-        VariantName = "mora";
+        millPos = moraMillPos;
+        invMillPos = moraInvMillPos;
+        boardGraph = moraBoardGraph;
+        aLBoardGraph = moraALBoardGraph;
+        maxKSZ = 12;
+        variantName = "mora";
     }
 
     if (Wrappers.Constants.Extended) {
-        MaxKSZ = 12;
+        maxKSZ = 12;
     }
 }

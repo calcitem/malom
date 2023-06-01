@@ -29,7 +29,7 @@
 #include "rules.h"
 
 // The object is informed to enter the specified game
-void Player::Enter(std::shared_ptr<Game> _g)
+void Player::Enter(Game *_g)
 {
     G = _g;
 }

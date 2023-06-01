@@ -151,7 +151,7 @@ private:
     enum class Cas { Val,
         Count };
 
-    eval_elem2 to_eval_elem2()
+    eval_elem2 to_eval_elem2() const
     {
         return eval_elem2 { key1, key2 };
     }
@@ -193,7 +193,7 @@ public:
             e.key1 = 0;
     }
 
-    int compare(const gui_eval_elem2& o)
+    int compare(const gui_eval_elem2& o) const
     {
         assert(s == o.s);
         if (!ignore_DD) {
@@ -221,9 +221,9 @@ public:
         }
     }
 
-    static bool operator<(const gui_eval_elem2& a, const gui_eval_elem2& b) { return a.compare(b) < 0; }
-    static bool operator>(const gui_eval_elem2& a, const gui_eval_elem2& b) { return a.compare(b) > 0; }
-    static bool operator==(const gui_eval_elem2& a, const gui_eval_elem2& b) { return a.compare(b) == 0; }
+    bool operator<(const gui_eval_elem2& b) const { return this->compare(b) < 0; }
+    bool operator>(const gui_eval_elem2& b) const { return this->compare(b) > 0; }
+    bool operator==(const gui_eval_elem2& b) const { return this->compare(b) == 0; }
 
     static gui_eval_elem2 min_value(Sector* s)
     {

@@ -37,6 +37,8 @@ class Player; // forward declaration, implement this
 class GameState; // forward declaration, implement this
 class Move; // forward declaration, implement this
 
+extern int maxKSZ;
+
 const GameState& Game::s() const
 { // wrapper of current.value
     return *current;
@@ -77,12 +79,12 @@ void Game::set_Ply(int i, Player* p)
 void Game::MakeMove(Move* M)
 { // called by player objects when they want to move
     try {
-        Ply(1 - s().SideToMove())->FollowMove(M);
+        Ply(1 - s().sideToMove())->FollowMove(M);
 
         history.insert(std::next(current), GameState(s()));
         current++;
 
-        s().MakeMove(M);
+        s().makeMove(M);
     } catch (std::exception& ex) {
         // If TypeOf ex Is KeyNotFoundException Then Throw
         std::cerr << "Exception in MakeMove\n"
@@ -105,7 +107,7 @@ void Game::CancelThinking()
 
 bool Game::PlayertypeChangingCmdAllowed()
 {
-    // Return TypeOf Ply(s.SideToMove) Is HumanPlayer
+    // Return TypeOf Ply(s.sideToMove) Is HumanPlayer
     return true;
 }
 
@@ -118,30 +120,30 @@ GameState::GameState(const GameState& s)
 { // copy constructor
     T = s.T;
     phase = s.phase;
-    SetStoneCount = s.SetStoneCount;
-    StoneCount = s.StoneCount;
+    setStoneCount = s.setStoneCount;
+    stoneCount = s.stoneCount;
     KLE = s.KLE;
-    SideToMove = s.SideToMove;
-    MoveCount = s.MoveCount;
+    sideToMove = s.sideToMove;
+    moveCount = s.moveCount;
     over = s.over;
     winner = s.winner;
     block = s.block;
-    LastIrrev = s.LastIrrev;
+    lastIrrev = s.lastIrrev;
 }
 
 int GameState::FutureStoneCount(int p)
 {
-    return StoneCount[p] + MaxKSZ - SetStoneCount[p];
+    return stoneCount[p] + maxKSZ - setStoneCount[p];
 }
 
 // Sets the state for Setup Mode: the placed stones are unchanged, but we switch to phase 2.
 void GameState::InitSetup()
 {
-    MoveCount = 10; // Nearly all the same, just don't be too small, see other comments
+    moveCount = 10; // Nearly all the same, just don't be too small, see other comments
     over = false;
     // Winner can be undefined, as over = False
     block = false;
-    LastIrrev = 0;
+    lastIrrev = 0;
 }
 
 void GameState::makeMove(Move* M)
@@ -168,7 +170,7 @@ void GameState::makeMove(Move* M)
         T[mk->hon] = -1;
         T[mk->hov] = sideToMove;
         lastIrrev++;
-        if (lastIrrev >= lastIrrevLimit) {
+        if (lastIrrev >= Rules::lastIrrevLimit) {
             over = true;
             winner = -1; // draw
         }
@@ -300,8 +302,8 @@ std::string GameState::setOverAndCheckValidSetup()
         }
     }
 
-    // Even though LastIrrev is always 0 while in free setup mode, it can be non-0 when pasting
-    if (lastIrrev >= rules::lastIrrevLimit) {
+    // Even though lastIrrev is always 0 while in free setup mode, it can be non-0 when pasting
+    if (lastIrrev >= Rules::lastIrrevLimit) {
         over = true;
         winner = -1;
     }
@@ -326,20 +328,20 @@ GameState::GameState(const std::string& s)
             for (int i = 0; i < 24; i++) {
                 T[i] = std::stoi(ss[i]);
             }
-            SideToMove = std::stoi(ss[24]);
+            sideToMove = std::stoi(ss[24]);
             phase = std::stoi(ss[27]);
-            SetStoneCount[0] = std::stoi(ss[28]);
-            SetStoneCount[1] = std::stoi(ss[29]);
-            StoneCount[0] = std::stoi(ss[30]);
-            StoneCount[1] = std::stoi(ss[31]);
+            setStoneCount[0] = std::stoi(ss[28]);
+            setStoneCount[1] = std::stoi(ss[29]);
+            stoneCount[0] = std::stoi(ss[30]);
+            stoneCount[1] = std::stoi(ss[31]);
             KLE = (ss[32] == "True" || ss[32] == "true");
-            MoveCount = (ss[33] != "malom") ? std::stoi(ss[33]) : 10;
-            LastIrrev = ((ss[33] != "malom") && (ss[34] != "malom")) ? std::stoi(ss[34]) : 0;
+            moveCount = (ss[33] != "malom") ? std::stoi(ss[33]) : 10;
+            lastIrrev = ((ss[33] != "malom") && (ss[34] != "malom")) ? std::stoi(ss[34]) : 0;
 
             // ensure correct count of stones
             int count0 = std::count(T.begin(), T.end(), 0);
             int count1 = std::count(T.begin(), T.end(), 1);
-            if (StoneCount[0] != count0 || StoneCount[1] != count1) {
+            if (stoneCount[0] != count0 || stoneCount[1] != count1) {
                 throw InvalidGameStateException("Number of stones is incorrect.");
             }
         } else {
@@ -359,9 +361,9 @@ std::string GameState::toString()
     for (int i = 0; i < 24; i++) {
         s << T[i] << ",";
     }
-    s << SideToMove << "," << 0 << "," << 0 << "," << phase << "," << SetStoneCount[0]
-      << "," << SetStoneCount[1] << "," << StoneCount[0] << "," << StoneCount[1]
-      << "," << (KLE ? "True" : "False") << "," << MoveCount << "," << LastIrrev;
+    s << sideToMove << "," << 0 << "," << 0 << "," << phase << "," << setStoneCount[0]
+      << "," << setStoneCount[1] << "," << stoneCount[0] << "," << stoneCount[1]
+      << "," << (KLE ? "True" : "False") << "," << moveCount << "," << lastIrrev;
     return s.str();
 }
 }

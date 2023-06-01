@@ -46,7 +46,7 @@ private:
     std::list<GameState>::iterator current; // the node of the current GameState in history
 
 public:
-    const GameState& s() const
+    GameState& s() const
     { // wrapper of current.value
         return *current;
     }
@@ -76,15 +76,15 @@ public:
     std::vector<int> T = std::vector<int>(24, -1);
     int phase = 1;
     // How many stones the players have set
-    std::vector<int> SetStoneCount = std::vector<int>(2, 0);
-    std::vector<int> StoneCount = std::vector<int>(2, 0);
+    std::vector<int> setStoneCount = std::vector<int>(2, 0);
+    std::vector<int> stoneCount = std::vector<int>(2, 0);
     bool KLE = false; // Is there a puck removal coming?
-    int SideToMove = 0;
-    int MoveCount = 0;
+    int sideToMove = 0;
+    int moveCount = 0;
     bool over = false;
     int winner = 0; // (-1, if a draw)
     bool block = false;
-    int LastIrrev = 0;
+    int lastIrrev = 0;
 
     GameState() { } // start of game
 

@@ -40,29 +40,29 @@ typedef unsigned char byte;
 class Rules {
 public:
     // Define your byte arrays
-    byte MillPos[16][3];
-    byte StdLaskerMillPos[16][3];
-    byte MoraMillPos[20][3];
+    byte millPos[16][3];
+    byte stdLaskerMillPos[16][3];
+    byte moraMillPos[20][3];
 
     // Define your integer arrays
-    int* InvMillPos[24];
-    int* StdLaskerInvMillPos[24];
-    int* MoraInvMillPos[24];
+    int* invMillPos[24];
+    int* stdLaskerInvMillPos[24];
+    int* moraInvMillPos[24];
 
     // Define your boolean arrays
-    bool BoardGraph[24][24];
-    bool StdLaskerBoardGraph[24][24];
-    bool MoraBoardGraph[24][24];
+    bool boardGraph[24][24];
+    bool stdLaskerBoardGraph[24][24];
+    bool moraBoardGraph[24][24];
 
     // Define your adjacency list byte arrays
-    byte ALBoardGraph[24][5];
-    byte StdLaskerALBoardGraph[24][5];
-    byte MoraALBoardGraph[24][5];
+    byte aLBoardGraph[24][5];
+    byte stdLaskerALBoardGraph[24][5];
+    byte moraALBoardGraph[24][5];
 
     // Define other variables
-    static std::string VariantName;
-    static int MaxKSZ;
-    const int LastIrrevLimit = 50;
+    static std::string variantName;
+    static int maxKSZ;
+    static const int lastIrrevLimit = 50;
 
 public:
     // Add your public methods here
@@ -76,8 +76,6 @@ public:
     bool YouCanMove(GameState s);
 
     bool MindenEllensegesKorongMalomban(GameState s);
-
-    static int MaxKSZ;
 
     // Checking if AlphaBeta is available
     bool AlphaBetaAvailable()

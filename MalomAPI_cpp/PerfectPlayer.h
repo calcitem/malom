@@ -74,7 +74,7 @@ public:
 
     Sector* GetSec(GameState s);
 
-    std::string ToHumanReadableEval(gui_eval_elem2 e);
+    std::string ToHumanReadableEval(struct gui_eval_elem2 e);
 
     enum class MoveType {
         SetMove,
@@ -153,7 +153,7 @@ public:
 
     std::mutex evalLock;
 
-    gui_eval_elem2 eval(GameState& s);
+    struct gui_eval_elem2 eval(GameState& s);
 
     int64_t boardNegate(int64_t a);
 };

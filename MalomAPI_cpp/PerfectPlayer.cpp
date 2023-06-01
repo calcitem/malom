@@ -41,6 +41,8 @@
 #include "move.h"
 #include "rules.h"
 
+#include "wrappers.h"
+
 std::map<id, Sector> Sectors::getsectors()
 {
     try {
@@ -48,11 +50,11 @@ std::map<id, Sector> Sectors::getsectors()
             Wrappers::Init::init_sym_lookuptables();
             Wrappers::Init::init_sec_vals();
 
-            for (int w = 0; w <= Rules::MaxKSZ; ++w) {
-                for (int b = 0; b <= Rules::MaxKSZ; ++b) {
-                    for (int wf = 0; wf <= Rules::MaxKSZ; ++wf) {
-                        for (int bf = 0; bf <= Rules::MaxKSZ; ++bf) {
-                            std::string fname = Rules::VariantName + "_" + std::to_string(w) + "_" + std::to_string(b) + "_" + std::to_string(wf) + "_" + std::to_string(bf) + ".sec" + Constants::Fname_suffix;
+            for (int w = 0; w <= Rules::maxKSZ; ++w) {
+                for (int b = 0; b <= Rules::maxKSZ; ++b) {
+                    for (int wf = 0; wf <= Rules::maxKSZ; ++wf) {
+                        for (int bf = 0; bf <= Rules::maxKSZ; ++bf) {
+                            std::string fname = Rules::variantName + "_" + std::to_string(w) + "_" + std::to_string(b) + "_" + std::to_string(wf) + "_" + std::to_string(bf) + ".sec" + Constants::Fname_suffix;
                             // std::cout << "Looking for database file " << fname << std::endl;
                             id _id(w, b, wf, bf);
                             std::ifstream file(fname);
@@ -107,9 +109,9 @@ Sector* PerfectPlayer::GetSec(GameState s)
         if (s.KLE)
             return nullptr;
 
-        id id_val(s.StoneCount[0], s.StoneCount[1], Rules::MaxKSZ - s.SetStoneCount[0], Rules::MaxKSZ - s.SetStoneCount[1]);
+        id id_val(s.stoneCount[0], s.stoneCount[1], Rules::maxKSZ - s.setStoneCount[0], Rules::maxKSZ - s.setStoneCount[1]);
 
-        if (s.SideToMove == 1) {
+        if (s.sideToMove == 1) {
             id_val.negate();
         }
 
@@ -124,7 +126,7 @@ Sector* PerfectPlayer::GetSec(GameState s)
     return nullptr;
 }
 
-std::string PerfectPlayer::ToHumanReadableEval(gui_eval_elem2 e)
+std::string PerfectPlayer::ToHumanReadableEval(struct gui_eval_elem2 e)
 {
     try {
         return e.ToString();
@@ -408,7 +410,7 @@ gui_eval_elem2 PerfectPlayer::eval(GameState& s)
         std::lock_guard<std::mutex> lock(evalLock);
         assert(!s.KLE); // Assuming s has a boolean member KLE
 
-        id Id(s.stoneCount[0], s.stoneCount[1], Rules::MaxKSZ - s.setStoneCount[0], Rules::MaxKSZ - s.setStoneCount[1]);
+        id Id(s.stoneCount[0], s.stoneCount[1], Rules::maxKSZ - s.setStoneCount[0], Rules::maxKSZ - s.setStoneCount[1]);
 
         if (futureKorongCount(s) < 3)
             return gui_eval_elem2::virt_loss_val;
