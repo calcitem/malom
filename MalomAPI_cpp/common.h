@@ -34,7 +34,7 @@ using namespace std;
 
 struct id;
 
-extern std::unordered_map<id, int> sector_sizes;
+//extern std::unordered_map<id, int, Hash> sector_sizes;
 
 static int f_inv_count[] { 1, 4, 30, 158, 757, 2830, 8774, 22188, 46879, 82880, 124124, 157668, 170854 };
 
@@ -295,6 +295,14 @@ struct id{
 	bool operator==(const id &o) const {return W==o.W && B==o.B && WF==o.WF && BF==o.BF;}
 	bool operator!=(const id &o) const {return !(*this==o);}
 
+	struct Hash {
+                std::size_t operator()(const id& k) const
+                {
+                                return k.W | (k.B << 4) | (k.WF << 8) | (k.BF << 12);
+                }
+        };
+
+	std::unordered_map<id, int, Hash> sector_sizes;
 
 	int size()
     {
@@ -304,6 +312,8 @@ struct id{
             }
             return sector_sizes[tn];
     }
+
+
 
 	private:
         static int factorial(int n)
@@ -317,8 +327,8 @@ struct id{
         }
 };
 
-#if 0
-// TODO
+// Define a std::hash specialisation for the id structure to make it compatible with standard library interfaces.
+namespace std {
 template <>
 struct hash<id> {
         size_t operator()(const id& k) const
@@ -326,7 +336,10 @@ struct hash<id> {
                 return k.W | (k.B << 4) | (k.WF << 8) | (k.BF << 12);
         }
 };
-#endif
+}
+
+// Now you can use id::Hash as the hash function.
+extern std::unordered_map<id, int, id::Hash> sector_sizes;
 
 //#ifndef WRAPPER
 //	#define WRAPPER

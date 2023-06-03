@@ -22,17 +22,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 
+#include <unordered_map>
 #include "common.h"
 
 #include <codecvt>
 #include <iostream>
 #include <locale>
 #include <string>
-#include <unordered_map>
 
 using namespace std;
-
-std::unordered_map<id, int> sector_sizes;
 
 wstring str2wstr(const string& s)
 {
