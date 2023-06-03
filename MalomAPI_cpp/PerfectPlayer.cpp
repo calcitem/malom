@@ -276,14 +276,14 @@ GameState PerfectPlayer::makeMoveInState(GameState& s, Move& m)
     GameState s2(s);
     if (!m.onlyTaking) {
         if (m.moveType == MoveType::SetMove) {
-            s2.makeMove(SetKorong(m.hov)); // Assuming the definition of SetKorong class is available
+            s2.makeMove(new SetKorong(m.hov)); // Assuming the definition of SetKorong class is available
         } else {
-            s2.makeMove(MoveKorong(m.hon, m.hov)); // Assuming the definition of MoveKorong class is available
+            s2.makeMove(new MoveKorong(m.hon, m.hov)); // Assuming the definition of MoveKorong class is available
         }
         if (m.withTaking)
-            s2.makeMove(LeveszKorong(m.takeHon)); // Assuming the definition of LeveszKorong class is available
+            s2.makeMove(new LeveszKorong(m.takeHon)); // Assuming the definition of LeveszKorong class is available
     } else {
-        s2.makeMove(LeveszKorong(m.takeHon));
+        s2.makeMove(new LeveszKorong(m.takeHon));
     }
     return s2;
 }
