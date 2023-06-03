@@ -188,7 +188,7 @@ std::vector<Move> PerfectPlayer::setMoves(GameState& s)
 {
     std::vector<Move> r;
     for (int i = 0; i < 24; ++i) {
-        if (s.T(i) == -1) {
+        if (s.T[i] == -1) {
             r.push_back(Move { i, false, makesMill(s, -1, i), MoveType::SetMove });
         }
     }
@@ -200,7 +200,7 @@ std::vector<Move> PerfectPlayer::slideMoves(GameState& s)
     std::vector<Move> r;
     for (int i = 0; i < 24; ++i) {
         for (int j = 0; j < 24; ++j) {
-            if (s.T(i) == s.sideToMove && s.T(j) == -1 && (futureKorongCount(s) == 3 || Rules.boardGraph(i, j))) {
+            if (s.T[i] == s.sideToMove && s.T(j) == -1 && (futureKorongCount(s) == 3 || Rules.boardGraph(i, j))) {
                 r.push_back(Move { i, j, makesMill(s, i, j), false, MoveType::SlideMove, 0 });
             }
         }
@@ -214,13 +214,13 @@ std::vector<Move> PerfectPlayer::withTakingMoves(GameState& s, Move& m)
     std::vector<Move> r;
     bool everythingInMill = true;
     for (int i = 0; i < 24; ++i) {
-        if (s.T(i) == 1 - s.sideToMove && !isMill(s, i)) {
+        if (s.T[i] == 1 - s.sideToMove && !isMill(s, i)) {
             everythingInMill = false;
         }
     }
 
     for (int i = 0; i < 24; ++i) {
-        if (s.T(i) == 1 - s.sideToMove && (!isMill(s, i) || everythingInMill)) {
+        if (s.T[i] == 1 - s.sideToMove && (!isMill(s, i) || everythingInMill)) {
             Move m2 = m;
             m2.takehon = i;
             r.push_back(m2);
@@ -234,13 +234,13 @@ std::vector<Move> PerfectPlayer::onlyTakingMoves(GameState& s)
     std::vector<Move> r;
     bool everythingInMill = true;
     for (int i = 0; i < 24; ++i) {
-        if (s.T(i) == 1 - s.sideToMove && !isMill(s, i)) {
+        if (s.T[i] == 1 - s.sideToMove && !isMill(s, i)) {
             everythingInMill = false;
         }
     }
 
     for (int i = 0; i < 24; ++i) {
-        if (s.T(i) == 1 - s.sideToMove && (!isMill(s, i) || everythingInMill)) {
+        if (s.T[i] == 1 - s.sideToMove && (!isMill(s, i) || everythingInMill)) {
             r.push_back(Move { 0, 0, false, true, MoveType::SlideMove, i }); // Assuming default values for hon, hov, and movetype
         }
     }
