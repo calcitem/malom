@@ -317,7 +317,7 @@ public:
 
 class Constants {
 public:
-    static const int Variant = VARIANT;
+    static const int variant = VARIANT;
     const std::string Fname_suffix = FNAME_SUFFIX;
     const std::string MovegenFname = movegen_file;
 
@@ -336,9 +336,9 @@ public:
     static const bool FBD = FULL_BOARD_IS_DRAW;
 
 #ifdef FULL_SECTOR_GRAPH
-    static const bool Extended = true;
+    static const bool extended = true;
 #else
-    static const bool Extended = false;
+    static const bool extended = false;
 #endif
 };
 

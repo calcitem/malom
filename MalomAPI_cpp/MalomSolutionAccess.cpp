@@ -149,7 +149,7 @@ void MalomSolutionAccess::SetVariantStripped()
 {
     // copy-paste from Rules.cpp, but references to Main stripped
 
-    switch (Wrappers::Constants::Variant) {
+    switch (Wrappers::Constants::variant) {
     case (int)Wrappers::Constants::Variants::std:
         std::memcpy(Rules::millPos, Rules::stdLaskerMillPos, sizeof(Rules::stdLaskerMillPos));
         std::memcpy(Rules::invMillPos, Rules::stdLaskerInvMillPos, sizeof(Rules::stdLaskerInvMillPos));
@@ -176,7 +176,7 @@ void MalomSolutionAccess::SetVariantStripped()
         break;
     }
 
-    if (Wrappers::Constants::Extended) {
+    if (Wrappers::Constants::extended) {
         maxKSZ = 12;
     }
 }

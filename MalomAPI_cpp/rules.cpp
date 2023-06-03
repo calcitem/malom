@@ -170,13 +170,13 @@ int maxKSZ;
 // Checking if AlphaBeta is available
 bool Rules::AlphaBetaAvailable()
 {
-    return Wrappers::Constants::Variant == (int)Wrappers::Constants::Variants::std && !Wrappers::Constants::Extended;
+    return Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::std && !Wrappers::Constants::extended;
 }
 
 void Rules::SetVariant()
 {
     // Part of this is copy-pasted in MalomAPI
-    if (Wrappers::Constants::Variant == (int)Wrappers::Constants::Variants::std) {
+    if (Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::std) {
         std::memcpy(millPos, stdLaskerMillPos, sizeof(stdLaskerMillPos));
         for (int i = 0; i < 24; ++i) {
             invMillPos[i] = stdLaskerInvMillPos[i];
@@ -185,7 +185,7 @@ void Rules::SetVariant()
         std::memcpy(aLBoardGraph, stdLaskerALBoardGraph, sizeof(stdLaskerALBoardGraph));
         maxKSZ = 9;
         variantName = "std";
-    } else if (Wrappers::Constants::Variant == (int)Wrappers::Constants::Variants::lask) {
+    } else if (Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::lask) {
         std::memcpy(millPos, stdLaskerMillPos, sizeof(stdLaskerMillPos));
         for (int i = 0; i < 24; ++i) {
             invMillPos[i] = stdLaskerInvMillPos[i];
@@ -194,7 +194,7 @@ void Rules::SetVariant()
         std::memcpy(aLBoardGraph, stdLaskerALBoardGraph, sizeof(stdLaskerALBoardGraph));
         maxKSZ = 10;
         variantName = "lask";
-    } else if (Wrappers::Constants::Variant == (int)Wrappers::Constants::Variants::mora) {
+    } else if (Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::mora) {
         std::memcpy(millPos, moraMillPos, sizeof(moraMillPos));
         for (int i = 0; i < 24; ++i) {
             invMillPos[i] = moraInvMillPos[i];
@@ -205,7 +205,7 @@ void Rules::SetVariant()
         variantName = "mora";
     }
 
-    if (Wrappers::Constants::Extended) {
+    if (Wrappers::Constants::extended) {
         maxKSZ = 12;
     }
 }
