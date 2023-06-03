@@ -412,6 +412,8 @@ Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState s)
         }
         Sector& sec = it->second;
 
+        sec.hash = new Hash(sec.W, sec.B, &sec);
+
         eval_elem2 eval_elem = sec.hash->hash((board)a).second;
 
         // TODO: [calcitem] Add this line to convert eval_elem2 to gui_eval_elem2, right?

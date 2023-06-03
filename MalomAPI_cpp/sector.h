@@ -52,7 +52,7 @@ struct short_id{
 #endif
 
 class Sector{
-	char fname[255];
+    char fname[255] {0};
 
 #ifndef WRAPPER
 	bool file_existed;
@@ -66,7 +66,7 @@ class Sector{
 	map<int,int> em_set;
 
 #ifdef WRAPPER
-	FILE *f;
+    FILE* f { nullptr };
 #endif
 
 #ifdef DD
@@ -79,7 +79,7 @@ class Sector{
 	void read_em_set(FILE *f);
 
 public:
-	Hash *hash;
+	Hash* hash {nullptr};
 
 	int W,B, WF,BF;
 	id id;
