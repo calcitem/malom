@@ -333,7 +333,7 @@ int PerfectPlayer::NGMAfterMove(GameState& s, Move& m)
 }
 
 template <typename T>
-T PerfectPlayer::chooseRandom(std::vector<T>& l)
+T PerfectPlayer::chooseRandom(const std::vector<T>& l)
 {
     std::random_device rd;
     std::mt19937 gen(rd());

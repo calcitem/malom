@@ -135,7 +135,7 @@ public:
     int NGMAfterMove(GameState& s, Move& m);
 
     template <typename T>
-    T chooseRandom(std::vector<T>& l);
+    T chooseRandom(const std::vector<T>& l);
 
     void sendMoveToGUI(Move& m);
 
