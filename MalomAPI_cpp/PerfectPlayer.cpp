@@ -398,9 +398,9 @@ Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState s)
             id.negate();
         }
 
-        sec sec = secs[id];
+        Sector sec = secs[id];
 
-        return sec.hash(a).item2;
+        return sec.hash->hash((board)a).second;
     } catch (const std::exception& ex) {
         if (typeid(ex) == typeid(std::out_of_range))
             throw;
