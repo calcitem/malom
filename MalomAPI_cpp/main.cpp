@@ -8,10 +8,15 @@
 #include <sstream>
 #include <string>
 
+#include "common.h"
 #include "MalomSolutionAccess.h"
 
-int main()
+int main(int argc, char* argv[])
 {
+    if (argc == 2) {
+        sec_val_path = argv[1];
+    }
+
     int res = MalomSolutionAccess::getBestMove(1, 2, 8, 8, 0, false); // Correct output: 16384
     // int res = GetBestMove(1 + 2 + 4, 8 + 16 + 32, 100, 0, 0, false); // tests exception
     // int res = GetBestMove(1 + 2 + 4, 1 + 8 + 16 + 32, 0, 0, 0, false); // tests exception

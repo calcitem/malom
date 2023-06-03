@@ -64,7 +64,7 @@ std::map<id, Sector> Sectors::getSectors()
                             std::string fname = Rules::variantName + "_" + std::to_string(w) + "_" + std::to_string(b) + "_" + std::to_string(wf) + "_" + std::to_string(bf) + ".sec" + Wrappers::Constants::fname_suffix;
                             // std::cout << "Looking for database file " << fname << std::endl;
                             id _id(w, b, wf, bf);
-                            std::ifstream file(fname);
+                            std::ifstream file(sec_val_path + "/" + fname);
                             if (file.good()) {
                                 sectors.emplace(_id, Sector(_id));
                             }

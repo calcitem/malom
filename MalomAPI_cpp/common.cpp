@@ -32,6 +32,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
+std::string sec_val_path = ".";
+std::string sec_val_fname = "";
+
 wstring str2wstr(const string& s)
 {
     wstring_convert<codecvt_utf8<wchar_t>> converter;

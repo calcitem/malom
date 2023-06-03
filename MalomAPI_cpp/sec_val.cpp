@@ -35,7 +35,8 @@ void init_sec_vals(){
 #ifdef DD
 #ifndef STONE_DIFF
 	FILE *f;
-	fopen_s(&f, sec_val_fname.c_str(), "rt");
+    sec_val_fname = sec_val_path + "/" + (string)VARIANT_NAME + ".secval";
+    fopen_s(&f, sec_val_fname.c_str(), "rt");
 	if(!f)
 		failwith(VARIANT_NAME".secval file not found.");
 	fscanf_s(f, "virt_loss_val: %hd\nvirt_win_val: %hd\n", &virt_loss_val, &virt_win_val);

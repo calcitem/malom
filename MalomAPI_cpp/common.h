@@ -153,8 +153,8 @@ const int version = 2;
 	//#pragma message ("Warning: max_ksz leveve")
 #endif
 
-
-const string sec_val_fname = (string)VARIANT_NAME + ".secval";
+extern string sec_val_path;
+extern string sec_val_fname;
 const string movegen_file = (string)"C:\\malom_data_aux\\" + VARIANT_NAME + ".movegen"; //This file is created by the solver with the -writemovegenlookups switch. The Controller automatically makes this, if the file doesn't exist.
 
 
