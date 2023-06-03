@@ -379,10 +379,10 @@ Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState s)
         std::lock_guard<std::mutex> lock(evalLock);
         assert(!s.kle); // Assuming s has a boolean member kle
 
-        id Id(s.stoneCount[0], s.stoneCount[1], Rules::maxKSZ - s.setStoneCount[0], Rules::maxKSZ - s.setStoneCount[1]);
+        id id(s.stoneCount[0], s.stoneCount[1], Rules::maxKSZ - s.setStoneCount[0], Rules::maxKSZ - s.setStoneCount[1]);
 
         if (futureKorongCount(s) < 3)
-            return Wrappers::gui_eval_elem2::virt_loss_val;
+            return Wrappers::gui_eval_elem2::virt_loss_val();
 
         int64_t a = 0;
         for (int i = 0; i < 24; ++i) {

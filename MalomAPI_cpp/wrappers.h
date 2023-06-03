@@ -70,12 +70,12 @@ struct eval_elem {
 
 struct gui_eval_elem2; // Assuming this struct is defined elsewhere
 
-class Sector {
+class WSector {
 public:
-    ::Sector* s; // Assuming ::Sector is a type defined in your code
+    Sector* s; // Assuming ::Sector is a type defined in your code
 
-    Sector(id id)
-        : s(new ::Sector(id.tonat()))
+    WSector(id id)
+        : s(new Sector(id.tonat()))
     {
     } // Assuming 'id' and 'tonat()' are defined elsewhere
 
@@ -88,7 +88,7 @@ struct gui_eval_elem2 {
 private:
     sec_val key1;
     int key2;
-    ::Sector* s;
+    Sector* s;
     enum class Cas { Val,
         Count };
 
@@ -98,19 +98,19 @@ private:
     }
 
 public:
-    gui_eval_elem2(sec_val key1, int key2, ::Sector* s)
+    gui_eval_elem2(sec_val key1, int key2, Sector* s)
         : key1 { key1 }
         , key2 { key2 }
         , s { s }
     {
     }
-    gui_eval_elem2(::eval_elem2 e, ::Sector* s)
+    gui_eval_elem2(::eval_elem2 e, Sector* s)
         : gui_eval_elem2 { e.key1, e.key2, s }
     {
     }
     static bool ignore_DD;
 
-    gui_eval_elem2 undo_negate(Sector* s)
+    gui_eval_elem2 undo_negate(WSector* s)
     {
         auto a = this->to_eval_elem2().corr((s ? s->sval() : virt_unique_sec_val()) + (this->s ? this->s->sval : virt_unique_sec_val()));
         a.key1 *= -1;
@@ -166,7 +166,7 @@ public:
     bool operator>(const gui_eval_elem2& b) const { return this->compare(b) > 0; }
     bool operator==(const gui_eval_elem2& b) const { return this->compare(b) == 0; }
 
-    static gui_eval_elem2 min_value(Sector* s)
+    static gui_eval_elem2 min_value(WSector* s)
     {
         return gui_eval_elem2 { static_cast<sec_val>(abs_min_value() - (s ? s->sval() : virt_unique_sec_val())), 0, s ? s->s : nullptr };
     }
