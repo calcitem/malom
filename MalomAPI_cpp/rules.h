@@ -43,6 +43,7 @@ public:
 
     // Define your integer arrays
     static int* invMillPos[24];
+    static size_t invMillPosLengths[24];
     static int* stdLaskerInvMillPos[24];
     static int* moraInvMillPos[24];
 

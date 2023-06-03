@@ -41,6 +41,7 @@ int* Rules::moraInvMillPos[24];
 bool Rules::moraBoardGraph[24][24];
 uint8_t Rules::moraALBoardGraph[24][5];
 int* Rules::invMillPos[24];
+size_t Rules::invMillPosLengths[24];
 bool Rules::boardGraph[24][24];
 uint8_t Rules::aLBoardGraph[24][5];
 std::string Rules::variantName;
@@ -87,6 +88,8 @@ void Rules::initRules()
                 l.push_back(j);
             }
         }
+        // Store the length
+        invMillPosLengths[i] = l.size();
         // Convert the vector into an array and store it in stdLaskerInvMillPos
         stdLaskerInvMillPos[i] = new int[l.size()];
         for (int j = 0; j < l.size(); j++) {
@@ -144,7 +147,8 @@ void Rules::initRules()
 int Rules::malome(int m, GameState s)
 {
     int result = -1;
-    int length = sizeof(invMillPos[m]) / sizeof(invMillPos[m][0]); // TODO
+    // Use the stored length instead of sizeof
+    int length = invMillPosLengths[m]; // TODO: Right?
     for (int i = 0; i < length; i++) {
         if (s.T[millPos[invMillPos[m][i]][0]] == s.T[m] && s.T[millPos[invMillPos[m][i]][1]] == s.T[m] && s.T[millPos[invMillPos[m][i]][2]] == s.T[m]) {
             result = invMillPos[m][i];
