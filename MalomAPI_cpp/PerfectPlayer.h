@@ -78,14 +78,10 @@ public:
     static std::map<id, Sector> sectors;
     static bool created;
 
-    static std::map<id, Sector> getsectors();
+    static std::map<id, Sector> getSectors();
 
     static bool hasDatabase();
 };
-
-// Initialize static member variables
-std::map<id, Sector> Sectors::sectors;
-bool Sectors::created = false;
 
 class PerfectPlayer : public Player {
 public:
@@ -100,48 +96,48 @@ public:
         Player::quit();
     }
 
-    WSector* getSec(GameState s);
+    Sector* getSec(const GameState s);
 
     std::string toHumanReadableEval(Wrappers::gui_eval_elem2 e);
 
-    int futureKorongCount(GameState& s);
+    int futureKorongCount(const GameState& s);
 
-    bool makesMill(GameState& s, int hon, int hov);
+    bool makesMill(const GameState& s, int hon, int hov);
 
-    bool isMill(GameState& s, int m);
+    bool isMill(const GameState& s, int m);
 
-    std::vector<ExtMove> setMoves(GameState& s);
+    std::vector<ExtMove> setMoves(const GameState& s);
 
-    std::vector<ExtMove> slideMoves(GameState& s);
+    std::vector<ExtMove> slideMoves(const GameState& s);
 
     // m has a withTaking step, where takeHon is not filled out. This function creates a list, the elements of which are copies of m supplemented with one possible removal each.
-    std::vector<ExtMove> withTakingMoves(GameState& s, ExtMove& m);
+    std::vector<ExtMove> withTakingMoves(const GameState& s, ExtMove& m);
 
-    std::vector<ExtMove> onlyTakingMoves(GameState& s);
+    std::vector<ExtMove> onlyTakingMoves(const GameState& s);
 
-    std::vector<ExtMove> getMoveList(GameState& s);
+    std::vector<ExtMove> getMoveList(const GameState& s);
 
-    GameState makeMoveInState(GameState& s, ExtMove& m);
+    GameState makeMoveInState(const GameState& s, ExtMove& m);
 
     // Assuming gui_eval_elem2 and getSec functions are defined somewhere
-    Wrappers::gui_eval_elem2 moveValue(GameState& s, ExtMove& m);
+    Wrappers::gui_eval_elem2 moveValue(const GameState& s, ExtMove& m);
 
     template <typename T, typename K>
     std::vector<T> allMaxBy(std::function<K(T)> f, std::vector<T>& l, K minValue);
 
     // Assuming the definition of gui_eval_elem2::min_value function
-    std::vector<ExtMove> goodMoves(GameState& s);
+    std::vector<ExtMove> goodMoves(const GameState& s);
 
-    int NGMAfterMove(GameState& s, ExtMove& m);
+    int NGMAfterMove(const GameState& s, ExtMove& m);
 
     template <typename T>
     T chooseRandom(const std::vector<T>& l);
 
     void sendMoveToGUI(ExtMove m);
 
-    void toMove(GameState& s);
+    void toMove(const GameState& s);
 
-    int numGoodMoves(GameState& s);
+    int numGoodMoves(const GameState& s);
 
     int cp;
 

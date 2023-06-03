@@ -46,7 +46,7 @@
 
 class GameState;
 
-std::map<id, Sector> Sectors::getsectors()
+std::map<id, Sector> Sectors::getSectors()
 {
     try {
         if (!created) {
@@ -75,7 +75,7 @@ std::map<id, Sector> Sectors::getsectors()
         if (dynamic_cast<std::out_of_range*>(&ex)) {
             throw;
         }
-        std::cerr << "An error happened in getsectors\n"
+        std::cerr << "An error happened in getSectors\n"
                   << ex.what() << std::endl;
         exit(1);
     }
@@ -83,13 +83,13 @@ std::map<id, Sector> Sectors::getsectors()
 
 bool Sectors::hasDatabase()
 {
-    return getsectors().size() > 0;
+    return getSectors().size() > 0;
 }
 
 PerfectPlayer::PerfectPlayer()
 {
     assert(Sectors::hasDatabase());
-    secs = Sectors::getsectors();
+    secs = Sectors::getSectors();
 }
 
 void PerfectPlayer::enter(Game *_g)
@@ -97,7 +97,7 @@ void PerfectPlayer::enter(Game *_g)
     Player::enter(_g);
 }
 
-WSector* PerfectPlayer::getSec(GameState s)
+Sector* PerfectPlayer::getSec(GameState s)
 {
     try {
         if (s.kle)
@@ -132,7 +132,7 @@ std::string PerfectPlayer::toHumanReadableEval(Wrappers::gui_eval_elem2 e)
     return "";
 }
 
-int PerfectPlayer::futureKorongCount(GameState& s)
+int PerfectPlayer::futureKorongCount(const GameState& s)
 {
     return s.stoneCount[s.sideToMove] + Rules::maxKSZ - s.setStoneCount[s.sideToMove]; // TODO: refactor to call to futureStoneCount
 }
@@ -176,7 +176,7 @@ std::vector<ExtMove> PerfectPlayer::slideMoves(GameState& s)
 }
 
 // m has a withTaking step, where takeHon is not filled out. This function creates a list, the elements of which are copies of m supplemented with one possible removal each.
-std::vector<ExtMove> PerfectPlayer::withTakingMoves(GameState& s, ExtMove& m)
+std::vector<ExtMove> PerfectPlayer::withTakingMoves(const GameState& s, ExtMove& m)
 {
     std::vector<ExtMove> r;
     bool everythingInMill = true;
@@ -214,7 +214,7 @@ std::vector<ExtMove> PerfectPlayer::onlyTakingMoves(GameState& s)
     return r;
 }
 
-std::vector<ExtMove> PerfectPlayer::getMoveList(GameState& s)
+std::vector<ExtMove> PerfectPlayer::getMoveList(const GameState& s)
 {
     std::vector<ExtMove> ms0, ms;
     if (!s.kle) {
@@ -247,7 +247,7 @@ std::vector<ExtMove> PerfectPlayer::getMoveList(GameState& s)
     return ms;
 }
 
-GameState PerfectPlayer::makeMoveInState(GameState& s, ExtMove& m)
+GameState PerfectPlayer::makeMoveInState(const GameState& s, ExtMove& m)
 {
     GameState s2(s);
     if (!m.onlyTaking) {
@@ -265,7 +265,7 @@ GameState PerfectPlayer::makeMoveInState(GameState& s, ExtMove& m)
 }
 
 // Assuming gui_eval_elem2 and getSec functions are defined somewhere
-Wrappers::gui_eval_elem2 PerfectPlayer::moveValue(GameState& s, ExtMove& m)
+Wrappers::gui_eval_elem2 PerfectPlayer::moveValue(const GameState& s, ExtMove& m)
 {
     try {
         return eval(makeMoveInState(s, m)).undo_negate(getSec(s));
@@ -301,7 +301,7 @@ std::vector<ExtMove> PerfectPlayer::goodMoves(GameState& s)
 }
 
 
-int PerfectPlayer::NGMAfterMove(GameState& s, ExtMove& m)
+int PerfectPlayer::NGMAfterMove(const GameState& s, ExtMove& m)
 {
     return numGoodMoves(makeMoveInState(s, m)); // Assuming numGoodMoves function is defined
 }
@@ -342,7 +342,7 @@ void PerfectPlayer::toMove(GameState& s)
     }
 }
 
-int PerfectPlayer::numGoodMoves(GameState& s)
+int PerfectPlayer::numGoodMoves(const GameState& s)
 {
     if (futureKorongCount(s) < 3)
         return 0; // Assuming futureKorongCount function is defined

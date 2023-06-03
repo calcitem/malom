@@ -108,13 +108,13 @@ public:
     }
     static bool ignore_DD;
 
-    gui_eval_elem2 undo_negate(WSector* s)
+    gui_eval_elem2 undo_negate(Sector* s)
     {
-        auto a = this->to_eval_elem2().corr((s ? s->sval() : virt_unique_sec_val()) + (this->s ? this->s->sval : virt_unique_sec_val()));
+        auto a = this->to_eval_elem2().corr((s ? s->sval : virt_unique_sec_val()) + (this->s ? this->s->sval : virt_unique_sec_val()));
         a.key1 *= -1;
         if (s)
             a.key2++;
-        return gui_eval_elem2(a, s ? s->s : nullptr);
+        return gui_eval_elem2(a, s ? s : nullptr); // TODO: s->s?
     }
 
     static sec_val abs_min_value()
@@ -164,9 +164,9 @@ public:
     bool operator>(const gui_eval_elem2& b) const { return this->compare(b) > 0; }
     bool operator==(const gui_eval_elem2& b) const { return this->compare(b) == 0; }
 
-    static gui_eval_elem2 min_value(WSector* s)
+    static gui_eval_elem2 min_value(Sector* s)
     {
-        return gui_eval_elem2 { static_cast<sec_val>(abs_min_value() - (s ? s->sval() : virt_unique_sec_val())), 0, s ? s->s : nullptr };
+        return gui_eval_elem2 { static_cast<sec_val>(abs_min_value() - (s ? s->sval : virt_unique_sec_val())), 0, s ? s : nullptr }; // TODO: s->s?
     }
 
     static gui_eval_elem2 virt_loss_val()
