@@ -100,7 +100,7 @@ public:
         Player::quit();
     }
 
-    Sector* GetSec(GameState s);
+    Sector* getSec(GameState s);
 
     std::string toHumanReadableEval(Wrappers::gui_eval_elem2 e);
 
@@ -137,7 +137,7 @@ public:
     template <typename T>
     T chooseRandom(const std::vector<T>& l);
 
-    void sendMoveToGUI(ExtMove& m);
+    void sendMoveToGUI(ExtMove m);
 
     void toMove(GameState& s);
 
@@ -154,7 +154,7 @@ public:
 
     std::mutex evalLock;
 
-    Wrappers::gui_eval_elem2 eval(GameState& s);
+    Wrappers::gui_eval_elem2 eval(GameState s);
 
     int64_t boardNegate(int64_t a);
 };

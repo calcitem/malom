@@ -97,7 +97,7 @@ void PerfectPlayer::enter(Game *_g)
     Player::enter(_g);
 }
 
-Sector* PerfectPlayer::GetSec(GameState s)
+Sector* PerfectPlayer::getSec(GameState s)
 {
     try {
         if (s.kle)
@@ -113,7 +113,7 @@ Sector* PerfectPlayer::GetSec(GameState s)
     } catch (std::exception& ex) {
         if (typeid(ex) == typeid(std::out_of_range))
             throw;
-        std::cerr << "An error happened in GetSec\n"
+        std::cerr << "An error happened in getSec\n"
                   << ex.what() << std::endl;
         std::exit(1);
     }
@@ -314,7 +314,7 @@ T PerfectPlayer::chooseRandom(const std::vector<T>& l)
     return l[dis(gen)];
 }
 
-void PerfectPlayer::sendMoveToGUI(ExtMove& m)
+void PerfectPlayer::sendMoveToGUI(ExtMove m)
 {
     if (!m.onlyTaking) {
         if (m.moveType == MoveType::SetMove) {
@@ -372,7 +372,7 @@ const double WRGMInf = 2; // Is this good?
 
 std::mutex evalLock;
 
-Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState& s)
+Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState s)
 {
     try {
         std::lock_guard<std::mutex> lock(evalLock);
