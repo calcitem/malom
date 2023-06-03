@@ -25,7 +25,7 @@
 #include <memory> // for std::shared_ptr
 
 #include "PerfectPlayer.h"
-#include "main.h"
+#include "game.h"
 #include "move.h"
 #include "rules.h"
 

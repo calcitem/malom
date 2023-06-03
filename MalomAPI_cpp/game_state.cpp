@@ -29,7 +29,7 @@
 #include "MalomSolutionAccess.h"
 #include "PerfectPlayer.h"
 #include "Player.h"
-#include "main.h"
+#include "game_state.h"
 #include "move.h"
 #include "rules.h"
 
@@ -38,83 +38,6 @@ class GameState; // forward declaration, implement this
 class Move; // forward declaration, implement this
 
 extern int maxKSZ;
-
-GameState& Game::s() const
-{ // wrapper of current.value
-    return *current;
-}
-
-Game::Game(Player* p1, Player* p2)
-{
-    history.push_back(GameState());
-    current = std::prev(history.end());
-    _ply[0] = p1;
-    _ply[1] = p2;
-}
-
-Player** Game::plys()
-{
-    return _ply;
-}
-
-Player* Game::ply(int i) const
-{ // get players in the game
-    return _ply[i];
-}
-
-void Game::set_ply(int i, Player* p)
-{ // set players in the game
-    if (p == nullptr) {
-        _ply[i] = nullptr;
-        return;
-    }
-
-    p->quit(); // we exit p to see if it was in a game (e.g. NewGame in the previous one)
-    if (_ply[i] != nullptr)
-        _ply[i]->quit(); // the player replaced by p is kicked out
-    _ply[i] = p;
-    p->enter(this);
-}
-
-void Game::makeMove(Move* M)
-{ // called by player objects when they want to move
-    try {
-        ply(1 - s().sideToMove)->followMove(M);
-
-        history.insert(std::next(current), GameState(s()));
-        current++;
-
-        s().makeMove(M);
-    } catch (std::exception& ex) {
-        // If TypeOf ex Is KeyNotFoundException Then Throw
-        std::cerr << "Exception in makeMove\n"
-                  << ex.what() << std::endl;
-    }
-}
-
-void Game::applySetup(GameState toSet)
-{
-    history.insert(std::next(current), toSet);
-    current++;
-}
-
-void Game::cancelThinking()
-{
-    for (int i = 0; i < 2; ++i) {
-        ply(i)->cancelThinking();
-    }
-}
-
-bool Game::playertypeChangingCmdAllowed()
-{
-    // Return TypeOf ply(s.sideToMove) Is HumanPlayer
-    return true;
-}
-
-void Game::copyMoveList()
-{
-    throw std::runtime_error("NotImplementedException");
-}
 
 GameState::GameState(const GameState& s)
 { // copy constructor
@@ -185,7 +108,7 @@ void GameState::makeMove(Move* M)
         lastIrrev = 0;
     }
 
-    if ((sk != nullptr || mk != nullptr) && Rules::malome(((MoveKorong *)M)->hov, *this) > -1 && stoneCount[1 - sideToMove] > 0) {
+    if ((sk != nullptr || mk != nullptr) && Rules::malome(((MoveKorong*)M)->hov, *this) > -1 && stoneCount[1 - sideToMove] > 0) {
         kle = true;
     } else {
         sideToMove = 1 - sideToMove;

@@ -24,7 +24,7 @@
 
 #include "PerfectPlayer.h"
 #include "Player.h"
-#include "main.h"
+//#include "main.h"
 #include "rules.h"
 
 class Move { // Step

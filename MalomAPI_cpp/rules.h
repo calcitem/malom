@@ -27,7 +27,7 @@
 #include <iostream>
 #include <vector>
 
-#include "main.h"
+//#include "main.h"
 #include "Wrappers.h"
 
 class GameState;

@@ -23,11 +23,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SYMMETRIES_H_INCLUDED
 #define SYMMETRIES_H_INCLUDED
 
+#include "common.h"
+
 void init_sym_lookuptables();
 
 board sym24(int op, board a);
 board sym48(int op, board a);
 
-int inv[]; //ezt at lehet irni extern-re talan???
+extern int inv[]; //ezt at lehet irni extern-re talan???
 
 #endif // SYMMETRIES_H_INCLUDED

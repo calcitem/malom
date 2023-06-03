@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "symmetries.h"
 #include "symmetries_slow.h"
 
-
+int inv[]; // ezt at lehet irni extern-re talan???
 
 //int (*slow[16])(int) = {id, rot90, rot180, rot270, tt_fuggoleges, tt_vizszintes, tt_bslash, tt_slash,
 //						swap, swap_rot90, swap_rot180, swap_rot270, swap_tt_fuggoleges, swap_tt_vizszintes, swap_tt_bslash, swap_tt_slash};

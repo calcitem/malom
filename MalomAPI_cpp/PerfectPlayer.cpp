@@ -38,11 +38,13 @@
 #include "MalomSolutionAccess.h"
 #include "PerfectPlayer.h"
 #include "Player.h"
-#include "main.h"
+//#include "main.h"
 #include "move.h"
 #include "rules.h"
 
 #include "Wrappers.h"
+
+class GameState;
 
 std::map<id, Sector> Sectors::getsectors()
 {

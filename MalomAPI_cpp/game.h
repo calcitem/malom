@@ -38,48 +38,6 @@
 class Player; // forward declaration, implement this
 class Move; // forward declaration, implement this
 
-class GameState {
-public:
-    // The board (-1: empty, 0: white piece, 1: black piece)
-    std::vector<int> T = std::vector<int>(24, -1);
-    int phase = 1;
-    // How many stones the players have set
-    std::vector<int> setStoneCount = std::vector<int>(2, 0);
-    std::vector<int> stoneCount = std::vector<int>(2, 0);
-    bool kle = false; // Is there a puck removal coming?
-    int sideToMove = 0;
-    int moveCount = 0;
-    bool over = false;
-    int winner = 0; // (-1, if a draw)
-    bool block = false;
-    int lastIrrev = 0;
-
-    GameState() { } // start of game
-
-    GameState(const GameState& s);
-
-    int futureStoneCount(int p);
-
-    // Sets the state for Setup Mode: the placed stones are unchanged, but we switch to phase 2.
-    void initSetup();
-
-    void makeMove(Move* M);
-
-    void checkValidMove(Move* M);
-
-    void checkInvariants();
-
-    // Called when applying a free setup. It sets over and checks whether the position is valid. Returns "" if valid, reason str otherwise.
-    // Also called when pasting a position.
-    std::string setOverAndCheckValidSetup();
-
-    // to paste from clipboard
-    GameState(const std::string& s);
-
-    // for clipboard
-    std::string toString();
-};
-
 class Game {
 private:
     Player* _ply[2]; // players in the game
@@ -106,17 +64,6 @@ public:
     bool playertypeChangingCmdAllowed();
 
     void copyMoveList();
-};
-
-class InvalidGameStateException : public std::exception {
-public:
-    std::string mymsg;
-    InvalidGameStateException(const std::string& msg)
-        : mymsg(msg)
-    {
-    }
-
-    virtual const char* what() const noexcept override;
 };
 
 #endif // MAIN_H_INCLUDED

@@ -27,7 +27,7 @@
 
 #include "PerfectPlayer.h"
 #include "Player.h"
-#include "main.h"
+#include "game_state.h"
 #include "move.h"
 #include "MalomSolutionAccess.h"
 #include "rules.h"

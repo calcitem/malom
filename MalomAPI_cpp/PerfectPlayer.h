@@ -39,7 +39,7 @@
 #include <functional>
 
 #include "Player.h"
-#include "main.h"
+//#include "main.h"
 #include "move.h"
 #include "rules.h"
 #include "sector.h"
