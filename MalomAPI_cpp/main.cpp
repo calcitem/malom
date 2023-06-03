@@ -17,10 +17,11 @@ int main(int argc, char* argv[])
         sec_val_path = argv[1];
     }
 
+    //int res = MalomSolutionAccess::getBestMove(0, 0, 9, 9, 0, false);
     int res = MalomSolutionAccess::getBestMove(1, 2, 8, 8, 0, false); // Correct output: 16384
-    // int res = GetBestMove(1 + 2 + 4, 8 + 16 + 32, 100, 0, 0, false); // tests exception
-    // int res = GetBestMove(1 + 2 + 4, 1 + 8 + 16 + 32, 0, 0, 0, false); // tests exception
-    // int res = GetBestMove(1 + 2 + 4, 8 + 16 + 32, 0, 0, 0, true); // Correct output: any of 8, 16, 32
+    //int res = MalomSolutionAccess::getBestMove(1 + 2 + 4, 8 + 16 + 32, 100, 0, 0, false); // tests exception
+    // int res = MalomSolutionAccess::getBestMove(1 + 2 + 4, 1 + 8 + 16 + 32, 0, 0, 0, false); // tests exception
+    // int res = MalomSolutionAccess::getBestMove(1 + 2 + 4, 8 + 16 + 32, 0, 0, 0, true); // Correct output: any of 8, 16, 32
 
     printf("GetBestMove result: %d\n", res);
 

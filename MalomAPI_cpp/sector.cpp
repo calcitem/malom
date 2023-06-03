@@ -44,7 +44,7 @@ sval(0)
 	,wms(-1)
 #endif
 #ifdef WRAPPER
-	,f(nullptr)
+	//,f(nullptr)
 #endif
 	{
 	sector_objs.push_back(this);

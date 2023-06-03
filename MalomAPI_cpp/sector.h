@@ -66,7 +66,7 @@ class Sector{
 	map<int,int> em_set;
 
 #ifdef WRAPPER
-    FILE* f { nullptr };
+    //FILE* f { nullptr };
 #endif
 
 #ifdef DD

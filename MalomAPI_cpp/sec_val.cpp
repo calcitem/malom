@@ -34,7 +34,6 @@ sec_val virt_loss_val = 0, virt_win_val = 0;
 void init_sec_vals(){
 #ifdef DD
 #ifndef STONE_DIFF
-	FILE *f;
     sec_val_fname = sec_val_path + "/" + (string)VARIANT_NAME + ".secval";
     fopen_s(&f, sec_val_fname.c_str(), "rt");
 	if(!f)
@@ -46,7 +45,7 @@ void init_sec_vals(){
 		int w, b, wf, bf, v;  fscanf_s(f, "%d %d %d %d  %d\n", &w, &b, &wf, &bf, &v);
 		sec_vals[id(w, b, wf, bf)] = v;
 	}
-	fclose(f);
+	//fclose(f);
 #else
 	for(int W = 0; W <= max_ksz; W++){
 		for(int WF = 0; WF <= max_ksz; WF++){

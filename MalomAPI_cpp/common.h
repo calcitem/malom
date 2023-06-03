@@ -155,6 +155,7 @@ const int version = 2;
 
 extern string sec_val_path;
 extern string sec_val_fname;
+extern FILE* f;
 const string movegen_file = (string)"C:\\malom_data_aux\\" + VARIANT_NAME + ".movegen"; //This file is created by the solver with the -writemovegenlookups switch. The Controller automatically makes this, if the file doesn't exist.
 
 

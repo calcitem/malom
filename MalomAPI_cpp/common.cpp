@@ -34,6 +34,7 @@ using namespace std;
 
 std::string sec_val_path = ".";
 std::string sec_val_fname = "";
+FILE* f = {nullptr};
 
 wstring str2wstr(const string& s)
 {
