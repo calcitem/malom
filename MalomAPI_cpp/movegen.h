@@ -20,8 +20,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-#pragma once
+#ifndef MOVE_GEN_H_INCLUDED
+#define MOVE_GEN_H_INCLUDED
 
 //#include "sector.h" //korkoros dependencia lenne, ugyhogy inkabb forward declarationnel vezetjuk be a Sector-t es a sectors-t (ld. http://stackoverflow.com/questions/625799/resolve-circular-dependencies-in-c)
 #include "sector_graph.h"
@@ -74,3 +74,5 @@ void get_chd(board a);
 void init_get_chd_sectors(id a_id);
 extern Child chd[1024];
 extern int num_chd;
+
+#endif // MOVE_GEN_H_INCLUDED

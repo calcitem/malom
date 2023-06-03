@@ -20,8 +20,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef SECTOR_GRAPH_H_INCLUDED
+#define SECTOR_GRAPH_H_INCLUDED
 
-#pragma once
 #include "common.h"
 
 #include <set>
@@ -54,3 +55,5 @@ extern unordered_map<id,wu*> wus;
 extern vector<id> sector_list;
 
 extern set<id> wu_ids; //azok az id-k, amelyekre van olyan wu, aminek ez az id-je
+
+#endif // SECTOR_GRAPH_H_INCLUDED

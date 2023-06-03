@@ -44,7 +44,7 @@
 #include "rules.h"
 #include "sector.h"
 #include "common.h"
-#include "wrappers.h"
+#include "Wrappers.h"
 
 class Sectors {
 public:

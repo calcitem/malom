@@ -20,8 +20,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-#pragma once
+#ifndef SECTOR_H_INCLUDED
+#define SECTOR_H_INCLUDED
 
 #include "eval_elem.h"
 #include "sector_graph.h"
@@ -132,3 +132,5 @@ extern Sector* sectors[max_ksz+1][max_ksz+1][max_ksz+1][max_ksz+1];
 #define sectors(id) (sectors[(id).W][(id).B][(id).WF][(id).BF])
 
 extern vector<Sector*> sector_objs;
+
+#endif // SECTOR_H_INCLUDED

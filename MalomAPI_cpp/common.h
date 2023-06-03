@@ -21,7 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#pragma once
+#ifndef COMMON_H_INCLUDED
+#define COMMON_H_INCLUDED
 
 #include <cassert>
 #include <string>
@@ -319,3 +320,5 @@ int sign(T x){ return x<0 ? -1 : (x>0 ? 1 : 0); }
 
 void failwith(string s);
 wstring str2wstr(const string &s);
+
+#endif // COMMON_H_INCLUDED

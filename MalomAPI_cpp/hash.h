@@ -21,7 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#pragma once
+#ifndef HASH_H_INCLUDED
+#define HASH_H_INCLUDED
 
 #include "sector.h"
 
@@ -61,3 +62,4 @@ int collapse(board a);
 board uncollapse(board a);
 int next_choose(int x);
 
+#endif // HASH_H_INCLUDED

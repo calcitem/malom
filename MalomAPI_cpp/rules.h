@@ -27,12 +27,8 @@
 #include <iostream>
 #include <vector>
 
-#include "PerfectPlayer.h"
-#include "Player.h"
 #include "main.h"
-#include "move.h"
-
-#include "wrappers.h"
+#include "Wrappers.h"
 
 extern int maxKSZ;
 
@@ -75,7 +71,7 @@ public:
     static int malome(int m, GameState s);
 
     // Tells whether the next player can move '(doesn't handle the kle case)
-    static bool youCanMove(GameState s);
+    static bool youCanMove(GameState *s);
 
     static bool mindenEllensegesKorongMalomban(GameState s);
 

@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#include "wrappers.h"
+#include "Wrappers.h"
 
 
 // This manages the lookuptables of the hash function: it keeps them in memory for a few most recently accessed sectors.

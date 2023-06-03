@@ -20,8 +20,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-#pragma once
+#ifndef SYMMETRIES_SLOW_H_INCLUDED
+#define SYMMETRIES_SLOW_H_INCLUDED
 
 int id(int a);
 int rot90(int a);
@@ -39,3 +39,5 @@ int swap_tt_fuggoleges(int a);
 int swap_tt_vizszintes(int a);
 int swap_tt_bslash(int a);
 int swap_tt_slash(int a);
+
+#endif // SYMMETRIES_SLOW_H_INCLUDED

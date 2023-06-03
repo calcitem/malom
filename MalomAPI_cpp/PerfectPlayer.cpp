@@ -41,7 +41,7 @@
 #include "move.h"
 #include "rules.h"
 
-#include "wrappers.h"
+#include "Wrappers.h"
 
 std::map<id, Sector> Sectors::getsectors()
 {

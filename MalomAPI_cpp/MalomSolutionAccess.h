@@ -19,6 +19,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef MALOM_SOLUTION_H_INCLUDED
+#define MALOM_SOLUTION_H_INCLUDED
+
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -50,3 +53,5 @@ public:
 
     static void setVariantStripped();
 };
+
+#endif // MALOM_SOLUTION_H_INCLUDED

@@ -138,14 +138,14 @@ int Rules::malome(int m, GameState s)
 }
 
 // Tells whether the next player can move '(doesn't handle the kle case)
-bool Rules::youCanMove(GameState s)
+bool Rules::youCanMove(GameState *s)
 {
-    assert(!s.kle);
-    if (s.setStoneCount(s.sideToMove) == maxKSZ && s.stoneCount(s.sideToMove) > 3) {
+    assert(!s->kle);
+    if (s->setStoneCount(s->sideToMove) == maxKSZ && s->stoneCount(s->sideToMove) > 3) {
         for (int i = 0; i <= 23; i++) {
-            if (s.T[i] == s.sideToMove) {
+            if (s.T[i] == s->sideToMove) {
                 for (int j = 1; j <= aLBoardGraph[i][0]; j++) {
-                    if (s.T[aLBoardGraph[i][j]] == -1)
+                    if (s->T[aLBoardGraph[i][j]] == -1)
                         return true;
                 }
             }

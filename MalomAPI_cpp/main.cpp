@@ -191,11 +191,11 @@ void GameState::makeMove(Move* M)
         sideToMove = 1 - sideToMove;
         if (setStoneCount[0] == maxKSZ && setStoneCount[1] == maxKSZ && phase == 1)
             phase = 2;
-        if (!youCanMove(this)) {
+        if (!Rules::youCanMove(this)) {
             over = true;
             block = true;
             winner = 1 - sideToMove;
-            if (wrappers::constants::FBD && stoneCount[0] == 12 && stoneCount[1] == 12) {
+            if (Wrappers::Constants::FBD && stoneCount[0] == 12 && stoneCount[1] == 12) {
                 winner = -1;
             }
         }
@@ -293,7 +293,7 @@ std::string GameState::setOverAndCheckValidSetup()
             }
         }
     }
-    if (!kle && !youCanMove(this)) { // youCanMove doesn't handle the kle case. However, we should always have a move in kle, see the validity check above.
+    if (!kle && !Rules::youCanMove(this)) { // youCanMove doesn't handle the kle case. However, we should always have a move in kle, see the validity check above.
         over = true;
         block = true;
         winner = 1 - sideToMove;

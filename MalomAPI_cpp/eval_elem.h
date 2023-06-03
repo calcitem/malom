@@ -21,8 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#pragma once
-
+#ifndef EVAL_ELEM_H_INCLUDED
+#define EVAL_ELEM_H_INCLUDED
 
 struct eval_elem;
 struct eval_elem_sym2;
@@ -108,3 +108,5 @@ struct eval_elem_sym2{
 	static const field2_t max_field2 = -(spec_field2 + 1);
 #endif
 };
+
+#endif // EVAL_ELEM_H_INCLUDED
