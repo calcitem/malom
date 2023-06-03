@@ -38,11 +38,11 @@
 #include "MalomSolutionAccess.h"
 #include "PerfectPlayer.h"
 #include "Player.h"
-//#include "main.h"
+#include "game_state.h"
 #include "move.h"
 #include "rules.h"
 
-#include "Wrappers.h"
+#include "wrappers.h"
 
 class GameState;
 

@@ -24,7 +24,7 @@
 #include "MalomSolutionAccess.h"
 #include "PerfectPlayer.h"
 #include "Player.h"
-#include "main.h"
+#include "game.h"
 #include "move.h"
 #include "rules.h"
 

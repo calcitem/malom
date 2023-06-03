@@ -23,7 +23,6 @@
 #include "MalomSolutionAccess.h"
 #include "PerfectPlayer.h"
 #include "Player.h"
-#include "main.h"
 #include "rules.h"
 
 std::vector<int> SetKorong::getMezok()
