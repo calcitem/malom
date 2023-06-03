@@ -191,7 +191,7 @@ std::vector<Move> PerfectPlayer::slideMoves(GameState& s)
     std::vector<Move> r;
     for (int i = 0; i < 24; ++i) {
         for (int j = 0; j < 24; ++j) {
-            if (s.T[i] == s.sideToMove && s.T(j) == -1 && (futureKorongCount(s) == 3 || Rules.boardGraph(i, j))) {
+            if (s.T[i] == s.sideToMove && s.T(j) == -1 && (futureKorongCount(s) == 3 || Rules::boardGraph(i, j))) {
                 r.push_back(Move { i, j, makesMill(s, i, j), false, MoveType::SlideMove, 0 });
             }
         }

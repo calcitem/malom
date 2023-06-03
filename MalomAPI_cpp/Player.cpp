@@ -42,23 +42,4 @@ void Player::quit()
     g = nullptr;
 }
 
-// The object is informed that it is its turn to move
-void Player::toMove(GameState& s) = 0; // Assuming GameState is a pre-defined class
 
-// Notifies about the opponent's move
-void Player::followMove(Move* M) { } // Assuming Object is a pre-defined class or built-in type
-
-// The object is informed that it is the opponent's turn to move
-void Player::oppToMove(GameState& s) { }
-
-// Game is over
-void Player::over(GameState& s) { }
-
-// Cancel thinking
-void Player::cancelThinking() { }
-
-// Determine the opponent player
-Player* Player::opponent()
-{
-    return (g->ply(0).get() == this) ? g->ply(1).get() : g->ply(0).get(); // Assuming Game has a ply function
-}

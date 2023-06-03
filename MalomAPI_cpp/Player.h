@@ -31,7 +31,7 @@
 
 class Player {
 protected:
-    std::shared_ptr<Game> g; // Assuming Game is a pre-defined class
+    Game *g; // Assuming Game is a pre-defined class
 
 public:
     // The object is informed to enter the specified game
