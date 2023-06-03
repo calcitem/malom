@@ -288,6 +288,6 @@ public:
 };
 }
 
-    std::pair<int, Wrappers::gui_eval_elem2> hash(board a); // Declaration only
+    std::pair<int, Wrappers::gui_eval_elem2> hash(board a, Sector* s); // Declaration only
 
 #endif // WRAPPER_H_INCLUDED
