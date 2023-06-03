@@ -182,7 +182,7 @@ std::string GameState::setOverAndCheckValidSetup()
 
     if (Wrappers::Constants::variant != (int)Wrappers::Constants::Variants::lask && !Wrappers::Constants::extended) {
         if (phase == 1) {
-            if (toBePlaced0 != toBePlaced1 - ((sideToMove == 0 ^ kle) ? 0 : 1)) {
+            if (toBePlaced0 != toBePlaced1 - ((sideToMove == 0) ^ kle ? 0 : 1)) {
                 return "If Black is to move in the placement phase, then the number of black stones to be placed should be one more than the number of white stones to placed. If White is to move in the placement phase, then the number of white and black stones to be placed should be equal. (Except in a stone taking position, where these conditions are reversed.)\n\nNote: The Lasker variant (and the extended solutions) doesn't have these constraints.\n\nNote: You can switch the side to move by the \"Switch STM\" button in position setup mode.";
             }
         } else {

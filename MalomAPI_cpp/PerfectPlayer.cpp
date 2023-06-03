@@ -327,7 +327,7 @@ void PerfectPlayer::sendMoveToGUI(ExtMove m)
     }
 }
 
-void PerfectPlayer::toMove(GameState& s)
+void PerfectPlayer::toMove(const GameState& s)
 {
     try {
         ExtMove mh = chooseRandom(goodMoves(s));
