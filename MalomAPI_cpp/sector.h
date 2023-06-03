@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SECTOR_H_INCLUDED
 #define SECTOR_H_INCLUDED
 
+#include "common.h"
 #include "eval_elem.h"
 #include "sector_graph.h"
 #include "sec_val.h"
