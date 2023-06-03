@@ -137,28 +137,6 @@ enum class MoveType {
     SlideMove // should be renamed to SlideOrJumpMove
 };
 
-struct Move {
-    int hon, hov;
-    MoveType moveType;
-    bool withTaking, onlyTaking; // withTaking includes the steps in mill closure, onlyTaking only includes removal
-    int takeHon;
-
-    int toBitBoard()
-    {
-        if (onlyTaking) {
-            return 1 << takeHon;
-        }
-        int ret = 1 << hov;
-        if (moveType == MoveType::SlideMove) {
-            ret += 1 << hon;
-        }
-        if (withTaking) {
-            ret += 1 << takeHon;
-        }
-        return ret;
-    }
-};
-
 int PerfectPlayer::futureKorongCount(GameState& s)
 {
     return s.stoneCount[s.sideToMove] + Rules::maxKSZ - s.setStoneCount[s.sideToMove]; // TODO: refactor to call to futureStoneCount
