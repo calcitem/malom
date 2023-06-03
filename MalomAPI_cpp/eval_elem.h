@@ -24,6 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef EVAL_ELEM_H_INCLUDED
 #define EVAL_ELEM_H_INCLUDED
 
+#include "common.h"
+
 struct eval_elem;
 struct eval_elem_sym2;
 struct eval_elem2;
