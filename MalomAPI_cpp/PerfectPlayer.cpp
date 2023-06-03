@@ -156,7 +156,7 @@ std::vector<ExtMove> PerfectPlayer::setMoves(const GameState& s)
     std::vector<ExtMove> r;
     for (int i = 0; i < 24; ++i) {
         if (s.T[i] == -1) {
-            r.push_back(ExtMove { i, false, makesMill(s, -1, i), MoveType::SetMove });
+            r.push_back(ExtMove { i, i, MoveType::SetMove, makesMill(s, -1, i), false, 0 });
         }
     }
     return r;
@@ -168,7 +168,7 @@ std::vector<ExtMove> PerfectPlayer::slideMoves(const GameState& s)
     for (int i = 0; i < 24; ++i) {
         for (int j = 0; j < 24; ++j) {
             if (s.T[i] == s.sideToMove && s.T[j] == -1 && (futureKorongCount(s) == 3 || Rules::boardGraph[i][j])) {
-                r.push_back(ExtMove { i, j, makesMill(s, i, j), false, MoveType::SlideMove, 0 });
+                r.push_back(ExtMove { i, j, MoveType::SlideMove, makesMill(s, i, j), false, 0 });
             }
         }
     }
@@ -208,7 +208,7 @@ std::vector<ExtMove> PerfectPlayer::onlyTakingMoves(const GameState& s)
 
     for (int i = 0; i < 24; ++i) {
         if (s.T[i] == 1 - s.sideToMove && (!isMill(s, i) || everythingInMill)) {
-            r.push_back(ExtMove { 0, 0, false, true, MoveType::SlideMove, i }); // Assuming default values for hon, hov, and moveType
+            r.push_back(ExtMove { 0, 0, MoveType::SlideMove, false, true, i }); // Assuming default values for hon and hov
         }
     }
     return r;
