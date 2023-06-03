@@ -33,6 +33,7 @@
 #include <stdexcept> // for std::out_of_range
 #include <string>
 #include <vector>
+#include <random>
 
 #include "MalomSolutionAccess.h"
 #include "PerfectPlayer.h"
@@ -172,7 +173,7 @@ bool PerfectPlayer::makesMill(GameState& s, int hon, int hov)
 
 bool PerfectPlayer::isMill(GameState& s, int m)
 {
-    return -1 != Rules.malome(m, s);
+    return -1 != Rules::malome(m, s);
 }
 
 std::vector<Move> PerfectPlayer::setMoves(GameState& s)
@@ -191,7 +192,7 @@ std::vector<Move> PerfectPlayer::slideMoves(GameState& s)
     std::vector<Move> r;
     for (int i = 0; i < 24; ++i) {
         for (int j = 0; j < 24; ++j) {
-            if (s.T[i] == s.sideToMove && s.T(j) == -1 && (futureKorongCount(s) == 3 || Rules::boardGraph(i, j))) {
+            if (s.T[i] == s.sideToMove && s.T[j] == -1 && (futureKorongCount(s) == 3 || Rules::boardGraph[i][j])) {
                 r.push_back(Move { i, j, makesMill(s, i, j), false, MoveType::SlideMove, 0 });
             }
         }
@@ -244,14 +245,14 @@ std::vector<Move> PerfectPlayer::getMoveList(GameState& s)
     if (!s.kle) {
         if (Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::std || 
             Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::mora) {
-            if (s.setStoneCount(s.sideToMove) < Rules::maxKSZ) {
+            if (s.setStoneCount[s.sideToMove] < Rules::maxKSZ) {
                 ms0 = setMoves(s);
             } else {
                 ms0 = slideMoves(s);
             }
         } else { // Lasker
             ms0 = slideMoves(s);
-            if (s.setStoneCount(s.sideToMove) < Rules::maxKSZ) {
+            if (s.setStoneCount[s.sideToMove] < Rules::maxKSZ) {
                 std::vector<Move> setMovesResult = setMoves(s);
                 ms0.insert(ms0.end(), setMovesResult.begin(), setMovesResult.end());
             }
