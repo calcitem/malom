@@ -89,7 +89,7 @@ public:
 
     PerfectPlayer();
 
-    void enter(Game *_g);
+    void enter(Game* _g) override;
 
     void quit() override
     {
@@ -135,7 +135,7 @@ public:
 
     void sendMoveToGUI(ExtMove m);
 
-    void toMove(const GameState& s);
+    void toMove(const GameState& s) override;
 
     int numGoodMoves(const GameState& s);
 
