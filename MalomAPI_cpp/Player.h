@@ -44,7 +44,7 @@ public:
     virtual void toMove(GameState& s) = 0; // Assuming GameState is a pre-defined class
 
     // Notifies about the opponent's move
-    virtual void followMove(const Move& M) { } // Assuming Object is a pre-defined class or built-in type
+    virtual void followMove(Move* M) { } // Assuming Object is a pre-defined class or built-in type
 
     // The object is informed that it is the opponent's turn to move
     virtual void oppToMove(GameState& s) { }

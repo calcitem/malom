@@ -174,9 +174,9 @@ bool PerfectPlayer::makesMill(GameState& s, int hon, int hov)
 {
     GameState s2 = s;
     if (hon != -1)
-        s2.T(hon) = -1;
-    s2.T(hov) = s.sideToMove;
-    return -1 != Rules.malome(hov, s2);
+        s2.T[hon] = -1;
+    s2.T[hov] = s.sideToMove;
+    return -1 != Rules::malome(hov, s2);
 }
 
 bool PerfectPlayer::isMill(GameState& s, int m)

@@ -46,7 +46,7 @@ void Player::quit()
 void Player::toMove(GameState& s) = 0; // Assuming GameState is a pre-defined class
 
 // Notifies about the opponent's move
-void Player::followMove(const Object& M) { } // Assuming Object is a pre-defined class or built-in type
+void Player::followMove(Move* M) { } // Assuming Object is a pre-defined class or built-in type
 
 // The object is informed that it is the opponent's turn to move
 void Player::oppToMove(GameState& s) { }

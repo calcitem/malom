@@ -65,10 +65,10 @@ int MalomSolutionAccess::getBestMove(int whiteBitboard, int blackBitboard, int w
     s.sideToMove = playerToMove;
     s.moveCount = 10;
 
-    if (s.futureStoneCount[W] > Rules::maxKSZ) {
+    if (s.futureStoneCount(W) > Rules::maxKSZ) {
         throw std::invalid_argument("Number of stones in whiteBitboard + whiteStonesToPlace > " + std::to_string(Rules::maxKSZ));
     }
-    if (s.futureStoneCount[B] > Rules::maxKSZ) {
+    if (s.futureStoneCount(B) > Rules::maxKSZ) {
         throw std::invalid_argument("Number of stones in blackBitboard + blackStonesToPlace > " + std::to_string(Rules::maxKSZ));
     }
 
