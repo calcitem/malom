@@ -400,7 +400,10 @@ Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState s)
 
         Sector sec = secs[id];
 
-        return sec.hash->hash((board)a).second;
+        eval_elem2 eval_elem = sec.hash->hash((board)a).second;
+
+        // TODO: [calcitem] Add this line to convert eval_elem2 to gui_eval_elem2, right?
+        return Wrappers::gui_eval_elem2(eval_elem, &sec);
     } catch (const std::exception& ex) {
         if (typeid(ex) == typeid(std::out_of_range))
             throw;
