@@ -46,6 +46,33 @@
 #include "common.h"
 #include "Wrappers.h"
 
+enum class MoveType {
+    SetMove,
+    SlideMove // should be renamed to SlideOrJumpMove
+};
+
+struct ExtMove {
+    int hon, hov;
+    MoveType moveType;
+    bool withTaking, onlyTaking; // withTaking includes the steps in mill closure, onlyTaking only includes removal
+    int takeHon;
+
+    int toBitBoard()
+    {
+        if (onlyTaking) {
+            return 1 << takeHon;
+        }
+        int ret = 1 << hov;
+        if (moveType == MoveType::SlideMove) {
+            ret += 1 << hon;
+        }
+        if (withTaking) {
+            ret += 1 << takeHon;
+        }
+        return ret;
+    }
+};
+
 class Sectors {
 public:
     static std::map<id, Sector> sectors;
@@ -77,67 +104,40 @@ public:
 
     std::string toHumanReadableEval(Wrappers::gui_eval_elem2 e);
 
-    enum class MoveType {
-        SetMove,
-        SlideMove // should be renamed to SlideOrJumpMove
-    };
-
-    struct Move {
-        int hon, hov;
-        MoveType moveType;
-        bool withTaking, onlyTaking; // withTaking includes the steps in mill closure, onlyTaking only includes removal
-        int takeHon;
-
-        int toBitBoard()
-        {
-            if (onlyTaking) {
-                return 1 << takeHon;
-            }
-            int ret = 1 << hov;
-            if (moveType == MoveType::SlideMove) {
-                ret += 1 << hon;
-            }
-            if (withTaking) {
-                ret += 1 << takeHon;
-            }
-            return ret;
-        }
-    };
-
     int futureKorongCount(GameState& s);
 
     bool makesMill(GameState& s, int hon, int hov);
 
     bool isMill(GameState& s, int m);
 
-    std::vector<Move> setMoves(GameState& s);
+    std::vector<ExtMove> setMoves(GameState& s);
 
-    std::vector<Move> slideMoves(GameState& s);
+    std::vector<ExtMove> slideMoves(GameState& s);
 
     // m has a withTaking step, where takeHon is not filled out. This function creates a list, the elements of which are copies of m supplemented with one possible removal each.
-    std::vector<Move> withTakingMoves(GameState& s, Move& m);
+    std::vector<ExtMove> withTakingMoves(GameState& s, ExtMove& m);
 
-    std::vector<Move> onlyTakingMoves(GameState& s);
+    std::vector<ExtMove> onlyTakingMoves(GameState& s);
 
-    std::vector<Move> getMoveList(GameState& s);
+    std::vector<ExtMove> getMoveList(GameState& s);
 
-    GameState makeMoveInState(GameState& s, Move& m);
+    GameState makeMoveInState(GameState& s, ExtMove& m);
 
     // Assuming gui_eval_elem2 and getSec functions are defined somewhere
-    Wrappers::gui_eval_elem2 moveValue(GameState& s, Move& m);
+    Wrappers::gui_eval_elem2 moveValue(GameState& s, ExtMove& m);
 
     template <typename T, typename K>
     std::vector<T> allMaxBy(std::function<K(T)> f, std::vector<T>& l, K minValue);
 
     // Assuming the definition of gui_eval_elem2::min_value function
-    std::vector<Move> goodMoves(GameState& s);
+    std::vector<ExtMove> goodMoves(GameState& s);
 
-    int NGMAfterMove(GameState& s, Move& m);
+    int NGMAfterMove(GameState& s, ExtMove& m);
 
     template <typename T>
     T chooseRandom(const std::vector<T>& l);
 
-    void sendMoveToGUI(Move& m);
+    void sendMoveToGUI(ExtMove& m);
 
     void toMove(GameState& s);
 
@@ -146,7 +146,7 @@ public:
     int cp;
 
     struct MoveValuePair {
-        Move m;
+        ExtMove m;
         double val;
     };
 
