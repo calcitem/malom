@@ -129,7 +129,8 @@ void Rules::initRules()
 int Rules::malome(int m, GameState s)
 {
     int result = -1;
-    for (int i = 0; i < invMillPos[m].size(); i++) {
+    int length = sizeof(invMillPos[m]) / sizeof(invMillPos[m][0]);
+    for (int i = 0; i < length; i++) {
         if (s.T[millPos[invMillPos[m][i]][0]] == s.T[m] && s.T[millPos[invMillPos[m][i]][1]] == s.T[m] && s.T[millPos[invMillPos[m][i]][2]] == s.T[m]) {
             result = invMillPos[m][i];
         }
