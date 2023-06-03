@@ -93,7 +93,7 @@ PerfectPlayer::PerfectPlayer()
     secs = Sectors::getsectors();
 }
 
-void PerfectPlayer::enter(Game _g)
+void PerfectPlayer::enter(Game *_g)
 {
     Player::enter(_g);
 }
@@ -145,21 +145,21 @@ enum class MoveType {
 
 struct Move {
     int hon, hov;
-    MoveType movetype;
-    bool withtaking, onlytaking; // withtaking includes the steps in mill closure, onlytaking only includes removal
-    int takehon;
+    MoveType moveType;
+    bool withTaking, onlyTaking; // withTaking includes the steps in mill closure, onlyTaking only includes removal
+    int takeHon;
 
     int toBitBoard()
     {
-        if (onlytaking) {
-            return 1 << takehon;
+        if (onlyTaking) {
+            return 1 << takeHon;
         }
         int ret = 1 << hov;
-        if (movetype == MoveType::SlideMove) {
+        if (moveType == MoveType::SlideMove) {
             ret += 1 << hon;
         }
-        if (withtaking) {
-            ret += 1 << takehon;
+        if (withTaking) {
+            ret += 1 << takeHon;
         }
         return ret;
     }
@@ -208,7 +208,7 @@ std::vector<Move> PerfectPlayer::slideMoves(GameState& s)
     return r;
 }
 
-// m has a withtaking step, where takehon is not filled out. This function creates a list, the elements of which are copies of m supplemented with one possible removal each.
+// m has a withTaking step, where takeHon is not filled out. This function creates a list, the elements of which are copies of m supplemented with one possible removal each.
 std::vector<Move> PerfectPlayer::withTakingMoves(GameState& s, Move& m)
 {
     std::vector<Move> r;
@@ -222,7 +222,7 @@ std::vector<Move> PerfectPlayer::withTakingMoves(GameState& s, Move& m)
     for (int i = 0; i < 24; ++i) {
         if (s.T[i] == 1 - s.sideToMove && (!isMill(s, i) || everythingInMill)) {
             Move m2 = m;
-            m2.takehon = i;
+            m2.takeHon = i;
             r.push_back(m2);
         }
     }
@@ -241,7 +241,7 @@ std::vector<Move> PerfectPlayer::onlyTakingMoves(GameState& s)
 
     for (int i = 0; i < 24; ++i) {
         if (s.T[i] == 1 - s.sideToMove && (!isMill(s, i) || everythingInMill)) {
-            r.push_back(Move { 0, 0, false, true, MoveType::SlideMove, i }); // Assuming default values for hon, hov, and movetype
+            r.push_back(Move { 0, 0, false, true, MoveType::SlideMove, i }); // Assuming default values for hon, hov, and moveType
         }
     }
     return r;
@@ -267,7 +267,7 @@ std::vector<Move> PerfectPlayer::getMoveList(GameState& s)
         }
 
         for (int i = 0; i < ms0.size(); ++i) {
-            if (!ms0[i].withtaking) {
+            if (!ms0[i].withTaking) {
                 ms.push_back(ms0[i]);
             } else {
                 std::vector<Move> withTakingMovesResult = withTakingMoves(s, ms0[i]);

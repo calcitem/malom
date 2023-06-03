@@ -66,7 +66,7 @@ public:
 
     PerfectPlayer();
 
-    void enter(Game _g);
+    void enter(Game *_g);
 
     void quit() override
     {
@@ -84,21 +84,21 @@ public:
 
     struct Move {
         int hon, hov;
-        MoveType movetype;
-        bool withtaking, onlytaking; // withtaking includes the steps in mill closure, onlytaking only includes removal
-        int takehon;
+        MoveType moveType;
+        bool withTaking, onlyTaking; // withTaking includes the steps in mill closure, onlyTaking only includes removal
+        int takeHon;
 
         int toBitBoard()
         {
-            if (onlytaking) {
-                return 1 << takehon;
+            if (onlyTaking) {
+                return 1 << takeHon;
             }
             int ret = 1 << hov;
-            if (movetype == MoveType::SlideMove) {
+            if (moveType == MoveType::SlideMove) {
                 ret += 1 << hon;
             }
-            if (withtaking) {
-                ret += 1 << takehon;
+            if (withTaking) {
+                ret += 1 << takeHon;
             }
             return ret;
         }
@@ -114,7 +114,7 @@ public:
 
     std::vector<Move> slideMoves(GameState& s);
 
-    // m has a withtaking step, where takehon is not filled out. This function creates a list, the elements of which are copies of m supplemented with one possible removal each.
+    // m has a withTaking step, where takeHon is not filled out. This function creates a list, the elements of which are copies of m supplemented with one possible removal each.
     std::vector<Move> withTakingMoves(GameState& s, Move& m);
 
     std::vector<Move> onlyTakingMoves(GameState& s);

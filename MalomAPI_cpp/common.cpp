@@ -44,3 +44,4 @@ void failwith(string s)
     wcout << str2wstr(VARIANT_NAME).c_str() << ": " << str2wstr(s).c_str() << endl;
     exit(7);
 }
+

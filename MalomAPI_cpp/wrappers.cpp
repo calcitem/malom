@@ -61,20 +61,3 @@ std::pair<int, Wrappers::gui_eval_elem2> Wrappers::Sector::hash(board a)
     return std::make_pair(e.first, Wrappers::gui_eval_elem2(e.second, s));
 }
 
-void Wrappers::id::negate()
-{
-    int t = W;
-    W = B;
-    B = t;
-
-    t = WF;
-    WF = BF;
-    BF = t;
-}
-
-Wrappers::id Wrappers::id::operator-(id s)
-{
-    id r = id(s);
-    r.negate();
-    return r;
-}

@@ -231,7 +231,7 @@ struct val {
 struct id{
 	int W,B,WF,BF;
 	id(int W, int B, int WF, int BF):W(W),B(B),WF(WF),BF(BF){}
-	//id(){}
+	id(){}
 
 	    // removed ::id constructor since standard C++ does not have it
 
@@ -253,7 +253,12 @@ struct id{
 		return r;
 	}
 
-	id operator-(id s); // Declaration only
+	id operator-(id s)
+        {
+                id r = id(s);
+                r.negate();
+                return r;
+        }
 
 	    // toString() replaced with a standard C++ function
         std::string to_string()
