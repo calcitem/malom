@@ -146,7 +146,7 @@ void GameState::initSetup()
     lastIrrev = 0;
 }
 
-void GameState::makeMove(SetKorong* M)
+void GameState::makeMove(Move* M)
 {
     if (M == nullptr) {
         throw std::invalid_argument("M is null");
@@ -185,7 +185,7 @@ void GameState::makeMove(SetKorong* M)
         lastIrrev = 0;
     }
 
-    if ((sk != nullptr || mk != nullptr) && Rules::malome(M->hov, *this) > -1 && stoneCount[1 - sideToMove] > 0) {
+    if ((sk != nullptr || mk != nullptr) && Rules::malome(((MoveKorong *)M)->hov, *this) > -1 && stoneCount[1 - sideToMove] > 0) {
         kle = true;
     } else {
         sideToMove = 1 - sideToMove;

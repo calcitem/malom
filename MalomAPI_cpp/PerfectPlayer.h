@@ -75,7 +75,7 @@ public:
 
     Sector* GetSec(GameState s);
 
-    std::string toHumanReadableEval(struct gui_eval_elem2 e);
+    std::string toHumanReadableEval(Wrappers::gui_eval_elem2 e);
 
     enum class MoveType {
         SetMove,
@@ -124,7 +124,7 @@ public:
     GameState makeMoveInState(GameState& s, Move& m);
 
     // Assuming gui_eval_elem2 and getSec functions are defined somewhere
-    gui_eval_elem2 moveValue(GameState& s, Move& m);
+    Wrappers::gui_eval_elem2 moveValue(GameState& s, Move& m);
 
     template <typename T, typename K>
     std::vector<T> allMaxBy(std::function<K(T)> f, std::vector<T>& l, K minValue);
@@ -154,7 +154,7 @@ public:
 
     std::mutex evalLock;
 
-    struct gui_eval_elem2 eval(GameState& s);
+    Wrappers::gui_eval_elem2 eval(GameState& s);
 
     int64_t boardNegate(int64_t a);
 };

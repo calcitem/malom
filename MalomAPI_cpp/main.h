@@ -63,7 +63,7 @@ public:
     // Sets the state for Setup Mode: the placed stones are unchanged, but we switch to phase 2.
     void initSetup();
 
-    void makeMove(SetKorong* M);
+    void makeMove(Move* M);
 
     void checkValidMove(Move* M);
 

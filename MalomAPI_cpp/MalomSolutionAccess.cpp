@@ -23,6 +23,7 @@
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
+#include <filesystem>
 
 #include "PerfectPlayer.h"
 #include "Player.h"
@@ -72,7 +73,7 @@ int MalomSolutionAccess::getBestMove(int whiteBitboard, int blackBitboard, int w
         throw std::invalid_argument("Number of stones in blackBitboard + blackStonesToPlace > " + std::to_string(Rules::maxKSZ));
     }
 
-    std::string errorMsg = s.SetOverAndCheckValidSetup();
+    std::string errorMsg = s.setOverAndCheckValidSetup();
     if (errorMsg != "") {
         throw std::invalid_argument(errorMsg);
     }
@@ -133,7 +134,7 @@ void MalomSolutionAccess::initializeIfNeeded()
     Rules::initRules();
     setVariantStripped();
     if (!Sectors::hasDatabase) {
-        throw std::runtime_error("Database files not found in the current working directory (" + std::string(std::filesystem::current_path()) + ")");
+        throw std::runtime_error("Database files not found in the current working directory (" + std::filesystem::current_path().string() + ")");
     }
     pp = new PerfectPlayer();
 }

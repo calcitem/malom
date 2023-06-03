@@ -258,7 +258,7 @@ public:
 class Constants {
 public:
     static const int variant = VARIANT;
-    const std::string fname_suffix = FNAME_SUFFIX;
+    inline static const std::string fname_suffix = FNAME_SUFFIX;
     const std::string movegenFname = movegen_file;
 
     enum class Variants {

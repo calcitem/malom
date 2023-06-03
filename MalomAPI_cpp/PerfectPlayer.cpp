@@ -54,7 +54,7 @@ std::map<id, Sector> Sectors::getsectors()
                 for (int b = 0; b <= Rules::maxKSZ; ++b) {
                     for (int wf = 0; wf <= Rules::maxKSZ; ++wf) {
                         for (int bf = 0; bf <= Rules::maxKSZ; ++bf) {
-                            std::string fname = Rules::variantName + "_" + std::to_string(w) + "_" + std::to_string(b) + "_" + std::to_string(wf) + "_" + std::to_string(bf) + ".sec" + Constants::fname_suffix;
+                            std::string fname = Rules::variantName + "_" + std::to_string(w) + "_" + std::to_string(b) + "_" + std::to_string(wf) + "_" + std::to_string(bf) + ".sec" + Wrappers::Constants::fname_suffix;
                             // std::cout << "Looking for database file " << fname << std::endl;
                             id _id(w, b, wf, bf);
                             std::ifstream file(fname);
@@ -126,7 +126,7 @@ Sector* PerfectPlayer::GetSec(GameState s)
     return nullptr;
 }
 
-std::string PerfectPlayer::toHumanReadableEval(struct gui_eval_elem2 e)
+std::string PerfectPlayer::toHumanReadableEval(Wrappers::gui_eval_elem2 e)
 {
     try {
         return e.toString();
@@ -167,7 +167,7 @@ struct Move {
 
 int PerfectPlayer::futureKorongCount(GameState& s)
 {
-    return s.stoneCount(s.sideToMove) + Rules.maxKSZ - s.setStoneCount(s.sideToMove); // TODO: refactor to call to futureStoneCount
+    return s.stoneCount(s.sideToMove) + Rules::maxKSZ - s.setStoneCount[s.sideToMove]; // TODO: refactor to call to futureStoneCount
 }
 
 bool PerfectPlayer::makesMill(GameState& s, int hon, int hov)
@@ -298,7 +298,7 @@ GameState PerfectPlayer::makeMoveInState(GameState& s, Move& m)
 }
 
 // Assuming gui_eval_elem2 and getSec functions are defined somewhere
-gui_eval_elem2 PerfectPlayer::moveValue(GameState& s, Move& m)
+Wrappers::gui_eval_elem2 PerfectPlayer::moveValue(GameState& s, Move& m)
 {
     try {
         return eval(makeMoveInState(s, m)).undo_negate(getSec(s));
@@ -330,7 +330,7 @@ std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f, std::vector<T>& l,
 // Assuming the definition of gui_eval_elem2::min_value function
 std::vector<Move> PerfectPlayer::goodMoves(GameState& s)
 {
-    return allMaxBy([s](Move m) { return moveValue(s, m); }, getMoveList(s), gui_eval_elem2::min_value(getSec(s)));
+    return allMaxBy([s](Move m) { return moveValue(s, m); }, getMoveList(s), Wrappers::gui_eval_elem2::min_value(getSec(s)));
 }
 
 int PerfectPlayer::NGMAfterMove(GameState& s, Move& m)
@@ -378,7 +378,7 @@ int PerfectPlayer::numGoodMoves(GameState& s)
 {
     if (futureKorongCount(s) < 3)
         return 0; // Assuming futureKorongCount function is defined
-    auto ma = gui_eval_elem2::min_value(getSec(s)); // Assuming getSec function is defined
+    auto ma = Wrappers::gui_eval_elem2::min_value(getSec(s)); // Assuming getSec function is defined
     Move mh;
     int c = 0;
     for (auto& m : getMoveList(s)) {
@@ -405,7 +405,7 @@ const double WRGMInf = 2; // Is this good?
 
 std::mutex evalLock;
 
-gui_eval_elem2 PerfectPlayer::eval(GameState& s)
+Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState& s)
 {
     try {
         std::lock_guard<std::mutex> lock(evalLock);
@@ -414,7 +414,7 @@ gui_eval_elem2 PerfectPlayer::eval(GameState& s)
         id Id(s.stoneCount[0], s.stoneCount[1], Rules::maxKSZ - s.setStoneCount[0], Rules::maxKSZ - s.setStoneCount[1]);
 
         if (futureKorongCount(s) < 3)
-            return gui_eval_elem2::virt_loss_val;
+            return Wrappers::gui_eval_elem2::virt_loss_val;
 
         int64_t a = 0;
         for (int i = 0; i < 24; ++i) {
