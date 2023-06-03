@@ -27,8 +27,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <locale>
 #include <string>
+#include <unordered_map>
 
 using namespace std;
+
+std::unordered_map<id, int> sector_sizes;
 
 wstring str2wstr(const string& s)
 {

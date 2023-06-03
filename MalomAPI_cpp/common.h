@@ -28,9 +28,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 #include <tuple>
 #include <sstream>
+#include <unordered_map>
 
 using namespace std;
 
+struct id;
+
+extern std::unordered_map<id, int> sector_sizes;
+
+static int f_inv_count[] { 1, 4, 30, 158, 757, 2830, 8774, 22188, 46879, 82880, 124124, 157668, 170854 };
 
 #define STANDARD 1
 #define MORABARABA 2
@@ -225,7 +231,15 @@ struct val {
 struct id{
 	int W,B,WF,BF;
 	id(int W, int B, int WF, int BF):W(W),B(B),WF(WF),BF(BF){}
-	id(){}
+	//id(){}
+
+	    // removed ::id constructor since standard C++ does not have it
+
+        id tonat()
+        {
+                        return id(W, B, WF, BF);
+        }
+
 	static id null(){ return id{ -1, -1, -1, -1 }; }
 
 	void negate(){
@@ -238,6 +252,14 @@ struct id{
 		r.negate();
 		return r;
 	}
+
+	id operator-(id s); // Declaration only
+
+	    // toString() replaced with a standard C++ function
+        std::string to_string()
+        {
+                return std::to_string(W) + "_" + std::to_string(B) + "_" + std::to_string(WF) + "_" + std::to_string(BF);
+        }
 
 	bool eks() const {
 		return *this==-*this;
@@ -268,20 +290,38 @@ struct id{
 	bool operator==(const id &o) const {return W==o.W && B==o.B && WF==o.WF && BF==o.BF;}
 	bool operator!=(const id &o) const {return !(*this==o);}
 
-	string to_string(){
-		char buf[255];
-		sprintf_s(buf,"%s_%d_%d_%d_%d",VARIANT_NAME,W,B,WF,BF);
-		return string(buf);
-	}
+
+	int size()
+    {
+            auto tn = tonat();
+            if (sector_sizes.count(tn) == 0) {
+                            sector_sizes[tn] = (int)nCr(24 - W, B) * f_inv_count[W];
+            }
+            return sector_sizes[tn];
+    }
+
+	private:
+        static int factorial(int n)
+        {
+                return (n == 0) ? 1 : n * factorial(n - 1);
+        }
+
+        static int nCr(int n, int r)
+        {
+                return factorial(n) / (factorial(r) * factorial(n - r));
+        }
 };
 
-template<>
-struct hash<id>{
-	size_t operator()(const id& k) const {
-		return k.W | (k.B << 4) | (k.WF << 8) | (k.BF << 12);
-	}
+#if 0
+// TODO
+template <>
+struct hash<id> {
+        size_t operator()(const id& k) const
+        {
+                return k.W | (k.B << 4) | (k.WF << 8) | (k.BF << 12);
+        }
 };
-
+#endif
 
 //#ifndef WRAPPER
 //	#define WRAPPER

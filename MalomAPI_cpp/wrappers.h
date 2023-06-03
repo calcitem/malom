@@ -42,69 +42,9 @@ using namespace std;
 
 namespace Wrappers {
 
-std::unordered_map<id, int> sector_sizes;
-static int f_inv_count[] { 1, 4, 30, 158, 757, 2830, 8774, 22188, 46879, 82880, 124124, 157668, 170854 };
-
 #include <cmath> // for factorial function
 #include <string>
 #include <unordered_map>
-
-struct id {
-    int W, B, WF, BF;
-    id(int W, int B, int WF, int BF)
-        : W(W)
-        , B(B)
-        , WF(WF)
-        , BF(BF)
-    {
-    }
-
-    // removed ::id constructor since standard C++ does not have it
-
-    id tonat()
-    {
-        return id(W, B, WF, BF);
-    }
-
-    void negate(); // Declaration only
-
-    id operator-(id s); // Declaration only
-
-    // toString() replaced with a standard C++ function
-    std::string to_string()
-    {
-        return std::to_string(W) + "_" + std::to_string(B) + "_" + std::to_string(WF) + "_" + std::to_string(BF);
-    }
-
-    // FileName() function removed, standard C++ does not have a direct equivalent
-
-    // GetHashCode() replaced with a hash function
-    int hash_code()
-    {
-        return (W << 0) | (B << 4) | (WF << 8) | (BF << 12);
-    }
-
-private:
-    static int factorial(int n)
-    {
-        return (n == 0) ? 1 : n * factorial(n - 1);
-    }
-
-    static int nCr(int n, int r)
-    {
-        return factorial(n) / (factorial(r) * factorial(n - r));
-    }
-
-public:
-    int size()
-    {
-        auto tn = tonat();
-        if (sector_sizes.count(tn) == 0) {
-            sector_sizes[tn] = (int)nCr(24 - W, B) * f_inv_count[W];
-        }
-        return sector_sizes[tn];
-    }
-};
 
 // Note: Assuming 'board' and 'sec_val' are defined elsewhere in your code
 
