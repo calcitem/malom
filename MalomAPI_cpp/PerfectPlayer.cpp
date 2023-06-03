@@ -137,7 +137,7 @@ int PerfectPlayer::futureKorongCount(const GameState& s)
     return s.stoneCount[s.sideToMove] + Rules::maxKSZ - s.setStoneCount[s.sideToMove]; // TODO: refactor to call to futureStoneCount
 }
 
-bool PerfectPlayer::makesMill(GameState& s, int hon, int hov)
+bool PerfectPlayer::makesMill(const GameState& s, int hon, int hov)
 {
     GameState s2 = s;
     if (hon != -1)
@@ -146,12 +146,12 @@ bool PerfectPlayer::makesMill(GameState& s, int hon, int hov)
     return -1 != Rules::malome(hov, s2);
 }
 
-bool PerfectPlayer::isMill(GameState& s, int m)
+bool PerfectPlayer::isMill(const GameState& s, int m)
 {
     return -1 != Rules::malome(m, s);
 }
 
-std::vector<ExtMove> PerfectPlayer::setMoves(GameState& s)
+std::vector<ExtMove> PerfectPlayer::setMoves(const GameState& s)
 {
     std::vector<ExtMove> r;
     for (int i = 0; i < 24; ++i) {
@@ -162,7 +162,7 @@ std::vector<ExtMove> PerfectPlayer::setMoves(GameState& s)
     return r;
 }
 
-std::vector<ExtMove> PerfectPlayer::slideMoves(GameState& s)
+std::vector<ExtMove> PerfectPlayer::slideMoves(const GameState& s)
 {
     std::vector<ExtMove> r;
     for (int i = 0; i < 24; ++i) {
@@ -196,7 +196,7 @@ std::vector<ExtMove> PerfectPlayer::withTakingMoves(const GameState& s, ExtMove&
     return r;
 }
 
-std::vector<ExtMove> PerfectPlayer::onlyTakingMoves(GameState& s)
+std::vector<ExtMove> PerfectPlayer::onlyTakingMoves(const GameState& s)
 { // there's some copy-paste code here
     std::vector<ExtMove> r;
     bool everythingInMill = true;
@@ -295,7 +295,7 @@ std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f, std::vector<T>& l,
 }
 
 // Assuming the definition of gui_eval_elem2::min_value function
-std::vector<ExtMove> PerfectPlayer::goodMoves(GameState& s)
+std::vector<ExtMove> PerfectPlayer::goodMoves(const GameState& s)
 {
     return allMaxBy([this, &s](ExtMove m) { return moveValue(s, m); }, getMoveList(s), Wrappers::gui_eval_elem2::min_value(getSec(s)));
 }

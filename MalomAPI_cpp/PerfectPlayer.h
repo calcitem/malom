@@ -135,7 +135,7 @@ public:
 
     void sendMoveToGUI(ExtMove m);
 
-    void toMove(const GameState& s);
+    void toMove(GameState& s);
 
     int numGoodMoves(const GameState& s);
 
