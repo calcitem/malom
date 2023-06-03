@@ -35,14 +35,14 @@ class GameState;
 extern int maxKSZ;
 
 // Define byte as unsigned char
-typedef unsigned char byte;
+//typedef unsigned char byte;
 
 class Rules {
 public:
     // Define your byte arrays
-    static byte millPos[16][3];
-    static byte stdLaskerMillPos[16][3];
-    static byte moraMillPos[20][3];
+    static uint8_t millPos[16][3];
+    static uint8_t stdLaskerMillPos[16][3];
+    static uint8_t moraMillPos[20][3];
 
     // Define your integer arrays
     static int* invMillPos[24];
@@ -55,9 +55,9 @@ public:
     static bool moraBoardGraph[24][24];
 
     // Define your adjacency list byte arrays
-    static byte aLBoardGraph[24][5];
-    static byte stdLaskerALBoardGraph[24][5];
-    static byte moraALBoardGraph[24][5];
+    static uint8_t aLBoardGraph[24][5];
+    static uint8_t stdLaskerALBoardGraph[24][5];
+    static uint8_t moraALBoardGraph[24][5];
 
     // Define other variables
     static std::string variantName;

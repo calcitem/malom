@@ -59,7 +59,7 @@ public:
 protected:
     Player* opponent()
     {
-        return (g->ply(0).get() == this) ? g->ply(1).get() : g->ply(0).get(); // Assuming Game has a ply function
+        return (g->ply(0) == this) ? g->ply(1) : g->ply(0); // Assuming Game has a ply function
     }
 };
 

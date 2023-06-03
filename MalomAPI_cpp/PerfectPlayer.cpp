@@ -83,10 +83,6 @@ bool Sectors::hasDatabase()
     return getsectors().size() > 0;
 }
 
-// Initialize static member variables
-std::map<id, Sector> Sectors::sectors;
-bool Sectors::created = false;
-
 PerfectPlayer::PerfectPlayer()
 {
     assert(Sectors::hasDatabase());
@@ -96,11 +92,6 @@ PerfectPlayer::PerfectPlayer()
 void PerfectPlayer::enter(Game *_g)
 {
     Player::enter(_g);
-}
-
-void PerfectPlayer::quit()
-{
-    Player::quit();
 }
 
 Sector* PerfectPlayer::GetSec(GameState s)
@@ -167,7 +158,7 @@ struct Move {
 
 int PerfectPlayer::futureKorongCount(GameState& s)
 {
-    return s.stoneCount(s.sideToMove) + Rules::maxKSZ - s.setStoneCount[s.sideToMove]; // TODO: refactor to call to futureStoneCount
+    return s.stoneCount[s.sideToMove] + Rules::maxKSZ - s.setStoneCount[s.sideToMove]; // TODO: refactor to call to futureStoneCount
 }
 
 bool PerfectPlayer::makesMill(GameState& s, int hon, int hov)
@@ -253,7 +244,7 @@ std::vector<Move> PerfectPlayer::getMoveList(GameState& s)
     if (!s.kle) {
         if (Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::std || 
             Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::mora) {
-            if (s.setStoneCount(s.sideToMove) < Rules.maxKSZ) {
+            if (s.setStoneCount(s.sideToMove) < Rules::maxKSZ) {
                 ms0 = setMoves(s);
             } else {
                 ms0 = slideMoves(s);
