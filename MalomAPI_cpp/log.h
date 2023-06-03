@@ -34,20 +34,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 
-template<typename... Args>
-void LOG(Args... args){
+template <typename... Args>
+    void LOG(const char* format, Args... args)
+    {
 #ifndef WRAPPER
-	printf_s(args...);
-	fflush(stdout);
-	if(Log::log_to_file){
-		fprintf(Log::logfile, args...);
-		fflush(Log::logfile);
-	}
-#else //azert kell ez a hokuszpokusz, mert az alul levo debug ablakban csak az jelenik meg normalisan, amit ezzel irunk ki
-	char buf[255];
-	sprintf_s(buf, args...);
-	System::Diagnostics::Debug::Write(gcnew System::String(buf));
+#if defined(_WIN32)
+            printf_s(format, args...);
+            fflush(stdout);
+            if (Log::log_to_file) {
+                fprintf_s(Log::logfile, format, args...);
+                fflush(Log::logfile);
+            }
+#elif defined(__linux__)
+            printf(format, args...);
+            fflush(stdout);
+            if (Log::log_to_file) {
+                fprintf(Log::logfile, format, args...);
+                fflush(Log::logfile);
+            }
 #endif
-}
+#else
+            char buf[255];
+            sprintf_s(buf, format, args...);
+            System::Diagnostics::Debug::Write(gcnew System::String(buf));
+#endif
+    }
 
 #endif // LOG_H_INCLUDED

@@ -133,7 +133,7 @@ void MalomSolutionAccess::initializeIfNeeded()
     }
     Rules::initRules();
     setVariantStripped();
-    if (!Sectors::hasDatabase) {
+    if (!Sectors::hasDatabase()) {
         throw std::runtime_error("Database files not found in the current working directory (" + std::filesystem::current_path().string() + ")");
     }
     pp = new PerfectPlayer();
