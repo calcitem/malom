@@ -29,9 +29,9 @@
 
 class Move { // Step
 public:
-    virtual std::vector<int> GetMezok() = 0; // Returns the fields included in the step
+    virtual std::vector<int> getMezok() = 0; // Returns the fields included in the step
 protected:
-    std::string MezoToString[24] = { "a4", "a7", "d7", "g7", "g4", "g1", "d1", "a1",
+    std::string mezoToString[24] = { "a4", "a7", "d7", "g7", "g4", "g1", "d1", "a1",
         "b4", "b6", "d6", "f6", "f4", "f2", "d2", "b2",
         "c4", "c5", "d5", "e5", "e4", "e3", "d3", "c3" };
 };
@@ -43,8 +43,8 @@ public:
         : hov(m)
     {
     }
-    std::vector<int> GetMezok() override;
-    std::string ToString();
+    std::vector<int> getMezok() override;
+    std::string toString();
 };
 
 class MoveKorong : public Move {
@@ -55,8 +55,8 @@ public:
         , hov(m2)
     {
     }
-    std::vector<int> GetMezok() override;
-    std::string ToString();
+    std::vector<int> getMezok() override;
+    std::string toString();
 };
 
 class LeveszKorong : public Move {
@@ -66,8 +66,8 @@ public:
         : hon(m)
     {
     }
-    std::vector<int> GetMezok() override;
-    std::string ToString();
+    std::vector<int> getMezok() override;
+    std::string toString();
 };
 
 #endif // MOVE_H_INCLUDED

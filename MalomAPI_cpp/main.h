@@ -41,7 +41,7 @@ class Move; // forward declaration, implement this
 
 class Game {
 private:
-    Player* _Ply[2]; // players in the game
+    Player* _ply[2]; // players in the game
     std::list<GameState> history; // GameStates in this (and previous) games
     std::list<GameState>::iterator current; // the node of the current GameState in history
 
@@ -50,21 +50,21 @@ public:
 
     Game(Player* p1, Player* p2);
 
-    Player** Plys();
+    Player** plys();
 
-    Player* Ply(int i) const;
+    Player* ply(int i) const;
 
-    void set_Ply(int i, Player* p);
+    void set_ply(int i, Player* p);
 
     void makeMove(Move* M);
 
-    void ApplySetup(GameState toSet);
+    void applySetup(GameState toSet);
 
-    void CancelThinking();
+    void cancelThinking();
 
-    bool PlayertypeChangingCmdAllowed();
+    bool playertypeChangingCmdAllowed();
 
-    void CopyMoveList();
+    void copyMoveList();
 };
 
 class GameState {
@@ -75,7 +75,7 @@ public:
     // How many stones the players have set
     std::vector<int> setStoneCount = std::vector<int>(2, 0);
     std::vector<int> stoneCount = std::vector<int>(2, 0);
-    bool KLE = false; // Is there a puck removal coming?
+    bool kle = false; // Is there a puck removal coming?
     int sideToMove = 0;
     int moveCount = 0;
     bool over = false;
@@ -87,10 +87,10 @@ public:
 
     GameState(const GameState& s);
 
-    int FutureStoneCount(int p);
+    int futureStoneCount(int p);
 
     // Sets the state for Setup Mode: the placed stones are unchanged, but we switch to phase 2.
-    void InitSetup();
+    void initSetup();
 
     void makeMove(Move* M);
 

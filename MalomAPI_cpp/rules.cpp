@@ -31,7 +31,7 @@
 #include "move.h"
 #include "rules.h"
 
-void Rules::InitRules()
+void Rules::initRules()
 {
     stdLaskerMillPos[0][0] = 1;
     stdLaskerMillPos[0][1] = 2;
@@ -126,7 +126,7 @@ void Rules::InitRules()
 }
 
 // Returns -1 if there is no mill on the given field, otherwise returns the sequence number in StdLaskerMalomPoz
-int Rules::Malome(int m, GameState s)
+int Rules::malome(int m, GameState s)
 {
     int result = -1;
     for (int i = 0; i < invMillPos[m].size(); i++) {
@@ -137,10 +137,10 @@ int Rules::Malome(int m, GameState s)
     return result;
 }
 
-// Tells whether the next player can move '(doesn't handle the KLE case)
-bool Rules::YouCanMove(GameState s)
+// Tells whether the next player can move '(doesn't handle the kle case)
+bool Rules::youCanMove(GameState s)
 {
-    assert(!s.KLE);
+    assert(!s.kle);
     if (s.setStoneCount(s.sideToMove) == maxKSZ && s.stoneCount(s.sideToMove) > 3) {
         for (int i = 0; i <= 23; i++) {
             if (s.T[i] == s.sideToMove) {
@@ -156,10 +156,10 @@ bool Rules::YouCanMove(GameState s)
     return false;
 }
 
-bool Rules::MindenEllensegesKorongMalomban(GameState s)
+bool Rules::mindenEllensegesKorongMalomban(GameState s)
 {
     for (int i = 0; i <= 23; i++) {
-        if (s.T[i] == 1 - s.sideToMove && Malome(i, s) == -1)
+        if (s.T[i] == 1 - s.sideToMove && malome(i, s) == -1)
             return false;
     }
     return true;
@@ -168,12 +168,12 @@ bool Rules::MindenEllensegesKorongMalomban(GameState s)
 int maxKSZ;
 
 // Checking if AlphaBeta is available
-bool Rules::AlphaBetaAvailable()
+bool Rules::alphaBetaAvailable()
 {
     return Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::std && !Wrappers::Constants::extended;
 }
 
-void Rules::SetVariant()
+void Rules::setVariant()
 {
     // Part of this is copy-pasted in MalomAPI
     if (Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::std) {

@@ -53,7 +53,7 @@ public:
 
     static std::map<id, Sector> getsectors();
 
-    static bool HasDatabase();
+    static bool hasDatabase();
 };
 
 // Initialize static member variables
@@ -66,16 +66,16 @@ public:
 
     PerfectPlayer();
 
-    void Enter(Game _g);
+    void enter(Game _g);
 
-    void Quit() override
+    void quit() override
     {
-        Player::Quit();
+        Player::quit();
     }
 
     Sector* GetSec(GameState s);
 
-    std::string ToHumanReadableEval(struct gui_eval_elem2 e);
+    std::string toHumanReadableEval(struct gui_eval_elem2 e);
 
     enum class MoveType {
         SetMove,

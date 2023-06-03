@@ -69,20 +69,20 @@ public:
 public:
     // Add your public methods here
 
-    static void InitRules();
+    static void initRules();
 
     // Returns -1 if there is no mill on the given field, otherwise returns the sequence number in StdLaskerMalomPoz
-    static int Malome(int m, GameState s);
+    static int malome(int m, GameState s);
 
-    // Tells whether the next player can move '(doesn't handle the KLE case)
-    static bool YouCanMove(GameState s);
+    // Tells whether the next player can move '(doesn't handle the kle case)
+    static bool youCanMove(GameState s);
 
-    static bool MindenEllensegesKorongMalomban(GameState s);
+    static bool mindenEllensegesKorongMalomban(GameState s);
 
     // Checking if AlphaBeta is available
-    static bool AlphaBetaAvailable();
+    static bool alphaBetaAvailable();
 
-    static void SetVariant();
+    static void setVariant();
 };
 
 #endif // RULES_H_INCLUDED

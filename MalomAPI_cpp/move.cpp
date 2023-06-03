@@ -26,31 +26,31 @@
 #include "main.h"
 #include "rules.h"
 
-std::vector<int> SetKorong::GetMezok()
+std::vector<int> SetKorong::getMezok()
 {
     return { hov };
 }
 
-std::string SetKorong::ToString()
+std::string SetKorong::toString()
 {
-    return MezoToString[hov];
+    return mezoToString[hov];
 }
 
-std::vector<int> MoveKorong::GetMezok()
+std::vector<int> MoveKorong::getMezok()
 {
     return { hon, hov };
 }
 
-std::string MoveKorong::ToString()
+std::string MoveKorong::toString()
 {
-    return MezoToString[hon] + "-" + MezoToString[hov];
+    return mezoToString[hon] + "-" + mezoToString[hov];
 }
 
-std::vector<int> LeveszKorong::GetMezok()
+std::vector<int> LeveszKorong::getMezok()
 {
     return { hon };
 }
-std::string LeveszKorong::ToString()
+std::string LeveszKorong::toString()
 {
-    return "x" + MezoToString[hon];
+    return "x" + mezoToString[hon];
 }

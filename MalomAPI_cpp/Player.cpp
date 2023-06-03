@@ -29,36 +29,36 @@
 #include "rules.h"
 
 // The object is informed to enter the specified game
-void Player::Enter(Game *_g)
+void Player::enter(Game *_g)
 {
-    G = _g;
+    g = _g;
 }
 
 // The object is informed to exit from the game
-void Player::Quit()
+void Player::quit()
 {
-    if (G == nullptr)
+    if (g == nullptr)
         return;
-    G = nullptr;
+    g = nullptr;
 }
 
 // The object is informed that it is its turn to move
-void Player::ToMove(GameState& s) = 0; // Assuming GameState is a pre-defined class
+void Player::toMove(GameState& s) = 0; // Assuming GameState is a pre-defined class
 
 // Notifies about the opponent's move
-void Player::FollowMove(const Object& M) { } // Assuming Object is a pre-defined class or built-in type
+void Player::followMove(const Object& M) { } // Assuming Object is a pre-defined class or built-in type
 
 // The object is informed that it is the opponent's turn to move
-void Player::OppToMove(GameState& s) { }
+void Player::oppToMove(GameState& s) { }
 
 // Game is over
-void Player::Over(GameState& s) { }
+void Player::over(GameState& s) { }
 
 // Cancel thinking
-void Player::CancelThinking() { }
+void Player::cancelThinking() { }
 
 // Determine the opponent player
-Player* Player::Opponent()
+Player* Player::opponent()
 {
-    return (G->Ply(0).get() == this) ? G->Ply(1).get() : G->Ply(0).get(); // Assuming Game has a Ply function
+    return (g->ply(0).get() == this) ? g->ply(1).get() : g->ply(0).get(); // Assuming Game has a ply function
 }

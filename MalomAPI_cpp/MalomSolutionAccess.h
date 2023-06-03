@@ -36,17 +36,17 @@ private:
     static std::exception* lastError;
 
 public:
-    static int GetBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace, int blackStonesToPlace, int playerToMove, bool onlyStoneTaking);
+    static int getBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace, int blackStonesToPlace, int playerToMove, bool onlyStoneTaking);
 
-    static int GetBestMoveNoException(int whiteBitboard, int blackBitboard, int whiteStonesToPlace, int blackStonesToPlace, int playerToMove, bool onlyStoneTaking);
+    static int getBestMoveNoException(int whiteBitboard, int blackBitboard, int whiteStonesToPlace, int blackStonesToPlace, int playerToMove, bool onlyStoneTaking);
 
-    static std::string GetLastError();
+    static std::string getLastError();
 
-    static int GetBestMoveStr(std::string args);
+    static int getBestMoveStr(std::string args);
 
-    static void InitializeIfNeeded();
+    static void initializeIfNeeded();
 
-    static void MustBeBetween(std::string paramName, int value, int min, int max);
+    static void mustBeBetween(std::string paramName, int value, int min, int max);
 
-    static void SetVariantStripped();
+    static void setVariantStripped();
 };

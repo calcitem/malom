@@ -70,7 +70,7 @@ struct id {
 
     id operator-(id s); // Declaration only
 
-    // ToString() replaced with a standard C++ function
+    // toString() replaced with a standard C++ function
     std::string to_string()
     {
         return std::to_string(W) + "_" + std::to_string(B) + "_" + std::to_string(WF) + "_" + std::to_string(BF);
@@ -282,14 +282,14 @@ public:
 class Nwu {
 public:
     static std::vector<id> WuIds;
-    static void InitWuGraph()
+    static void initWuGraph()
     {
         init_sector_graph();
         WuIds = std::vector<id>();
         for (auto it = wu_ids.begin(); it != wu_ids.end(); ++it)
             WuIds.push_back(id(*it));
     }
-    static std::vector<id> WuGraphT(id u)
+    static std::vector<id> wuGraphT(id u)
     {
         auto r = std::vector<id>();
         wu* w = wus[u.tonat()];
@@ -297,7 +297,7 @@ public:
             r.push_back(id((*it)->id));
         return r;
     }
-    static bool Twine(id w)
+    static bool twine(id w)
     {
         return wus[w.tonat()]->twine;
     }
@@ -318,8 +318,8 @@ public:
 class Constants {
 public:
     static const int variant = VARIANT;
-    const std::string Fname_suffix = FNAME_SUFFIX;
-    const std::string MovegenFname = movegen_file;
+    const std::string fname_suffix = FNAME_SUFFIX;
+    const std::string movegenFname = movegen_file;
 
     enum class Variants {
         std = STANDARD,

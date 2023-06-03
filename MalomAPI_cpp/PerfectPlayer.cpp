@@ -54,7 +54,7 @@ std::map<id, Sector> Sectors::getsectors()
                 for (int b = 0; b <= Rules::maxKSZ; ++b) {
                     for (int wf = 0; wf <= Rules::maxKSZ; ++wf) {
                         for (int bf = 0; bf <= Rules::maxKSZ; ++bf) {
-                            std::string fname = Rules::variantName + "_" + std::to_string(w) + "_" + std::to_string(b) + "_" + std::to_string(wf) + "_" + std::to_string(bf) + ".sec" + Constants::Fname_suffix;
+                            std::string fname = Rules::variantName + "_" + std::to_string(w) + "_" + std::to_string(b) + "_" + std::to_string(wf) + "_" + std::to_string(bf) + ".sec" + Constants::fname_suffix;
                             // std::cout << "Looking for database file " << fname << std::endl;
                             id _id(w, b, wf, bf);
                             std::ifstream file(fname);
@@ -78,7 +78,7 @@ std::map<id, Sector> Sectors::getsectors()
     }
 }
 
-bool Sectors::HasDatabase()
+bool Sectors::hasDatabase()
 {
     return getsectors().size() > 0;
 }
@@ -89,24 +89,24 @@ bool Sectors::created = false;
 
 PerfectPlayer::PerfectPlayer()
 {
-    assert(Sectors::HasDatabase());
+    assert(Sectors::hasDatabase());
     secs = Sectors::getsectors();
 }
 
-void PerfectPlayer::Enter(Game _g)
+void PerfectPlayer::enter(Game _g)
 {
-    Player::Enter(_g);
+    Player::enter(_g);
 }
 
-void PerfectPlayer::Quit()
+void PerfectPlayer::quit()
 {
-    Player::Quit();
+    Player::quit();
 }
 
 Sector* PerfectPlayer::GetSec(GameState s)
 {
     try {
-        if (s.KLE)
+        if (s.kle)
             return nullptr;
 
         id id_val(s.stoneCount[0], s.stoneCount[1], Rules::maxKSZ - s.setStoneCount[0], Rules::maxKSZ - s.setStoneCount[1]);
@@ -126,12 +126,12 @@ Sector* PerfectPlayer::GetSec(GameState s)
     return nullptr;
 }
 
-std::string PerfectPlayer::ToHumanReadableEval(struct gui_eval_elem2 e)
+std::string PerfectPlayer::toHumanReadableEval(struct gui_eval_elem2 e)
 {
     try {
-        return e.ToString();
+        return e.toString();
     } catch (std::exception& ex) {
-        std::cerr << "An error happened in ToHumanReadableEval\n"
+        std::cerr << "An error happened in toHumanReadableEval\n"
                   << ex.what() << std::endl;
         std::exit(1);
     }
@@ -250,7 +250,7 @@ std::vector<Move> PerfectPlayer::onlyTakingMoves(GameState& s)
 std::vector<Move> PerfectPlayer::getMoveList(GameState& s)
 {
     std::vector<Move> ms0, ms;
-    if (!s.KLE) {
+    if (!s.kle) {
         if (Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::std || 
             Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::mora) {
             if (s.setStoneCount(s.sideToMove) < Rules.maxKSZ) {
@@ -274,7 +274,7 @@ std::vector<Move> PerfectPlayer::getMoveList(GameState& s)
                 ms.insert(ms.end(), withTakingMovesResult.begin(), withTakingMovesResult.end());
             }
         }
-    } else { // KLE
+    } else { // kle
         ms = onlyTakingMoves(s);
     }
     return ms;
@@ -351,12 +351,12 @@ void PerfectPlayer::sendMoveToGUI(Move& m)
 {
     if (!m.onlyTaking) {
         if (m.moveType == MoveType::SetMove) {
-            G.makeMove(SetKorong(m.hov)); // Assuming the definition of SetKorong class is available
+            g.makeMove(SetKorong(m.hov)); // Assuming the definition of SetKorong class is available
         } else {
-            G.makeMove(MoveKorong(m.hon, m.hov)); // Assuming the definition of MoveKorong class is available
+            g.makeMove(MoveKorong(m.hon, m.hov)); // Assuming the definition of MoveKorong class is available
         }
     } else {
-        G.makeMove(LeveszKorong(m.takeHon)); // Assuming the definition of LeveszKorong class is available
+        g.makeMove(LeveszKorong(m.takeHon)); // Assuming the definition of LeveszKorong class is available
     }
 }
 
@@ -368,7 +368,7 @@ void PerfectPlayer::toMove(GameState& s)
     } catch (const std::out_of_range&) {
         sendMoveToGUI(chooseRandom(getMoveList(s)));
     } catch (const std::exception& ex) {
-        std::cerr << "Exception in ToMove\n"
+        std::cerr << "Exception in toMove\n"
                   << ex.what() << std::endl;
         std::exit(1);
     }
@@ -409,7 +409,7 @@ gui_eval_elem2 PerfectPlayer::eval(GameState& s)
 {
     try {
         std::lock_guard<std::mutex> lock(evalLock);
-        assert(!s.KLE); // Assuming s has a boolean member KLE
+        assert(!s.kle); // Assuming s has a boolean member kle
 
         id Id(s.stoneCount[0], s.stoneCount[1], Rules::maxKSZ - s.setStoneCount[0], Rules::maxKSZ - s.setStoneCount[1]);
 

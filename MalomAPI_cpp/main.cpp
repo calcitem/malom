@@ -48,38 +48,38 @@ Game::Game(Player* p1, Player* p2)
 {
     history.push_back(GameState());
     current = std::prev(history.end());
-    _Ply[0] = p1;
-    _Ply[1] = p2;
+    _ply[0] = p1;
+    _ply[1] = p2;
 }
 
-Player** Game::Plys()
+Player** Game::plys()
 {
-    return _Ply;
+    return _ply;
 }
 
-Player* Game::Ply(int i) const
+Player* Game::ply(int i) const
 { // get players in the game
-    return _Ply[i];
+    return _ply[i];
 }
 
-void Game::set_Ply(int i, Player* p)
+void Game::set_ply(int i, Player* p)
 { // set players in the game
     if (p == nullptr) {
-        _Ply[i] = nullptr;
+        _ply[i] = nullptr;
         return;
     }
 
-    p->Quit(); // we exit p to see if it was in a game (e.g. NewGame in the previous one)
-    if (_Ply[i] != nullptr)
-        _Ply[i]->Quit(); // the player replaced by p is kicked out
-    _Ply[i] = p;
-    p->Enter(this);
+    p->quit(); // we exit p to see if it was in a game (e.g. NewGame in the previous one)
+    if (_ply[i] != nullptr)
+        _ply[i]->quit(); // the player replaced by p is kicked out
+    _ply[i] = p;
+    p->enter(this);
 }
 
 void Game::makeMove(Move* M)
 { // called by player objects when they want to move
     try {
-        Ply(1 - s().sideToMove())->FollowMove(M);
+        ply(1 - s().sideToMove())->followMove(M);
 
         history.insert(std::next(current), GameState(s()));
         current++;
@@ -92,26 +92,26 @@ void Game::makeMove(Move* M)
     }
 }
 
-void Game::ApplySetup(GameState toSet)
+void Game::applySetup(GameState toSet)
 {
     history.insert(std::next(current), toSet);
     current++;
 }
 
-void Game::CancelThinking()
+void Game::cancelThinking()
 {
     for (int i = 0; i < 2; ++i) {
-        Ply(i)->CancelThinking();
+        ply(i)->cancelThinking();
     }
 }
 
-bool Game::PlayertypeChangingCmdAllowed()
+bool Game::playertypeChangingCmdAllowed()
 {
-    // Return TypeOf Ply(s.sideToMove) Is HumanPlayer
+    // Return TypeOf ply(s.sideToMove) Is HumanPlayer
     return true;
 }
 
-void Game::CopyMoveList()
+void Game::copyMoveList()
 {
     throw std::runtime_error("NotImplementedException");
 }
@@ -122,7 +122,7 @@ GameState::GameState(const GameState& s)
     phase = s.phase;
     setStoneCount = s.setStoneCount;
     stoneCount = s.stoneCount;
-    KLE = s.KLE;
+    kle = s.kle;
     sideToMove = s.sideToMove;
     moveCount = s.moveCount;
     over = s.over;
@@ -131,13 +131,13 @@ GameState::GameState(const GameState& s)
     lastIrrev = s.lastIrrev;
 }
 
-int GameState::FutureStoneCount(int p)
+int GameState::futureStoneCount(int p)
 {
     return stoneCount[p] + maxKSZ - setStoneCount[p];
 }
 
 // Sets the state for Setup Mode: the placed stones are unchanged, but we switch to phase 2.
-void GameState::InitSetup()
+void GameState::initSetup()
 {
     moveCount = 10; // Nearly all the same, just don't be too small, see other comments
     over = false;
@@ -177,7 +177,7 @@ void GameState::makeMove(Move* M)
     } else if (lk != nullptr) {
         T[lk->hon] = -1;
         stoneCount[1 - sideToMove]--;
-        KLE = false;
+        kle = false;
         if (stoneCount[1 - sideToMove] + maxKSZ - setStoneCount[1 - sideToMove] < 3) {
             over = true;
             winner = sideToMove;
@@ -186,7 +186,7 @@ void GameState::makeMove(Move* M)
     }
 
     if ((sk != nullptr || mk != nullptr) && malome(M->hov, this) > -1 && stoneCount[1 - sideToMove] > 0) {
-        KLE = true;
+        kle = true;
     } else {
         sideToMove = 1 - sideToMove;
         if (setStoneCount[0] == maxKSZ && setStoneCount[1] == maxKSZ && phase == 1)
@@ -222,7 +222,7 @@ void GameState::checkValidMove(Move* M)
         assert(T[mk->hov] == -1);
     }
     if (lk != nullptr) {
-        assert(KLE);
+        assert(kle);
         assert(T[lk->hon] == 1 - sideToMove);
     }
 }
@@ -259,7 +259,7 @@ std::string GameState::setOverAndCheckValidSetup()
 
     if (Wrappers::Constants::variant != (int)Wrappers::Constants::Variants::lask && !Wrappers::Constants::extended) {
         if (phase == 1) {
-            if (toBePlaced0 != toBePlaced1 - ((sideToMove == 0 ^ KLE) ? 0 : 1)) {
+            if (toBePlaced0 != toBePlaced1 - ((sideToMove == 0 ^ kle) ? 0 : 1)) {
                 return "If Black is to move in the placement phase, then the number of black stones to be placed should be one more than the number of white stones to placed. If White is to move in the placement phase, then the number of white and black stones to be placed should be equal. (Except in a stone taking position, where these conditions are reversed.)\n\nNote: The Lasker variant (and the extended solutions) doesn't have these constraints.\n\nNote: You can switch the side to move by the \"Switch STM\" button in position setup mode.";
             }
         } else {
@@ -268,7 +268,7 @@ std::string GameState::setOverAndCheckValidSetup()
         }
     }
 
-    if (KLE && stoneCount[1 - sideToMove] == 0) {
+    if (kle && stoneCount[1 - sideToMove] == 0) {
         return "A position where the opponent doesn't have any stones cannot be a stone taking position.";
     }
 
@@ -293,7 +293,7 @@ std::string GameState::setOverAndCheckValidSetup()
             }
         }
     }
-    if (!KLE && !youCanMove(this)) { // youCanMove doesn't handle the KLE case. However, we should always have a move in KLE, see the validity check above.
+    if (!kle && !youCanMove(this)) { // youCanMove doesn't handle the kle case. However, we should always have a move in kle, see the validity check above.
         over = true;
         block = true;
         winner = 1 - sideToMove;
@@ -334,7 +334,7 @@ GameState::GameState(const std::string& s)
             setStoneCount[1] = std::stoi(ss[29]);
             stoneCount[0] = std::stoi(ss[30]);
             stoneCount[1] = std::stoi(ss[31]);
-            KLE = (ss[32] == "True" || ss[32] == "true");
+            kle = (ss[32] == "True" || ss[32] == "true");
             moveCount = (ss[33] != "malom") ? std::stoi(ss[33]) : 10;
             lastIrrev = ((ss[33] != "malom") && (ss[34] != "malom")) ? std::stoi(ss[34]) : 0;
 
@@ -363,7 +363,7 @@ std::string GameState::toString()
     }
     s << sideToMove << "," << 0 << "," << 0 << "," << phase << "," << setStoneCount[0]
       << "," << setStoneCount[1] << "," << stoneCount[0] << "," << stoneCount[1]
-      << "," << (KLE ? "True" : "False") << "," << moveCount << "," << lastIrrev;
+      << "," << (kle ? "True" : "False") << "," << moveCount << "," << lastIrrev;
     return s.str();
 }
 

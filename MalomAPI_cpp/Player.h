@@ -31,35 +31,35 @@
 
 class Player {
 protected:
-    std::shared_ptr<Game> G; // Assuming Game is a pre-defined class
+    std::shared_ptr<Game> g; // Assuming Game is a pre-defined class
 
 public:
     // The object is informed to enter the specified game
-    virtual void Enter(Game *_g);
+    virtual void enter(Game *_g);
 
     // The object is informed to exit from the game
-    virtual void Quit();
+    virtual void quit();
 
     // The object is informed that it is its turn to move
-    virtual void ToMove(GameState& s) = 0; // Assuming GameState is a pre-defined class
+    virtual void toMove(GameState& s) = 0; // Assuming GameState is a pre-defined class
 
     // Notifies about the opponent's move
-    virtual void FollowMove(const Move& M) { } // Assuming Object is a pre-defined class or built-in type
+    virtual void followMove(const Move& M) { } // Assuming Object is a pre-defined class or built-in type
 
     // The object is informed that it is the opponent's turn to move
-    virtual void OppToMove(GameState& s) { }
+    virtual void oppToMove(GameState& s) { }
 
     // Game is over
-    virtual void Over(GameState& s) { }
+    virtual void over(GameState& s) { }
 
     // Cancel thinking
-    virtual void CancelThinking() { }
+    virtual void cancelThinking() { }
 
     // Determine the opponent player
 protected:
-    Player* Opponent()
+    Player* opponent()
     {
-        return (G->Ply(0).get() == this) ? G->Ply(1).get() : G->Ply(0).get(); // Assuming Game has a Ply function
+        return (g->ply(0).get() == this) ? g->ply(1).get() : g->ply(0).get(); // Assuming Game has a ply function
     }
 };
 

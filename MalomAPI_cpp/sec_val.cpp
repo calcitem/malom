@@ -60,7 +60,7 @@ void init_sec_vals(){
 	virt_win_val = max_ksz + 1;
 	virt_loss_val = -max_ksz - 1;
 #endif
-	//azert kell, mert egyreszt korrigalas, masreszt levonunk belole egyet a gui_eval_elem2-ben a KLE-s szektorok ertekenel (a -5 csak biztonsagi, lehet, hogy eleg lenne -1 is)
+	//azert kell, mert egyreszt korrigalas, masreszt levonunk belole egyet a gui_eval_elem2-ben a kle-s szektorok ertekenel (a -5 csak biztonsagi, lehet, hogy eleg lenne -1 is)
 	assert(2 * virt_loss_val - 5 > sec_val_min_value);
 #else
 	virt_loss_val = -1;

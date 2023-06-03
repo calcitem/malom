@@ -31,9 +31,9 @@
 #include "MalomSolutionAccess.h"
 #include "rules.h"
 
-int MalomSolutionAccess::GetBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace, int blackStonesToPlace, int playerToMove, bool onlyStoneTaking)
+int MalomSolutionAccess::getBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace, int blackStonesToPlace, int playerToMove, bool onlyStoneTaking)
 {
-    InitializeIfNeeded();
+    initializeIfNeeded();
 
     GameState s;
 
@@ -56,19 +56,19 @@ int MalomSolutionAccess::GetBestMove(int whiteBitboard, int blackBitboard, int w
     }
 
     s.phase = ((whiteStonesToPlace == 0 && blackStonesToPlace == 0) ? 2 : 1);
-    MustBeBetween("whiteStonesToPlace", whiteStonesToPlace, 0, Rules::maxKSZ);
-    MustBeBetween("blackStonesToPlace", blackStonesToPlace, 0, Rules::maxKSZ);
+    mustBeBetween("whiteStonesToPlace", whiteStonesToPlace, 0, Rules::maxKSZ);
+    mustBeBetween("blackStonesToPlace", blackStonesToPlace, 0, Rules::maxKSZ);
     s.setStoneCount[W] = Rules::maxKSZ - whiteStonesToPlace;
     s.setStoneCount[B] = Rules::maxKSZ - blackStonesToPlace;
-    s.KLE = onlyStoneTaking;
-    MustBeBetween("playerToMove", playerToMove, 0, 1);
+    s.kle = onlyStoneTaking;
+    mustBeBetween("playerToMove", playerToMove, 0, 1);
     s.sideToMove = playerToMove;
     s.moveCount = 10;
 
-    if (s.FutureStoneCount[W] > Rules::maxKSZ) {
+    if (s.futureStoneCount[W] > Rules::maxKSZ) {
         throw std::invalid_argument("Number of stones in whiteBitboard + whiteStonesToPlace > " + std::to_string(Rules::maxKSZ));
     }
-    if (s.FutureStoneCount[B] > Rules::maxKSZ) {
+    if (s.futureStoneCount[B] > Rules::maxKSZ) {
         throw std::invalid_argument("Number of stones in blackBitboard + blackStonesToPlace > " + std::to_string(Rules::maxKSZ));
     }
 
@@ -89,18 +89,18 @@ int MalomSolutionAccess::GetBestMove(int whiteBitboard, int blackBitboard, int w
     }
 }
 
-int MalomSolutionAccess::GetBestMoveNoException(int whiteBitboard, int blackBitboard, int whiteStonesToPlace, int blackStonesToPlace, int playerToMove, bool onlyStoneTaking)
+int MalomSolutionAccess::getBestMoveNoException(int whiteBitboard, int blackBitboard, int whiteStonesToPlace, int blackStonesToPlace, int playerToMove, bool onlyStoneTaking)
 {
     try {
         lastError = nullptr;
-        return GetBestMove(whiteBitboard, blackBitboard, whiteStonesToPlace, blackStonesToPlace, playerToMove, onlyStoneTaking);
+        return getBestMove(whiteBitboard, blackBitboard, whiteStonesToPlace, blackStonesToPlace, playerToMove, onlyStoneTaking);
     } catch (std::exception& e) {
         lastError = &e;
         return 0;
     }
 }
 
-std::string MalomSolutionAccess::GetLastError()
+std::string MalomSolutionAccess::getLastError()
 {
     if (lastError == nullptr) {
         return "No error";
@@ -108,7 +108,7 @@ std::string MalomSolutionAccess::GetLastError()
     return lastError->what();
 }
 
-int MalomSolutionAccess::GetBestMoveStr(std::string args)
+int MalomSolutionAccess::getBestMoveStr(std::string args)
 {
     try {
         std::istringstream iss(args);
@@ -118,34 +118,34 @@ int MalomSolutionAccess::GetBestMoveStr(std::string args)
         if (argsSplit.size() != numArgs)
             throw std::invalid_argument("Invalid number of arguments after splitting the string. Instead of " + std::to_string(numArgs) + ", got " + std::to_string(argsSplit.size()) + " arguments.");
 
-        return GetBestMove(std::stoi(argsSplit[0]), std::stoi(argsSplit[1]), std::stoi(argsSplit[2]), std::stoi(argsSplit[3]), std::stoi(argsSplit[4]), argsSplit[5] != "0");
+        return getBestMove(std::stoi(argsSplit[0]), std::stoi(argsSplit[1]), std::stoi(argsSplit[2]), std::stoi(argsSplit[3]), std::stoi(argsSplit[4]), argsSplit[5] != "0");
     } catch (std::exception& e) {
         std::cerr << "Fatal exception: " << e.what() << std::endl;
         return 0;
     }
 }
 
-void MalomSolutionAccess::InitializeIfNeeded()
+void MalomSolutionAccess::initializeIfNeeded()
 {
     if (pp != nullptr) {
         return;
     }
-    Rules::InitRules();
-    SetVariantStripped();
-    if (!Sectors::HasDatabase) {
+    Rules::initRules();
+    setVariantStripped();
+    if (!Sectors::hasDatabase) {
         throw std::runtime_error("Database files not found in the current working directory (" + std::string(std::filesystem::current_path()) + ")");
     }
     pp = new PerfectPlayer();
 }
 
-void MalomSolutionAccess::MustBeBetween(std::string paramName, int value, int min, int max)
+void MalomSolutionAccess::mustBeBetween(std::string paramName, int value, int min, int max)
 {
     if (value < min || value > max) {
         throw std::out_of_range(paramName + " must be between " + std::to_string(min) + " and " + std::to_string(max));
     }
 }
 
-void MalomSolutionAccess::SetVariantStripped()
+void MalomSolutionAccess::setVariantStripped()
 {
     // copy-paste from Rules.cpp, but references to Main stripped
 
