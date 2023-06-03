@@ -62,7 +62,7 @@ std::map<id, Sector> Sectors::getSectors()
                             id _id(w, b, wf, bf);
                             std::ifstream file(fname);
                             if (file.good()) {
-                                sectors[_id] = Sector(_id);
+                                sectors.emplace(_id, Sector(_id));
                             }
                         }
                     }
@@ -109,7 +109,12 @@ Sector* PerfectPlayer::getSec(GameState s)
             id_val.negate();
         }
 
-        return &secs[id_val];
+        auto iter = secs.find(id_val);
+        if (iter == secs.end()) {
+            throw std::runtime_error("Key not found in secs");
+        }
+        return &(iter->second);
+
     } catch (std::exception& ex) {
         if (typeid(ex) == typeid(std::out_of_range))
             throw;
@@ -368,7 +373,7 @@ struct MoveValuePair {
     double val;
 };
 
-const double WRGMInf = 2; // Is this good?
+//const double WRGMInf = 2; // Is this good?
 
 std::mutex evalLock;
 
@@ -397,7 +402,11 @@ Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState s)
             id.negate();
         }
 
-        Sector sec = secs[id];
+        auto it = secs.find(id);
+        if (it == secs.end()) {
+            throw std::runtime_error("Key not found in map");
+        }
+        Sector& sec = it->second;
 
         eval_elem2 eval_elem = sec.hash->hash((board)a).second;
 

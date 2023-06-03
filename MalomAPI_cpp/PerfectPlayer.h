@@ -146,7 +146,7 @@ public:
         double val;
     };
 
-    const double WRGMInf = 2; // Is this good?
+    //const double WRGMInf = 2; // Is this good?
 
     std::mutex evalLock;
 
