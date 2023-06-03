@@ -277,7 +277,7 @@ Wrappers::gui_eval_elem2 PerfectPlayer::moveValue(const GameState& s, ExtMove& m
 }
 
 template <typename T, typename K>
-std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f, std::vector<T>& l, K minValue)
+std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f, const std::vector<T>& l, K minValue)
 {
     std::vector<T> r;
     K ma = minValue;
@@ -297,9 +297,8 @@ std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f, std::vector<T>& l,
 // Assuming the definition of gui_eval_elem2::min_value function
 std::vector<ExtMove> PerfectPlayer::goodMoves(const GameState& s)
 {
-    return allMaxBy([this, &s](ExtMove m) { return moveValue(s, m); }, getMoveList(s), Wrappers::gui_eval_elem2::min_value(getSec(s)));
+    return allMaxBy(std::function<Wrappers::gui_eval_elem2(ExtMove)>([this, &s](ExtMove m) { return moveValue(s, m); }), getMoveList(s), Wrappers::gui_eval_elem2::min_value(getSec(s)));
 }
-
 
 int PerfectPlayer::NGMAfterMove(const GameState& s, ExtMove& m)
 {

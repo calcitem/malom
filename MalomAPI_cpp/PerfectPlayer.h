@@ -44,7 +44,7 @@
 #include "rules.h"
 #include "sector.h"
 #include "common.h"
-#include "Wrappers.h"
+#include "wrappers.h"
 
 enum class MoveType {
     SetMove,
@@ -123,7 +123,7 @@ public:
     Wrappers::gui_eval_elem2 moveValue(const GameState& s, ExtMove& m);
 
     template <typename T, typename K>
-    std::vector<T> allMaxBy(std::function<K(T)> f, std::vector<T>& l, K minValue);
+    std::vector<T> allMaxBy(std::function<K(T)> f, const std::vector<T>& l, K minValue);
 
     // Assuming the definition of gui_eval_elem2::min_value function
     std::vector<ExtMove> goodMoves(const GameState& s);
