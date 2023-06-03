@@ -100,7 +100,7 @@ public:
         Player::quit();
     }
 
-    Sector* getSec(GameState s);
+    WSector* getSec(GameState s);
 
     std::string toHumanReadableEval(Wrappers::gui_eval_elem2 e);
 

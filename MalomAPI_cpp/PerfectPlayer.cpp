@@ -97,7 +97,7 @@ void PerfectPlayer::enter(Game *_g)
     Player::enter(_g);
 }
 
-Sector* PerfectPlayer::getSec(GameState s)
+WSector* PerfectPlayer::getSec(GameState s)
 {
     try {
         if (s.kle)

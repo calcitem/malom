@@ -39,6 +39,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
+class WSector {
+public:
+    Sector* s; // Assuming ::Sector is a type defined in your code
+
+    WSector(id id)
+        : s(new Sector(id.tonat()))
+    {
+    } // Assuming 'id' and 'tonat()' are defined elsewhere
+
+    sec_val sval() { return s->sval; }
+};
+
 namespace Wrappers {
 
 #include <cmath> // for factorial function
@@ -69,20 +81,6 @@ struct eval_elem {
 };
 
 struct gui_eval_elem2; // Assuming this struct is defined elsewhere
-
-class WSector {
-public:
-    Sector* s; // Assuming ::Sector is a type defined in your code
-
-    WSector(id id)
-        : s(new Sector(id.tonat()))
-    {
-    } // Assuming 'id' and 'tonat()' are defined elsewhere
-
-    std::pair<int, gui_eval_elem2> hash(board a); // Declaration only
-
-    sec_val sval() { return s->sval; }
-};
 
 struct gui_eval_elem2 {
 private:
@@ -289,5 +287,7 @@ public:
     }
 };
 }
+
+    std::pair<int, Wrappers::gui_eval_elem2> hash(board a); // Declaration only
 
 #endif // WRAPPER_H_INCLUDED

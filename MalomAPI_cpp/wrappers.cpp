@@ -21,11 +21,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#include "Wrappers.h"
+#include "wrappers.h"
 
 
 // This manages the lookuptables of the hash function: it keeps them in memory for a few most recently accessed sectors.
-std::pair<int, Wrappers::gui_eval_elem2> WSector::hash(board a)
+std::pair<int, Wrappers::gui_eval_elem2> hash(board a)
 {
     static std::set<std::pair<int, ::Sector*>> loaded_hashes;
     static std::map<::WSector*, int> loaded_hashes_inv;
