@@ -297,8 +297,9 @@ std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f, std::vector<T>& l,
 // Assuming the definition of gui_eval_elem2::min_value function
 std::vector<ExtMove> PerfectPlayer::goodMoves(GameState& s)
 {
-    return allMaxBy([s](ExtMove m) { return moveValue(s, m); }, getMoveList(s), Wrappers::gui_eval_elem2::min_value(getSec(s)));
+    return allMaxBy([this, &s](ExtMove m) { return moveValue(s, m); }, getMoveList(s), Wrappers::gui_eval_elem2::min_value(getSec(s)));
 }
+
 
 int PerfectPlayer::NGMAfterMove(GameState& s, ExtMove& m)
 {

@@ -27,7 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "hash.h"
 #include "symmetries.h"
 #include "debug.h"
-#include "sector.h"
 #include "sector_graph.h"
 
 #include <string>
