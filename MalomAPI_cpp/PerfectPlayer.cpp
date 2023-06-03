@@ -46,6 +46,10 @@
 
 class GameState;
 
+bool Sectors::created = false;
+
+std::map<id, Sector> Sectors::sectors;
+
 std::map<id, Sector> Sectors::getSectors()
 {
     try {

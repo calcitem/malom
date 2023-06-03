@@ -31,6 +31,21 @@
 #include "move.h"
 #include "rules.h"
 
+uint8_t Rules::millPos[20][3];
+uint8_t Rules::stdLaskerMillPos[16][3];
+int* Rules::stdLaskerInvMillPos[24] = { nullptr };
+bool Rules::stdLaskerBoardGraph[24][24] = { false };
+uint8_t Rules::stdLaskerALBoardGraph[24][5] = { 0 };
+uint8_t Rules::moraMillPos[20][3];
+int* Rules::moraInvMillPos[24];
+bool Rules::moraBoardGraph[24][24];
+uint8_t Rules::moraALBoardGraph[24][5];
+int* Rules::invMillPos[24];
+bool Rules::boardGraph[24][24];
+uint8_t Rules::aLBoardGraph[24][5];
+std::string Rules::variantName;
+int Rules::maxKSZ = 0;
+
 void Rules::initRules()
 {
     stdLaskerMillPos[0][0] = 1;
@@ -129,7 +144,7 @@ void Rules::initRules()
 int Rules::malome(int m, GameState s)
 {
     int result = -1;
-    int length = sizeof(invMillPos[m]) / sizeof(invMillPos[m][0]);
+    int length = sizeof(invMillPos[m]) / sizeof(invMillPos[m][0]); // TODO
     for (int i = 0; i < length; i++) {
         if (s.T[millPos[invMillPos[m][i]][0]] == s.T[m] && s.T[millPos[invMillPos[m][i]][1]] == s.T[m] && s.T[millPos[invMillPos[m][i]][2]] == s.T[m]) {
             result = invMillPos[m][i];
@@ -165,8 +180,6 @@ bool Rules::mindenEllensegesKorongMalomban(GameState s)
     }
     return true;
 }
-
-int maxKSZ;
 
 // Checking if AlphaBeta is available
 bool Rules::alphaBetaAvailable()

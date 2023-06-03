@@ -433,7 +433,7 @@ void Sector::allocate_hash(){ // and read em_set (should be renamed)
 }
 
 
-#if defined(WRAPPER) || defined(ANALYZER)
+//#if defined(WRAPPER) || defined(ANALYZER)
 void Sector::release_hash(){ // and clear em_set (should be renamed)
 	delete hash;
 	hash = nullptr;
@@ -445,4 +445,4 @@ void Sector::release_hash(){ // and clear em_set (should be renamed)
 	f = nullptr;
 #endif
 }
-#endif
+//#endif

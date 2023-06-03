@@ -136,6 +136,7 @@
     <ClCompile Include="hash.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="MalomSolutionAccess.cpp" />
     <ClCompile Include="move.cpp" />
     <ClCompile Include="movegen.cpp" />

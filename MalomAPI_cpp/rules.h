@@ -27,12 +27,9 @@
 #include <iostream>
 #include <vector>
 
-//#include "main.h"
 #include "wrappers.h"
 
 class GameState;
-
-extern int maxKSZ;
 
 // Define byte as unsigned char
 //typedef unsigned char byte;

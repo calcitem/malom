@@ -32,6 +32,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
+// TODO: Need?
+//#define WRAPPER
+
 struct id;
 
 //extern std::unordered_map<id, int, Hash> sector_sizes;

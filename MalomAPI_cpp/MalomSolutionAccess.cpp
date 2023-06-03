@@ -32,6 +32,9 @@
 #include "MalomSolutionAccess.h"
 #include "rules.h"
 
+PerfectPlayer* MalomSolutionAccess::pp = nullptr;
+std::exception* MalomSolutionAccess::lastError = nullptr;
+
 int MalomSolutionAccess::getBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace, int blackStonesToPlace, int playerToMove, bool onlyStoneTaking)
 {
     initializeIfNeeded();
@@ -156,7 +159,7 @@ void MalomSolutionAccess::setVariantStripped()
         std::memcpy(Rules::invMillPos, Rules::stdLaskerInvMillPos, sizeof(Rules::stdLaskerInvMillPos));
         std::memcpy(Rules::boardGraph, Rules::stdLaskerBoardGraph, sizeof(Rules::stdLaskerBoardGraph));
         std::memcpy(Rules::aLBoardGraph, Rules::stdLaskerALBoardGraph, sizeof(Rules::stdLaskerALBoardGraph));
-        maxKSZ = 9;
+        Rules::maxKSZ = 9;
         Rules::variantName = "std";
         break;
     case (int)Wrappers::Constants::Variants::lask:
@@ -164,7 +167,7 @@ void MalomSolutionAccess::setVariantStripped()
         std::memcpy(Rules::invMillPos, Rules::stdLaskerInvMillPos, sizeof(Rules::stdLaskerInvMillPos));
         std::memcpy(Rules::boardGraph, Rules::stdLaskerBoardGraph, sizeof(Rules::stdLaskerBoardGraph));
         std::memcpy(Rules::aLBoardGraph, Rules::stdLaskerALBoardGraph, sizeof(Rules::stdLaskerALBoardGraph));
-        maxKSZ = 10;
+        Rules::maxKSZ = 10;
         Rules::variantName = "lask";
         break;
     case (int)Wrappers::Constants::Variants::mora:
@@ -172,12 +175,12 @@ void MalomSolutionAccess::setVariantStripped()
         std::memcpy(Rules::invMillPos, Rules::moraInvMillPos, sizeof(Rules::moraInvMillPos));
         std::memcpy(Rules::boardGraph, Rules::moraBoardGraph, sizeof(Rules::moraBoardGraph));
         std::memcpy(Rules::aLBoardGraph, Rules::moraALBoardGraph, sizeof(Rules::moraALBoardGraph));
-        maxKSZ = 12;
+        Rules::maxKSZ = 12;
         Rules::variantName = "mora";
         break;
     }
 
     if (Wrappers::Constants::extended) {
-        maxKSZ = 12;
+        Rules::maxKSZ = 12;
     }
 }

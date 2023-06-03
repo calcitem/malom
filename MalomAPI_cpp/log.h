@@ -23,7 +23,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef LOG_H_INCLUDED
 #define LOG_H_INCLUDED
 
-#ifndef WRAPPER
+#include <cstdio>
+#include <iostream>
+
+//#ifndef WRAPPER
 	struct Log{ //ez azert nincs a masik agban, mert a wrapper projektben nincs benne a log.cpp (de amugy semmi akadalya nem lenne belerakni)
 		static bool log_to_file;
 		static FILE *logfile;
@@ -31,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		static string fname, fnamelogging, donefname;
 		static void close();
 	};
-#endif
+//#endif
 
 
 template <typename... Args>
@@ -54,9 +57,9 @@ template <typename... Args>
             }
 #endif
 #else
-            char buf[255];
-            sprintf_s(buf, format, args...);
-            System::Diagnostics::Debug::Write(gcnew System::String(buf));
+                char buf[255];
+                snprintf(buf, sizeof(buf), format, args...);
+                std::cerr << buf;
 #endif
     }
 

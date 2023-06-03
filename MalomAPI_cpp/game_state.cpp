@@ -37,8 +37,6 @@ class Player; // forward declaration, implement this
 class GameState; // forward declaration, implement this
 class Move; // forward declaration, implement this
 
-extern int maxKSZ;
-
 GameState::GameState(const GameState& s)
 { // copy constructor
     T = s.T;
@@ -56,7 +54,7 @@ GameState::GameState(const GameState& s)
 
 int GameState::futureStoneCount(int p)
 {
-    return stoneCount[p] + maxKSZ - setStoneCount[p];
+    return stoneCount[p] + Rules::maxKSZ - setStoneCount[p];
 }
 
 // Sets the state for Setup Mode: the placed stones are unchanged, but we switch to phase 2.
@@ -101,7 +99,7 @@ void GameState::makeMove(Move* M)
         T[lk->hon] = -1;
         stoneCount[1 - sideToMove]--;
         kle = false;
-        if (stoneCount[1 - sideToMove] + maxKSZ - setStoneCount[1 - sideToMove] < 3) {
+        if (stoneCount[1 - sideToMove] + Rules::maxKSZ - setStoneCount[1 - sideToMove] < 3) {
             over = true;
             winner = sideToMove;
         }
@@ -112,7 +110,7 @@ void GameState::makeMove(Move* M)
         kle = true;
     } else {
         sideToMove = 1 - sideToMove;
-        if (setStoneCount[0] == maxKSZ && setStoneCount[1] == maxKSZ && phase == 1)
+        if (setStoneCount[0] == Rules::maxKSZ && setStoneCount[1] == Rules::maxKSZ && phase == 1)
             phase = 2;
         if (!Rules::youCanMove(*this)) {
             over = true;
@@ -156,7 +154,7 @@ void GameState::checkInvariants()
     assert(setStoneCount[0] <= Rules::maxKSZ);
     assert(setStoneCount[1] >= 0);
     assert(setStoneCount[1] <= Rules::maxKSZ);
-    assert(phase == 1 || (phase == 2 && setStoneCount[0] == maxKSZ && setStoneCount[1] == maxKSZ));
+    assert(phase == 1 || (phase == 2 && setStoneCount[0] == Rules::maxKSZ && setStoneCount[1] == Rules::maxKSZ));
 }
 
 // Called when applying a free setup. It sets over and checks whether the position is valid. Returns "" if valid, reason str otherwise.
@@ -197,10 +195,10 @@ std::string GameState::setOverAndCheckValidSetup()
 
     // Set over if needed:
     bool whiteLose = false, blackLose = false;
-    if (stoneCount[0] + maxKSZ - setStoneCount[0] < 3) {
+    if (stoneCount[0] + Rules::maxKSZ - setStoneCount[0] < 3) {
         whiteLose = true;
     }
-    if (stoneCount[1] + maxKSZ - setStoneCount[1] < 3) {
+    if (stoneCount[1] + Rules::maxKSZ - setStoneCount[1] < 3) {
         blackLose = true;
     }
     if (whiteLose || blackLose) {

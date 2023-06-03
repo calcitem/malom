@@ -106,7 +106,7 @@ public:
         : gui_eval_elem2 { e.key1, e.key2, s }
     {
     }
-    static bool ignore_DD;
+    inline static const bool ignore_DD = false;
 
     gui_eval_elem2 undo_negate(Sector* s)
     {

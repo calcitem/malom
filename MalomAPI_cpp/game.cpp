@@ -38,8 +38,6 @@ class Player; // forward declaration, implement this
 class GameState; // forward declaration, implement this
 class Move; // forward declaration, implement this
 
-extern int maxKSZ;
-
 GameState& Game::s() const
 { // wrapper of current.value
     return *current;
