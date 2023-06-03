@@ -40,7 +40,7 @@ extern int maxKSZ;
 class Rules {
 public:
     // Define your byte arrays
-    static uint8_t millPos[16][3];
+    static uint8_t millPos[20][3]; // TODO: Initial: [16][3];
     static uint8_t stdLaskerMillPos[16][3];
     static uint8_t moraMillPos[20][3];
 

@@ -116,14 +116,11 @@ Hash::Hash(int W, int B, Sector *s):W(W),B(B),s(s){
 #endif
 }
 
-#pragma managed(push,off)
 void Hash::check_hash_init_consistency(){
 	for(int i=0; i<1<<24; i++)
 		if(__popcnt(i)==W)
 			assert(f_sym_lookup[i]>=0 && f_sym_lookup[i]<16);
 }
-#pragma managed(pop)
-
 
 Hash::~Hash(){
 	delete f_inv_lookup;
@@ -211,7 +208,6 @@ void init_collapse_lookup(){
 }
 
 #ifndef WRAPPER
-#pragma managed(push,off)
 //__declspec(noinline)
 int collapse(board a){
 	int w = (int)(a&mask24), b = (int)(a >> 24);
@@ -252,5 +248,4 @@ int collapse(board a){
 	}
 	return r;
 }
-#pragma managed(pop)
 #endif

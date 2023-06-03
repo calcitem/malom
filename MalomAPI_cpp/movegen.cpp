@@ -174,7 +174,7 @@ void get_parents(board a, int w, int b, int wf, int bf){
 	//(P_FELRAK_COND azert nincs, mert ha visszacsinalunk egy felrakast, akkor lesz mit folrakni.)
 	
 	board kor; //az aktualis korong maskja
-	while(kor=lssb(cp)){ cp^=kor;
+	while((kor=lssb(cp))){ cp^=kor;
 		unsigned long kor_i; _BitScanReverse64(&kor_i, kor); //az aktualis korong indexe
 		board adjmask = adjmasks[kor_i] & free; //szabad szomszedos mezok  (a ciklus megeszi)
 		board akor=a^kor;
@@ -183,7 +183,7 @@ void get_parents(board a, int w, int b, int wf, int bf){
 		if(!(cpmills&kor)){ //ha nem malombol lepunk
 			if(P_MOZG_COND){ //mozgatas
 				if((wms=v_mozg)!=-1){
-					while(moveso_mask=lssb(adjmask)){ adjmask^=moveso_mask;
+					while((moveso_mask=lssb(adjmask))){ adjmask^=moveso_mask;
 						parents[num_parents++] = Parent(akor^moveso_mask, wms);
 					}
 				}
@@ -196,11 +196,11 @@ void get_parents(board a, int w, int b, int wf, int bf){
 		}else{ //ha malombol lepunk
 			if((wms=v_mozg_kle)!=-1){
 				if(P_MOZG_COND){ //mozgatas
-					while(moveso_mask=lssb(adjmask)){ adjmask^=moveso_mask;
+					while((moveso_mask=lssb(adjmask))){ adjmask^=moveso_mask;
 						board unt_mask; //untake mask
 						board can_untake_mask0=can_untake_mask &~(moveso_mask<<24); //onnan sem vehetunk le korongot, ahonnan leptunk
 						board akormoveso_mask=akor^moveso_mask;
-						while(unt_mask=lssb(can_untake_mask0)){ can_untake_mask0^=unt_mask;
+						while((unt_mask=lssb(can_untake_mask0))){ can_untake_mask0^=unt_mask;
 							parents[num_parents++] = Parent(akormoveso_mask^unt_mask, wms);
 						}
 					}
@@ -211,7 +211,7 @@ void get_parents(board a, int w, int b, int wf, int bf){
 			if((wms=v_felrak_kle)!=-1){
 				board unt_mask; //untake mask
 				board can_untake_mask0=can_untake_mask; //mert a can_untake_mask-ot nem eheti meg a ciklus
-				while(unt_mask=lssb(can_untake_mask0)){ can_untake_mask0^=unt_mask;
+				while((unt_mask=lssb(can_untake_mask0))){ can_untake_mask0^=unt_mask;
 					parents[num_parents++] = Parent(akor^unt_mask, wms);
 				}
 			}			
@@ -256,14 +256,14 @@ bool can_close_mill(board a, int w, int b, int wf, int bf){
 		const board *adjmasks = w+wf>3 ? slide_adjmasks : fly_adjmasks;
 		board cp=a&(mask24); //cp korongjai (a ciklus megeszi!)
 		board kor; //az aktualis korong maskja
-		while(kor=lssb(cp)){
+		while((kor=lssb(cp))){
 			cp^=kor;
 			unsigned long kor_i; _BitScanReverse64(&kor_i, kor); //az aktualis korong indexe
 			board adjmask = adjmasks[kor_i] & free; //szomszedos szabad mezok
 			
 			board akorm24=(a^kor)&mask24;
 			board moveend;
-			while(moveend=lssb(adjmask)){ adjmask^=moveend;
+			while((moveend=lssb(adjmask))){ adjmask^=moveend;
 				if(millmasks[akorm24^moveend]&moveend)
 					return true;
 			}
@@ -315,19 +315,19 @@ void get_chd(board a){
 		const board *adjmasks = a_id.W+a_id.WF>3 ? slide_adjmasks : fly_adjmasks;
 		board cp=a&(mask24); //cp korongjai (a ciklus megeszi!)
 		board kor; //az aktualis korong maskja
-		while(kor=lssb(cp)){
+		while((kor=lssb(cp))){
 			cp^=kor;
 			unsigned long kor_i; _BitScanReverse64(&kor_i, kor); //az aktualis korong indexe
 			board adjmask = adjmasks[kor_i] & free; //szomszedos szabad mezok
 			
 			board akorm24=(a^kor)&mask24;
 			board moveend;
-			while(moveend=lssb(adjmask)){ adjmask^=moveend;
+			while((moveend=lssb(adjmask))){ adjmask^=moveend;
 				if(millmasks[akorm24^moveend]&moveend){ //koronglevetel
 					board akormoveend=a^kor^moveend;
 					board opp_takeable0=opp_takeable; //megesszuk
 					board taking;
-					while(taking=lssb(opp_takeable0)){ opp_takeable0^=taking;
+					while((taking=lssb(opp_takeable0))){ opp_takeable0^=taking;
 						chd[num_chd++]=Child(akormoveend^taking, mozg_kle);
 					}
 				}else
@@ -338,12 +338,12 @@ void get_chd(board a){
 
 	if(C_FELRAK_COND){
 		board kor;
-		while(kor=lssb(free)){ free^=kor;
+		while((kor=lssb(free))){ free^=kor;
 			board akor=a^kor;
 			if(millmasks[(akor)&mask24]&kor){ //koronglevetel
 				board opp_takeable0=opp_takeable; //megesszuk
 				board taking;
-				while(taking=lssb(opp_takeable0)){ opp_takeable0^=taking;
+				while((taking=lssb(opp_takeable0))){ opp_takeable0^=taking;
 					chd[num_chd++]=Child(akor^taking, felrakas_kle);
 				}
 			}else{

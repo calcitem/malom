@@ -27,7 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 #include <sstream>
 
-#pragma managed(push,off)
 const char* toclp(board b){
 	board mask=1;
 	vector<int> kit(24,-1);
@@ -51,10 +50,6 @@ const char* toclp(board b){
 	strcpy_s(ret,1024,ss.str().c_str());
 	return ret;
 }
-#pragma managed(pop)
-
-
-
 
 string toclp2(board b){
 	board mask=1;
