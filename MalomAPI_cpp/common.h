@@ -185,7 +185,7 @@ extern modes mode;
 	#pragma message ("Warning : Compiled in Danner mode! (conversion warnings)")
 #endif
 
-#if __cplusplus_cli
+#if __cplusplus
 	#define WRAPPER
 #endif
 

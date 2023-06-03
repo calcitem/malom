@@ -57,9 +57,6 @@
     <ClCompile Include="symmetries.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="movegen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="sec_val.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,9 +114,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="symmetries.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="movegen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sec_val.h">

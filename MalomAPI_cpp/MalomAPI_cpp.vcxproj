@@ -139,7 +139,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MalomSolutionAccess.cpp" />
     <ClCompile Include="move.cpp" />
-    <ClCompile Include="movegen.cpp" />
     <ClCompile Include="PerfectPlayer.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="rules.cpp" />
@@ -160,7 +159,6 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="MalomSolutionAccess.h" />
     <ClInclude Include="move.h" />
-    <ClInclude Include="movegen.h" />
     <ClInclude Include="PerfectPlayer.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="rules.h" />
