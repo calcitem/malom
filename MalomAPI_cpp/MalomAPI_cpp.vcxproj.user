@@ -4,4 +4,8 @@
     <LocalDebuggerCommandArguments>E:\Malom\Malom_Standard_Ultra-strong_1.1.0\Std_DD_89adjusted</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LocalDebuggerCommandArguments>E:\Malom\Malom_Standard_Ultra-strong_1.1.0\Std_DD_89adjusted</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
 </Project>
