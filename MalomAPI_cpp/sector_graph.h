@@ -38,17 +38,21 @@ void init_sector_graph();
 
 
 
-struct wu{
-	id id;
-	bool twine;
-	set<wu*> parents;
-	int child_count;
+struct wu {
+    id id;
+    bool twine;
+    set<wu*> parents;
+    int child_count;
 
-	wu(::id id):id(id),twine(false),child_count(0){};
+    wu(::id id)
+        : id(id)
+        , twine(false)
+        , child_count(0) {};
 
-private:
-	wu(const wu &o){ assert(false); } //forbid copying
+    wu(const wu& o) = delete;
+    wu& operator=(const wu& o) = delete;
 };
+
 
 extern unordered_map<id,wu*> wus;
 

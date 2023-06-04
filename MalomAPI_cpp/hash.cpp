@@ -116,10 +116,11 @@ Hash::Hash(int W, int B, Sector *s):W(W),B(B),s(s){
 #endif
 }
 
-void Hash::check_hash_init_consistency(){
-	for(int i=0; i<1<<24; i++)
-		if(__popcnt(i)==W)
-			assert(f_sym_lookup[i]>=0 && f_sym_lookup[i]<16);
+void Hash::check_hash_init_consistency()
+{
+        for (int i = 0; i < 1 << 24; i++)
+                if (static_cast<int>(__popcnt(i)) == W)
+                        assert(f_sym_lookup[i] >= 0 && f_sym_lookup[i] < 16);
 }
 
 Hash::~Hash(){

@@ -30,10 +30,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //void init_hash_lookuptables();
 
 class Hash{	
-	int W,B; //ezeket cache-locality szempontbol talan erdemesebb lenne a nagy tombok utanra tenni
+	int W,B; // It might be worth to put these after the large arrays for cache locality reasons
 
 	int f_lookup[1<<24] {0};
-	char f_sym_lookup[1<<24] { 0 }; // atirva introl charra
+	char f_sym_lookup[1<<24] { 0 }; // Converted from int to char
 	int *f_inv_lookup {nullptr};
 	int *g_lookup { nullptr };
 	int *g_inv_lookup { nullptr };

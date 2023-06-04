@@ -34,8 +34,8 @@
 uint8_t Rules::millPos[20][3];
 uint8_t Rules::stdLaskerMillPos[16][3];
 int* Rules::stdLaskerInvMillPos[24] = { nullptr };
-bool Rules::stdLaskerBoardGraph[24][24] = { false };
-uint8_t Rules::stdLaskerALBoardGraph[24][5] = { 0 };
+bool Rules::stdLaskerBoardGraph[24][24] = { { false } };
+uint8_t Rules::stdLaskerALBoardGraph[24][5] = { { 0 } };
 uint8_t Rules::moraMillPos[20][3];
 int* Rules::moraInvMillPos[24];
 bool Rules::moraBoardGraph[24][24];
@@ -92,7 +92,7 @@ void Rules::initRules()
         invMillPosLengths[i] = l.size();
         // Convert the vector into an array and store it in stdLaskerInvMillPos
         stdLaskerInvMillPos[i] = new int[l.size()];
-        for (int j = 0; j < l.size(); j++) {
+        for (size_t j = 0; j < l.size(); j++) {
             stdLaskerInvMillPos[i][j] = l[j];
         }
     }

@@ -242,7 +242,7 @@ std::vector<ExtMove> PerfectPlayer::getMoveList(const GameState& s)
             }
         }
 
-        for (int i = 0; i < ms0.size(); ++i) {
+        for (size_t i = 0; i < ms0.size(); ++i) {
             if (!ms0[i].withTaking) {
                 ms.push_back(ms0[i]);
             } else {

@@ -79,8 +79,6 @@ class Sector{
 	void read_em_set(FILE *f);
 
 public:
-	Hash* hash {nullptr};
-
 	int W,B, WF,BF;
 	id id;
 
@@ -115,6 +113,8 @@ public:
 
 	//statisztikak:
 	int max_val, max_count;
+
+	Hash* hash { nullptr };
 
 #ifndef WRAPPER
 	void allocate(bool doinit, ::id parent = id::null());
