@@ -88,10 +88,10 @@ namespace Wrappers {
 
 	value struct gui_eval_elem2;
 
-	public ref class Sector {
+	public ref class WSector {
 	public:
 		::Sector *s;
-		Sector(id id) : s(new ::Sector(id.tonat())) {}
+		WSector(id id) : s(new ::Sector(id.tonat())) {}
 
 		Tuple<int, gui_eval_elem2>^ hash(board a);
 
@@ -118,7 +118,7 @@ namespace Wrappers {
 		gui_eval_elem2(::eval_elem2 e, ::Sector *s) : gui_eval_elem2{ e.key1, e.key2, s } {}
 
 
-		gui_eval_elem2 undo_negate(Sector^ s){
+		gui_eval_elem2 undo_negate(WSector^ s){
 			auto a = this->to_eval_elem2().corr((s ? s->sval() : virt_unique_sec_val()) + (this->s ? this->s->sval : virt_unique_sec_val()));
 			a.key1 *= -1;
 			if(s) //ha s null, akkor KLE-be negalunk
@@ -174,7 +174,7 @@ namespace Wrappers {
 		static bool operator==(gui_eval_elem2 a, gui_eval_elem2 b){ return a.CompareTo(b) == 0; }
 
 
-		static gui_eval_elem2 min_value(Sector ^s){
+		static gui_eval_elem2 min_value(WSector ^s){
 			return gui_eval_elem2{ abs_min_value() - (s ? s->sval() : virt_unique_sec_val()), 0, s ? s->s : nullptr };
 		}
 

@@ -23,11 +23,11 @@ Imports System.IO
 Imports Wrappers
 
 Public Class Sectors
-    Public Shared sectors As New Dictionary(Of id, Sector)
+    Public Shared sectors As New Dictionary(Of id, WSector)
     Shared created As Boolean = False
 
     <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute>
-    Public Shared Function getsectors() As Dictionary(Of id, Sector)
+    Public Shared Function getsectors() As Dictionary(Of id, WSector)
         Try
 
             If Not created Then
@@ -43,7 +43,7 @@ Public Class Sectors
                                 'Console.WriteLine("Looking for database file " & fname)
                                 Dim id As New id(w, b, wf, bf)
                                 If File.Exists(fname) Then
-                                    sectors(id) = New Sector(id)
+                                    sectors(id) = New WSector(id)
                                 End If
                             Next
                         Next
@@ -71,7 +71,7 @@ End Class
 Public Class PerfectPlayer
     Inherits Player
 
-    Dim secs As New Dictionary(Of id, Sector)
+    Dim secs As New Dictionary(Of id, WSector)
 
     Public Sub New()
         Debug.Assert(Sectors.HasDatabase)
@@ -87,7 +87,7 @@ Public Class PerfectPlayer
     End Sub
 
     <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute>
-    Public Function GetSec(s As GameState) As Sector
+    Public Function GetSec(s As GameState) As WSector
         Try
             If s.KLE Then Return Nothing
 

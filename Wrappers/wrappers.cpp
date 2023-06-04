@@ -35,7 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //}
 
 //This manages the lookuptables of the hash function: it keeps them in memory for a few most recently accessed sectors.
-Tuple<int, Wrappers::gui_eval_elem2>^ Wrappers::Sector::hash(board a){
+Tuple<int, Wrappers::gui_eval_elem2>^ Wrappers::WSector::hash(board a){
 	static set<pair<int, ::Sector*>> loaded_hashes;
 	static map<::Sector*, int> loaded_hashes_inv;
 	static int timestamp = 0;
