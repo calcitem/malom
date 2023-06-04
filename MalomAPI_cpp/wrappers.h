@@ -36,22 +36,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <cassert>
 #include <iostream>
 #include <set>
+#include <map>
+#include <tuple>
 
 using namespace std;
 
-class WSector {
-public:
-    Sector* s; // Assuming ::Sector is a type defined in your code
 
-    WSector(id id)
-        : s(new Sector(id.tonat()))
-    {
-    } // Assuming 'id' and 'tonat()' are defined elsewhere
-
-    sec_val sval() { return s->sval; }
-};
 
 namespace Wrappers {
+
+class WSector;
 
 #include <cmath> // for factorial function
 #include <string>
@@ -82,6 +76,19 @@ struct eval_elem {
 
 struct gui_eval_elem2; // Assuming this struct is defined elsewhere
 
+class WSector {
+public:
+    ::Sector* s;
+    WSector(id id)
+        : s(new ::Sector(id.tonat()))
+    {
+    }
+
+    std::pair<int, Wrappers::gui_eval_elem2> hash(board a);
+
+    sec_val sval() { return s->sval; }
+};
+
 struct gui_eval_elem2 {
 private:
     sec_val key1;
@@ -108,13 +115,13 @@ public:
     }
     inline static const bool ignore_DD = false;
 
-    gui_eval_elem2 undo_negate(Sector* s)
+    gui_eval_elem2 undo_negate(WSector* s)
     {
-        auto a = this->to_eval_elem2().corr((s ? s->sval : virt_unique_sec_val()) + (this->s ? this->s->sval : virt_unique_sec_val()));
+        auto a = this->to_eval_elem2().corr((s ? s->sval() : virt_unique_sec_val()) + (this->s ? this->s->sval : virt_unique_sec_val()));
         a.key1 *= -1;
         if (s)
             a.key2++;
-        return gui_eval_elem2(a, s ? s : nullptr); // TODO: s->s?
+        return gui_eval_elem2(a, s ? s->s : nullptr);
     }
 
     static sec_val abs_min_value()
@@ -164,9 +171,9 @@ public:
     bool operator>(const gui_eval_elem2& b) const { return this->compare(b) > 0; }
     bool operator==(const gui_eval_elem2& b) const { return this->compare(b) == 0; }
 
-    static gui_eval_elem2 min_value(Sector* s)
+    static gui_eval_elem2 min_value(WSector* s)
     {
-        return gui_eval_elem2 { static_cast<sec_val>(abs_min_value() - (s ? s->sval : virt_unique_sec_val())), 0, s ? s : nullptr }; // TODO: s->s?
+        return gui_eval_elem2 { static_cast<sec_val>(abs_min_value() - (s ? s->sval() : virt_unique_sec_val())), 0, s ? s->s : nullptr };
     }
 
     static gui_eval_elem2 virt_loss_val()
@@ -287,7 +294,5 @@ public:
     }
 };
 }
-
-    std::pair<int, Wrappers::gui_eval_elem2> hash(board a, Sector* s); // Declaration only
 
 #endif // WRAPPER_H_INCLUDED

@@ -75,17 +75,17 @@ struct ExtMove {
 
 class Sectors {
 public:
-    static std::map<id, Sector> sectors;
+    static std::map<id, Wrappers::WSector> sectors;
     static bool created;
 
-    static std::map<id, Sector> getSectors();
+    static std::map<id, Wrappers::WSector> getSectors();
 
     static bool hasDatabase();
 };
 
 class PerfectPlayer : public Player {
 public:
-    std::map<id, Sector> secs;
+    std::map<id, Wrappers::WSector> secs;
 
     PerfectPlayer();
 
@@ -96,7 +96,7 @@ public:
         Player::quit();
     }
 
-    Sector* getSec(const GameState s);
+    Wrappers::WSector* getSec(const GameState s);
 
     std::string toHumanReadableEval(Wrappers::gui_eval_elem2 e);
 

@@ -25,20 +25,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 // This manages the lookuptables of the hash function: it keeps them in memory for a few most recently accessed sectors.
-std::pair<int, Wrappers::gui_eval_elem2> hash(board a, Sector* s)
+std::pair<int, Wrappers::gui_eval_elem2> Wrappers::WSector::hash(board a)
 {
     static std::set<std::pair<int, ::Sector*>> loaded_hashes;
-    static std::map<Sector*, int> loaded_hashes_inv;
+    static std::map<::Sector*, int> loaded_hashes_inv;
     static int timestamp = 0;
 
-    Sector* tmp = s;
+    ::Sector* tmp = s;
 
     if (s->hash == nullptr) {
         // hash object is not present
 
         if (loaded_hashes.size() == 8) {
             // release one if there are too many
-            Sector* to_release = loaded_hashes.begin()->second;
+            ::Sector* to_release = loaded_hashes.begin()->second;
             LOG("Releasing hash: %s\n", to_release->id.to_string().c_str());
             to_release->release_hash();
             loaded_hashes.erase(loaded_hashes.begin());
@@ -60,4 +60,3 @@ std::pair<int, Wrappers::gui_eval_elem2> hash(board a, Sector* s)
     auto e = s->hash->hash(a);
     return std::make_pair(e.first, Wrappers::gui_eval_elem2(e.second, s));
 }
-
