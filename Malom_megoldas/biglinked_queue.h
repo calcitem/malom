@@ -20,48 +20,58 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #pragma once
 
-template<class T>
-class biglinked_queue {
-	static const int link_size = 1024 * 1024;
-	struct link {
-		array<T, link_size> a;
-		int start, end;
-		link* next;
-		link() : start{ 0 }, end{ 0 }, next{ nullptr }{}
-	};
-	link *first, *last;
+template <class T>
+class biglinked_queue
+{
+    static const int link_size = 1024 * 1024;
+    struct link
+    {
+        array<T, link_size> a;
+        int start, end;
+        link *next;
+        link()
+            : start {0}
+            , end {0}
+            , next {nullptr}
+        { }
+    };
+    link *first, *last;
+
 public:
-	using value_type = T;
-	using size_type = size_t;
-	using reference = T&;
-	using const_reference = const T&;
+    using value_type = T;
+    using size_type = size_t;
+    using reference = T &;
+    using const_reference = const T &;
 
-	biglinked_queue() : first{ new link{} }, last{ first } {}
+    biglinked_queue()
+        : first {new link {}}
+        , last {first}
+    { }
 
-	void push_back(const T &x){
-		last->a[last->end++] = x;
-		if(last->end == link_size)
-			last = last->next = new link{};
-	}
+    void push_back(const T &x)
+    {
+        last->a[last->end++] = x;
+        if (last->end == link_size)
+            last = last->next = new link {};
+    }
 
-	bool empty() const {
-		return first == last && first->start == first->end;
-	}
+    bool empty() const { return first == last && first->start == first->end; }
 
-	void pop_front(){
-		assert(!empty());
-		if(++first->start == link_size){
-			link *newfirst = first->next;
-			delete first;
-			first = newfirst;
-		}
-	}
+    void pop_front()
+    {
+        assert(!empty());
+        if (++first->start == link_size) {
+            link *newfirst = first->next;
+            delete first;
+            first = newfirst;
+        }
+    }
 
-	T& front(){
-		assert(!empty());
-		return first->a[first->start];
-	}
+    T &front()
+    {
+        assert(!empty());
+        return first->a[first->start];
+    }
 };

@@ -25,9 +25,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "symmetries_slow.h"
 
 // int (*slow[16])(int) = {id, rot90, rot180, rot270, tt_fuggoleges,
-// tt_vizszintes, tt_bslash, tt_slash, 						swap, swap_rot90, swap_rot180,
-//swap_rot270, swap_tt_fuggoleges, swap_tt_vizszintes, swap_tt_bslash,
-//swap_tt_slash};
+// tt_vizszintes, tt_bslash, tt_slash, swap, swap_rot90, swap_rot180,
+// swap_rot270, swap_tt_fuggoleges, swap_tt_vizszintes, swap_tt_bslash,
+// swap_tt_slash};
 int (*slow[16])(int) = {rot90,
                         rot180,
                         rot270,
@@ -111,7 +111,8 @@ board sym48(int op, board a)
     return sym24(op, a & mask24) | (sym24(op, a >> 24) << 24); //|
                                                                //(a&(1LL<<48));
                                                                ////ez talan nem
-                                                               //kell ide, ugye?
+                                                               // kell ide,
+                                                               // ugye?
 }
 
 // int inv[]={0, 3, 2, 1, 4, 5, 6, 7, 8, 11, 10, 9, 12, 13, 14, 15};

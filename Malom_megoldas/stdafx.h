@@ -20,12 +20,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #pragma once
 
 #include "targetver.h"
 
-#define NOMINMAX //http://social.msdn.microsoft.com/Forums/vstudio/en-US/e94865f7-84cd-4912-8339-6ee95fb58825/numericlimitsdoublemax-not-recognized?forum=vcgeneral
+#define NOMINMAX // http://social.msdn.microsoft.com/Forums/vstudio/en-US/e94865f7-84cd-4912-8339-6ee95fb58825/numericlimitsdoublemax-not-recognized?forum=vcgeneral
 
 #include <cstdio>
 #include <cstring>

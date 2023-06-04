@@ -20,44 +20,42 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #pragma once
 
 #include "sector.h"
 
+// void init_hash_lookuptables();
 
-//void init_hash_lookuptables();
+class Hash
+{
+    int W, B; // ezeket cache-locality szempontbol talan erdemesebb lenne a nagy
+              // tombok utanra tenni
 
-class Hash{	
-	int W,B; //ezeket cache-locality szempontbol talan erdemesebb lenne a nagy tombok utanra tenni
+    int f_lookup[1 << 24];
+    char f_sym_lookup[1 << 24]; // atirva introl charra
+    int *f_inv_lookup;
+    int *g_lookup;
+    int *g_inv_lookup;
 
-	int f_lookup[1<<24];
-	char f_sym_lookup[1<<24]; //atirva introl charra
-	int *f_inv_lookup;
-	int *g_lookup;
-	int *g_inv_lookup;
+    int f_count;
 
-	int f_count;
-
-	Sector *s;
+    Sector *s;
 
 public:
-	Hash(int W, int B, Sector *s);
+    Hash(int W, int B, Sector *s);
 
-	pair<int, eval_elem2> hash(board a);
-	board inv_hash(int h);
+    pair<int, eval_elem2> hash(board a);
+    board inv_hash(int h);
 
-	int hash_count;
+    int hash_count;
 
-	unsigned short f_sym_lookup2[1<<24]; ///
+    unsigned short f_sym_lookup2[1 << 24]; ///
 
-	void check_hash_init_consistency();
+    void check_hash_init_consistency();
 
-	~Hash();
+    ~Hash();
 };
-
 
 int collapse(board a);
 board uncollapse(board a);
 int next_choose(int x);
-

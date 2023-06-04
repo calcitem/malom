@@ -20,7 +20,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "stdafx.h"
 
 #include "common.h"
@@ -31,93 +30,104 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "debug.h"
 #include "auto_grow_vector.h"
 
-
 extern id run_params;
 
+void analyze(id id)
+{
+    LOG("Analyze sector %s\n", id.to_string().c_str());
 
-void analyze(id id){
-	LOG("Analyze sector %s\n", id.to_string().c_str());
+    Sector *sec = sectors(id) = new Sector(id);
+    sec->allocate(false);
+    Hash *hash = sec->hash;
 
-	Sector *sec=sectors(id)=new Sector(id);
-	sec->allocate(false);
-	Hash *hash=sec->hash;
+    LOG("Analyzing\n");
 
-	LOG("Analyzing\n");
+    int sym_count = 0, win_count = 0, loss_count = 0;
 
-	int sym_count=0, win_count=0, loss_count=0;
+    int ma = -1;
+    int mh = 0;
+    pn_vector<int> dist;
+    pn_vector<int> akey1_dist;
+    akey1_dist[virt_loss_val];
+    akey1_dist[virt_win_val]; // force range
+    for (int h = 0; h < hash->hash_count; h++) {
+        auto eval = sec->get_eval_inner(h);
+        if (eval.cas() != eval_elem_sym2::Sym) {
+            sec_val akey1 = eval.key1 + sec->sval;
 
-	int ma=-1;
-	int mh=0;
-	pn_vector<int> dist;
-	pn_vector<int> akey1_dist;
-	akey1_dist[virt_loss_val];  akey1_dist[virt_win_val]; //force range
-	for(int h=0; h<hash->hash_count; h++){
-		auto eval=sec->get_eval_inner(h);
-		if(eval.cas()!=eval_elem_sym2::Sym){
-			sec_val akey1 = eval.key1 + sec->sval;
+            int distance = (eval.cas() == eval_elem_sym2::Val &&
+                            abs(akey1) == virt_win_val) ?
+                               eval.value().key2 :
+                               -1;
 
-			int distance = (eval.cas() == eval_elem_sym2::Val && abs(akey1) == virt_win_val) ? eval.value().key2 : -1;
+            if (distance > ma) {
+                ma = distance;
+                mh = h;
+            }
 
-			if(distance > ma){
-				ma = distance;
-				mh = h;
-			}
+            assert(distance >= -1);
+            dist[distance]++;
 
-			assert(distance >= -1);
-			dist[distance]++;
+            akey1_dist[akey1]++;
 
-			akey1_dist[akey1]++;
+            /*if(akey1 == 5){
+                    LOG("a draw: %s\n", toclp3(sec->hash->inv_hash(h),
+            sec->id).c_str());
+            }*/
 
-			/*if(akey1 == 5){
-				LOG("a draw: %s\n", toclp3(sec->hash->inv_hash(h), sec->id).c_str());
-			}*/
+            if (distance >= 0) {
+                if (eval.value().key1 > 0)
+                    win_count++;
+                else
+                    loss_count++;
+            }
+        } else {
+            sym_count++;
+        }
+    }
 
-			if(distance >= 0){
-				if(eval.value().key1 > 0)
-					win_count++;
-				else
-					loss_count++;
-			}
-		}else{
-			sym_count++;
-		}
-	}
+    board maxval_board = hash->inv_hash(mh);
 
-	board maxval_board=hash->inv_hash(mh);
+    int tot_count = hash->hash_count - sym_count;
+    int draw_count = dist[-1];
 
-	int tot_count = hash->hash_count - sym_count;
-	int draw_count = dist[-1];
+    LOG("maxval: %d\n", ma);
+    LOG("maxval_board: %lld, toclp: %s\n", maxval_board,
+        toclp3(maxval_board, id).c_str());
+    LOG("sym_count: %d  (ratio: %f)\n", sym_count,
+        (double)sym_count / hash->hash_count);
+    LOG("win/draw/loss ratios: %f/%f/%f\n", (double)win_count / tot_count,
+        (double)draw_count / tot_count, (double)loss_count / tot_count);
+    LOG("\ndistance distribution:\n");
+    for (auto it = dist.begin(); it != dist.end(); ++it)
+        LOG("%d %d\n", it.ind(), *it);
+    LOG("\nakey1 distribution:\n");
+    for (auto it = akey1_dist.begin(); it != akey1_dist.end(); ++it)
+        if (*it)
+            LOG("%s %d\n", sec_val_to_sec_name(it.ind()).c_str(), *it);
+    LOG("\n");
 
-	LOG("maxval: %d\n", ma);
-	LOG("maxval_board: %lld, toclp: %s\n", maxval_board, toclp3(maxval_board, id).c_str());
-	LOG("sym_count: %d  (ratio: %f)\n", sym_count, (double)sym_count/hash->hash_count);
-	LOG("win/draw/loss ratios: %f/%f/%f\n", (double)win_count/tot_count, (double)draw_count/tot_count, (double)loss_count/tot_count);
-	LOG("\ndistance distribution:\n");
-	for(auto it = dist.begin(); it != dist.end(); ++it)
-		LOG("%d %d\n", it.ind(), *it);
-	LOG("\nakey1 distribution:\n");
-	for(auto it = akey1_dist.begin(); it != akey1_dist.end(); ++it)
-		if(*it)
-			LOG("%s %d\n", sec_val_to_sec_name(it.ind()).c_str(), *it);
-	LOG("\n");
-	
-	assert(sym_count + win_count + draw_count + loss_count == hash->hash_count);
-	FILE *out;
-	fopen_s(&out, (run_params.to_string()+".analyze"+FNAME_SUFFIX).c_str(), "w");
-	fprintf(out, "%d\n%lld\n%d\n%d %d %d\n", ma, maxval_board, sym_count, win_count, draw_count, loss_count);
-	fprintf(out, "%d\n", (int)dist.size());
-	for(auto d: dist)
-		fprintf(out, "%d\n", d);
+    assert(sym_count + win_count + draw_count + loss_count == hash->hash_count);
+    FILE *out;
+    fopen_s(&out, (run_params.to_string() + ".analyze" + FNAME_SUFFIX).c_str(),
+            "w");
+    fprintf(out, "%d\n%lld\n%d\n%d %d %d\n", ma, maxval_board, sym_count,
+            win_count, draw_count, loss_count);
+    fprintf(out, "%d\n", (int)dist.size());
+    for (auto d : dist)
+        fprintf(out, "%d\n", d);
 #ifdef DD
-	fprintf(out, "%d %d\n", virt_loss_val, virt_win_val);
-	assert(akey1_dist.size() == virt_win_val - virt_loss_val + 1);
-	fprintf(out, "%d\n", (int)akey1_dist.size());
-	for(auto x : akey1_dist)
-		fprintf(out, "%d\n", x);
+    fprintf(out, "%d %d\n", virt_loss_val, virt_win_val);
+    assert(akey1_dist.size() == virt_win_val - virt_loss_val + 1);
+    fprintf(out, "%d\n", (int)akey1_dist.size());
+    for (auto x : akey1_dist)
+        fprintf(out, "%d\n", x);
 #endif
-	fclose(out);
-	
-	histogram(dist.to_vector(), -1, id.to_string()+"_disthist").gnuplot(false);
-	
-	histogram(akey1_dist.to_vector(), virt_loss_val, id.to_string() + "_akey1hist").gnuplot(false);
+    fclose(out);
+
+    histogram(dist.to_vector(), -1, id.to_string() + "_disthist").gnuplot(false);
+
+    histogram(akey1_dist.to_vector(), virt_loss_val,
+              id.to_string() + "_akey1hist")
+        .gnuplot(false);
 }

@@ -57,7 +57,7 @@ static int f_inv_count[] {1,     4,     30,    158,    757,    2830,  8774,
 #define DD // distinguish draws (ultra) //comment or uncomment
 
 //#define STONE_DIFF //value of sectors is the stone difference (otherwise, get
-//values from the .secval file) //comment or uncomment
+// values from the .secval file) //comment or uncomment
 
 //-------------------------------------
 

@@ -20,7 +20,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #pragma once
 
 void init_sym_lookuptables();
@@ -28,4 +27,4 @@ void init_sym_lookuptables();
 board sym24(int op, board a);
 board sym48(int op, board a);
 
-int inv[]; //ezt at lehet irni extern-re talan???
+int inv[]; // ezt at lehet irni extern-re talan???

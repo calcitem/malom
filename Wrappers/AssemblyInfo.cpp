@@ -16,7 +16,8 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyConfigurationAttribute("")];
 [assembly:AssemblyCompanyAttribute("")];
 [assembly:AssemblyProductAttribute("Malom")];
-[assembly:AssemblyCopyrightAttribute("Copyright (C) 2007-2014  Gabor E. Gevay, Gabor Danner")];
+[assembly:AssemblyCopyrightAttribute("Copyright (C) 2007-2014  Gabor E. Gevay, "
+                                     "Gabor Danner")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
 
@@ -28,8 +29,8 @@ using namespace System::Security::Permissions;
 //      Build Number
 //      Revision
 //
-// You can specify all the value or you can default the Revision and Build Numbers
-// by using the '*' as shown below:
+// You can specify all the value or you can default the Revision and Build
+// Numbers by using the '*' as shown below:
 
 [assembly:AssemblyVersionAttribute("1.0.*")];
 
@@ -37,5 +38,6 @@ using namespace System::Security::Permissions;
 
 [assembly:CLSCompliantAttribute(true)];
 
-//erre azt irta a VS2013, hogy obsolete
-//[assembly:SecurityPermission(SecurityAction::RequestMinimum, UnmanagedCode = true)];
+// erre azt irta a VS2013, hogy obsolete
+//[assembly:SecurityPermission(SecurityAction::RequestMinimum, UnmanagedCode =
+// true)];

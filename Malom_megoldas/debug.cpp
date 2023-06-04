@@ -20,82 +20,82 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "stdafx.h"
 
 #include "common.h"
 #include "debug.h"
 
+#pragma managed(push, off)
+const char *toclp(board b)
+{
+    board mask = 1;
+    vector<int> kit(24, -1);
+    for (int i = 0; i < 24; i++) {
+        if ((mask << i) & b)
+            kit[i] = 0;
+    }
+    for (int i = 24; i < 48; i++) {
+        if ((mask << i) & b)
+            kit[i - 24] = 1;
+    }
 
-#pragma managed(push,off)
-const char* toclp(board b){
-	board mask=1;
-	vector<int> kit(24,-1);
-	for(int i=0; i<24; i++){
-		if((mask<<i)&b)
-			kit[i]=0;
-	}
-	for(int i=24; i<48; i++){
-		if((mask<<i)&b)
-			kit[i-24]=1;
-	}
+    stringstream ss;
+    for (int i = 0; i < 24; i++)
+        ss << kit[i] << ",";
+    // ss<<"0,0,0,2,9,9,3,3,False,0,0,malom";
+    // ss<<"0,0,0,2,9,9,3,3,False,60,-1000,0,3,malom2";
+    ss << "0,0,0,2,9,9," << __popcnt((unsigned int)(b & mask24)) << ","
+       << __popcnt((unsigned int)((b & (mask24 << 24)) >> 24))
+       << ",False,60,-1000,0,3,malom2";
 
-	stringstream ss;
-	for(int i=0; i<24; i++)
-		ss<<kit[i]<<",";
-	//ss<<"0,0,0,2,9,9,3,3,False,0,0,malom";
-	//ss<<"0,0,0,2,9,9,3,3,False,60,-1000,0,3,malom2";
-	ss<<"0,0,0,2,9,9,"<<__popcnt((unsigned int)(b&mask24))<<","<<__popcnt((unsigned int)((b&(mask24<<24))>>24))<<",False,60,-1000,0,3,malom2";
-
-	char *ret=new char[1024];
-	strcpy_s(ret,1024,ss.str().c_str());
-	return ret;
+    char *ret = new char[1024];
+    strcpy_s(ret, 1024, ss.str().c_str());
+    return ret;
 }
 #pragma managed(pop)
 
+string toclp2(board b)
+{
+    board mask = 1;
+    vector<int> kit(24, -1);
+    for (int i = 0; i < 24; i++) {
+        if ((mask << i) & b)
+            kit[i] = 0;
+    }
+    for (int i = 24; i < 48; i++) {
+        if ((mask << i) & b)
+            kit[i - 24] = 1;
+    }
 
+    stringstream ss;
+    for (int i = 0; i < 24; i++)
+        ss << kit[i] << ",";
+    // ss<<"0,0,0,2,9,9,3,3,False,0,0,malom";
+    ss << "0,0,0,2,9,9,3,3,False,60,-1000,0,3,malom2";
 
-
-string toclp2(board b){
-	board mask=1;
-	vector<int> kit(24,-1);
-	for(int i=0; i<24; i++){
-		if((mask<<i)&b)
-			kit[i]=0;
-	}
-	for(int i=24; i<48; i++){
-		if((mask<<i)&b)
-			kit[i-24]=1;
-	}
-
-	stringstream ss;
-	for(int i=0; i<24; i++)
-		ss<<kit[i]<<",";
-	//ss<<"0,0,0,2,9,9,3,3,False,0,0,malom";
-	ss<<"0,0,0,2,9,9,3,3,False,60,-1000,0,3,malom2";
-
-	return ss.str();
+    return ss.str();
 }
 
-string toclp3(board b, id id){
-	board mask=1;
-	vector<int> kit(24,-1);
-	for(int i=0; i<24; i++){
-		if((mask<<i)&b)
-			kit[i]=0;
-	}
-	for(int i=24; i<48; i++){
-		if((mask<<i)&b)
-			kit[i-24]=1;
-	}
+string toclp3(board b, id id)
+{
+    board mask = 1;
+    vector<int> kit(24, -1);
+    for (int i = 0; i < 24; i++) {
+        if ((mask << i) & b)
+            kit[i] = 0;
+    }
+    for (int i = 24; i < 48; i++) {
+        if ((mask << i) & b)
+            kit[i - 24] = 1;
+    }
 
-	stringstream ss;
-	for(int i=0; i<24; i++)
-		ss<<kit[i]<<",";
+    stringstream ss;
+    for (int i = 0; i < 24; i++)
+        ss << kit[i] << ",";
 
-	ss << "0,0,0," << (id.WF ? 1 : 2) << "," << max_ksz - id.WF << "," << max_ksz - id.BF << "," << id.W << "," << id.B << ",False,60,-1000,0,3,malom2";
+    ss << "0,0,0," << (id.WF ? 1 : 2) << "," << max_ksz - id.WF << ","
+       << max_ksz - id.BF << "," << id.W << "," << id.B
+       << ",False,60,-1000,0,3,malom2";
 
-	return ss.str();
+    return ss.str();
 }
-
-

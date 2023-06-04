@@ -202,8 +202,8 @@ void init_wu_graph()
     }
 
     for (auto it = wus.begin(); it != wus.end(); ++it) { //(nem baj, hogy
-                                                         //ketszer megyunk a
-                                                         //twineken)
+                                                         // ketszer megyunk a
+                                                         // twineken)
         auto &wu = *(it->second);
 
         add_adj(wu, wu.id);

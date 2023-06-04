@@ -20,7 +20,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #pragma once
 
 #include "common.h"
@@ -29,5 +28,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 void solve(id id);
 
-
-extern vector<Sector*> main_secs;
+extern vector<Sector *> main_secs;

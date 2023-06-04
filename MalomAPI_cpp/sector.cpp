@@ -499,8 +499,8 @@ void Sector::init()
                 ,c));*/
 
                 set_eval(h, eval_elem2 {0}); //(count) ezt a 0-t fogja
-                                             //novelgetni a forditott
-                                             //gyerekszamolas
+                                             // novelgetni a forditott
+                                             // gyerekszamolas
             }
         }
     }

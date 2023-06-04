@@ -163,7 +163,7 @@ Hash::Hash(int W, int B, Sector *s)
 
     // for(int w=(1<<W)-1; w<1<<24; w=next_choose(w))
     //	f_inv_lookup[f_lookup[w]]=w; //ez igy nem jo, ld. a fentebbi komment
-    //veget
+    // veget
     //
     vector<int> ws;
     for (int w = (1 << W) - 1; w < 1 << 24; w = next_choose(w))
@@ -246,7 +246,7 @@ board uncollapse(board a)
 
 // eredeti valtozat
 //~83 cc, ha egyesevel inkrementalgatjuk a hash-t (valszeg ilyenkor jo a branch
-//predicition, mivel hasonlitanak egymashoz az allasok)
+// predicition, mivel hasonlitanak egymashoz az allasok)
 //__declspec(noinline)
 #ifdef WRAPPER
 int collapse(board a)
