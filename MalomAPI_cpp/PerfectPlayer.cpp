@@ -68,7 +68,7 @@ std::map<Wrappers::WID, Wrappers::WSector> Sectors::getSectors()
                             // std::cout << "Looking for database file " <<
                             // fname << std::endl;
                             Wrappers::WID _id(w, b, wf, bf);
-                            std::ifstream file(sec_val_path + "/" + fname);
+                            std::ifstream file(sec_val_path + "\\" + fname);
                             if (file.good()) {
                                 sectors.emplace(_id, Wrappers::WSector(_id));
                             }

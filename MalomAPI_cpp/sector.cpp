@@ -55,9 +55,8 @@ Sector::Sector(::id id)
     , sid((char)sector_objs.size())
     , wms(-1)
 #endif
-// TODO: Why should undef WRAPPER here?
 #ifdef WRAPPER
-//,f(nullptr)
+,f(nullptr)
 #endif
 {
     sector_objs.push_back(this);
@@ -117,7 +116,7 @@ void Sector::read_em_set(FILE *f)
     auto last_update = std::chrono::steady_clock::now(); // Record the last
                                                          // update time
 
-    int em_set_size;
+    int em_set_size = 0;
     fread(&em_set_size, 4, 1, f);
     for (int i = 0; i < em_set_size; i++) {
         int e[2];
@@ -542,7 +541,11 @@ void Sector::allocate_hash()
 
 #ifdef WRAPPER
     if (!f) {
-        fopen_s(&f, fname, "rb"); // the vb code has checked that it exists
+        std::string filename = std::string(fname);
+        filename = sec_val_path + "\\" + filename;
+        
+        fopen_s(&f, filename.c_str(), "rb"); // the vb code has checked that it
+                                            // exists
         read_header(f);
     }
     fseek(f, header_size + eval_size, SEEK_SET);

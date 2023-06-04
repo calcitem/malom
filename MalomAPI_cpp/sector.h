@@ -67,8 +67,9 @@ class Sector
 
     map<int, int> em_set;
 
-#ifdef WRAPPER
-    // FILE* f { nullptr };
+// TODO:
+#if 1
+    FILE* f { nullptr };
 #endif
 
 #ifdef DD
@@ -81,7 +82,10 @@ class Sector
     void read_em_set(FILE *f);
 
 public:
-    int W, B, WF, BF;
+    int W {0};
+    int B {0};
+    int WF {0};
+    int BF {0};
     id id;
 
     Sector(::id id);

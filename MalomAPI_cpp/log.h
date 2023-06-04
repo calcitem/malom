@@ -28,8 +28,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <string>
 
-// TODO: Why should define WRAPPER here?
-#ifdef WRAPPER
+// TODO: Revert
+#if 1
 struct Log
 { // ez azert nincs a masik agban, mert a wrapper projektben nincs benne a
   // log.cpp (de amugy semmi akadalya nem lenne belerakni)
@@ -44,7 +44,8 @@ struct Log
 template <typename... Args>
 void LOG(const char *format, Args... args)
 {
-#ifndef WRAPPER
+    // TODO: Revert
+#if 1
 #if defined(_WIN32)
     printf_s(format, args...);
     fflush(stdout);
