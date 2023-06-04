@@ -75,17 +75,17 @@ struct ExtMove {
 
 class Sectors {
 public:
-    static std::map<id, Wrappers::WSector> sectors;
+    static std::map<Wrappers::WID, Wrappers::WSector> sectors;
     static bool created;
 
-    static std::map<id, Wrappers::WSector> getSectors();
+    static std::map<Wrappers::WID, Wrappers::WSector> getSectors();
 
     static bool hasDatabase();
 };
 
 class PerfectPlayer : public Player {
 public:
-    std::map<id, Wrappers::WSector> secs;
+    std::map<Wrappers::WID, Wrappers::WSector> secs;
 
     PerfectPlayer();
 

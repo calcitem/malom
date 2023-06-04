@@ -64,7 +64,7 @@ namespace Controller
 
 		abstract class WuSec //vagy wu vagy sector
 		{
-			public id id;
+			public WID id;
 
 			public override string ToString() { return id.ToString(); }
 
@@ -79,7 +79,7 @@ namespace Controller
 			public bool Done;
 			public bool InProgress;
 
-			public Wu(id id, bool twine)
+			public Wu(WID id, bool twine)
 			{
 				this.id = id;
 				this.AdjT = new List<Wu>();
@@ -104,7 +104,7 @@ namespace Controller
 			public bool VerifDone, AnalyzeDone;
 			public bool VerifInProgress, AnalyzeInProgress;
 
-			public Sector(id id, Wu Wu)
+			public Sector(WID id, Wu Wu)
 			{
 				this.id = id;
 				this.Wu = Wu;
@@ -142,7 +142,7 @@ namespace Controller
 				SecList.Add(new Sector(w.id, w));
 				if (w.twine)
 				{
-					id nid = w.id;
+                    WID nid = w.id;
 					nid.negate();
 					SecList.Add(new Sector(nid, w));
 				}
@@ -151,7 +151,7 @@ namespace Controller
 
 		List<Wu> WuList = new List<Wu>();
 		List<Sector> SecList = new List<Sector>();
-		Dictionary<id, Wu> Wus = new Dictionary<id, Wu>();
+		Dictionary<WID, Wu> Wus = new Dictionary<WID, Wu>();
 
 
 		String DataDir = Directory.GetCurrentDirectory();
@@ -241,7 +241,7 @@ namespace Controller
 
 		}
 
-		HashSet<id> OwnInProgressIDs = new HashSet<id>();
+		HashSet<WID> OwnInProgressIDs = new HashSet<WID>();
 		Thread RunnerThread;
 
 		List<WuSec> GetStartables()

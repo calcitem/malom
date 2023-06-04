@@ -46,11 +46,10 @@
 
 class GameState;
 
+std::map<Wrappers::WID, Wrappers::WSector> Sectors::sectors;
 bool Sectors::created = false;
 
-std::map<id, Wrappers::WSector> Sectors::sectors;
-
-std::map<id, Wrappers::WSector> Sectors::getSectors()
+std::map<Wrappers::WID, Wrappers::WSector> Sectors::getSectors()
 {
     try {
         if (!created) {
@@ -63,7 +62,7 @@ std::map<id, Wrappers::WSector> Sectors::getSectors()
                         for (int bf = 0; bf <= Rules::maxKSZ; ++bf) {
                             std::string fname = Rules::variantName + "_" + std::to_string(w) + "_" + std::to_string(b) + "_" + std::to_string(wf) + "_" + std::to_string(bf) + ".sec" + Wrappers::Constants::fname_suffix;
                             // std::cout << "Looking for database file " << fname << std::endl;
-                            id _id(w, b, wf, bf);
+                            Wrappers::WID _id(w, b, wf, bf);
                             std::ifstream file(sec_val_path + "/" + fname);
                             if (file.good()) {
                                 sectors.emplace(_id, Wrappers::WSector(_id));
@@ -107,7 +106,7 @@ Wrappers::WSector* PerfectPlayer::getSec(GameState s)
         if (s.kle)
             return nullptr;
 
-        id id_val(s.stoneCount[0], s.stoneCount[1], Rules::maxKSZ - s.setStoneCount[0], Rules::maxKSZ - s.setStoneCount[1]);
+        Wrappers::WID id_val(s.stoneCount[0], s.stoneCount[1], Rules::maxKSZ - s.setStoneCount[0], Rules::maxKSZ - s.setStoneCount[1]);
 
         if (s.sideToMove == 1) {
             id_val.negate();
@@ -387,7 +386,7 @@ Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState s)
         std::lock_guard<std::mutex> lock(evalLock);
         assert(!s.kle); // Assuming s has a boolean member kle
 
-        id id(s.stoneCount[0], s.stoneCount[1], Rules::maxKSZ - s.setStoneCount[0], Rules::maxKSZ - s.setStoneCount[1]);
+        Wrappers::WID id(s.stoneCount[0], s.stoneCount[1], Rules::maxKSZ - s.setStoneCount[0], Rules::maxKSZ - s.setStoneCount[1]);
 
         if (futureKorongCount(s) < 3)
             return Wrappers::gui_eval_elem2::virt_loss_val();

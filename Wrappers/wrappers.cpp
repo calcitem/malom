@@ -75,7 +75,7 @@ Tuple<int, Wrappers::gui_eval_elem2>^ Wrappers::WSector::hash(board a){
 //}
 
 
-void Wrappers::id::negate(){
+void Wrappers::WID::negate(){
 	int t=W;
 	W=B;
 	B=t;
@@ -85,8 +85,8 @@ void Wrappers::id::negate(){
 	BF=t;
 }
 
-Wrappers::id Wrappers::id::operator-(id s){
-	id r = id(s);
+Wrappers::WID Wrappers::WID::operator-(WID s){
+	WID r = WID(s);
 	r.negate();
 	return r;
 }

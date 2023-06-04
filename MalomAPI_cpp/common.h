@@ -232,118 +232,97 @@ struct val {
 	val undo_negate(){ return val(-key1, key2 + 1); }
 };
 
-struct id{
-	int W,B,WF,BF;
-	id(int W, int B, int WF, int BF):W(W),B(B),WF(WF),BF(BF){}
-	id(){}
-
-	    // removed ::id constructor since standard C++ does not have it
-
-        id tonat()
+struct id {
+        int W, B, WF, BF;
+        id(int W, int B, int WF, int BF)
+            : W(W)
+            , B(B)
+            , WF(WF)
+            , BF(BF)
         {
-                        return id(W, B, WF, BF);
+        }
+        id() { }
+
+        static id null()
+        {
+                        return id { -1, -1, -1, -1 };
         }
 
-	static id null(){ return id{ -1, -1, -1, -1 }; }
-
-	void negate(){
-		swap(W,B);
-		swap(WF,BF);
-	}
-
-	id operator-() const {
-		id r=*this;
-		r.negate();
-		return r;
-	}
-
-	id operator-(id s)
+        void negate()
         {
-                id r = id(s);
-                r.negate();
-                return r;
+                        swap(W, B);
+                        swap(WF, BF);
         }
 
-	    // toString() replaced with a standard C++ function
-        std::string to_string()
+        id operator-() const
         {
-                return std::to_string(W) + "_" + std::to_string(B) + "_" + std::to_string(WF) + "_" + std::to_string(BF);
+                        id r = *this;
+                        r.negate();
+                        return r;
         }
 
-	bool eks() const {
-		return *this==-*this;
-	}
-
-	bool transient() const {
-		#if VARIANT==STANDARD || VARIANT==MORABARABA
-		return !(WF==0 && BF==0);
-		#else
-		return !(W!=0 && B!=0);
-		#endif
-	}
-
-	bool twine() const {
-		return !eks() && !transient();
-	}
-
-	string file_name(){
-		char b[255];
-		sprintf_s(b, "%s_%d_%d_%d_%d.sec%s", VARIANT_NAME, W, B, WF, BF, FNAME_SUFFIX);
-		string r=string(b);
-		return r;
-	}
-
-	bool operator<(const id &o) const {return make_pair(make_pair(W,B),make_pair(WF,BF)) < make_pair(make_pair(o.W,o.B),make_pair(o.WF,o.BF));}
-	bool operator>(const id &o) const {return make_pair(make_pair(W,B),make_pair(WF,BF)) > make_pair(make_pair(o.W,o.B),make_pair(o.WF,o.BF));}
-
-	bool operator==(const id &o) const {return W==o.W && B==o.B && WF==o.WF && BF==o.BF;}
-	bool operator!=(const id &o) const {return !(*this==o);}
-
-	struct Hash {
-                std::size_t operator()(const id& k) const
-                {
-                                return k.W | (k.B << 4) | (k.WF << 8) | (k.BF << 12);
-                }
-        };
-
-	std::unordered_map<id, int, Hash> sector_sizes;
-
-	int size()
-    {
-            auto tn = tonat();
-            if (sector_sizes.count(tn) == 0) {
-                            sector_sizes[tn] = (int)nCr(24 - W, B) * f_inv_count[W];
-            }
-            return sector_sizes[tn];
-    }
-
-
-
-	private:
-        static int factorial(int n)
+        bool eks() const
         {
-                return (n == 0) ? 1 : n * factorial(n - 1);
+                        return *this == -*this;
         }
 
-        static int nCr(int n, int r)
+        bool transient() const
         {
-                return factorial(n) / (factorial(r) * factorial(n - r));
+// VARIANT, STANDARD, MORABARABA, and VARIANT_NAME need to be defined
+#if VARIANT == STANDARD || VARIANT == MORABARABA
+                        return !(WF == 0 && BF == 0);
+#else
+            return !(W != 0 && B != 0);
+#endif
+        }
+
+        bool twine() const
+        {
+                        return !eks() && !transient();
+        }
+
+        string file_name()
+        {
+                        char b[255];
+                        sprintf(b, "%s_%d_%d_%d_%d.sec", VARIANT_NAME, W, B, WF, BF);
+                        return string(b);
+        }
+ 
+		bool operator<(const id& other) const
+        {
+                        return std::tie(W, B, WF, BF) < std::tie(other.W, other.B, other.WF, other.BF);
+        }
+
+        bool operator>(const id& other) const
+        {
+                        return std::tie(W, B, WF, BF) > std::tie(other.W, other.B, other.WF, other.BF);
+        }
+
+        bool operator==(const id& other) const
+        {
+                        return std::tie(W, B, WF, BF) == std::tie(other.W, other.B, other.WF, other.BF);
+        }
+
+        bool operator!=(const id& other) const
+        {
+                        return !(*this == other);
+        }
+
+        string to_string()
+        {
+                        char buf[255];
+                        sprintf(buf, "%s_%d_%d_%d_%d", VARIANT_NAME, W, B, WF, BF);
+                        return string(buf);
         }
 };
 
-// Define a std::hash specialisation for the id structure to make it compatible with standard library interfaces.
-namespace std {
 template <>
 struct hash<id> {
         size_t operator()(const id& k) const
         {
-                return k.W | (k.B << 4) | (k.WF << 8) | (k.BF << 12);
+                        return k.W | (k.B << 4) | (k.WF << 8) | (k.BF << 12);
         }
 };
-}
-
-// Now you can use id::Hash as the hash function.
-extern std::unordered_map<id, int, id::Hash> sector_sizes;
 
 //#ifndef WRAPPER
 //	#define WRAPPER

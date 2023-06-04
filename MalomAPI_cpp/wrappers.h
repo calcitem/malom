@@ -41,15 +41,78 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-
-
 namespace Wrappers {
 
 class WSector;
 
-#include <cmath> // for factorial function
-#include <string>
-#include <unordered_map>
+extern unordered_map<id, int> sector_sizes;
+
+struct WID {
+    int W, B, WF, BF;
+    WID(int W, int B, int WF, int BF)
+        : W(W)
+        , B(B)
+        , WF(WF)
+        , BF(BF)
+    {
+    }
+    WID(id id)
+        : W(id.W)
+        , B(id.B)
+        , WF(id.WF)
+        , BF(id.BF)
+    {
+    }
+    id tonat() { return id(W, B, WF, BF); }
+    void negate();
+    WID operator-(WID s);
+
+    string ToString()
+    {
+        return this->tonat().to_string();
+    }
+
+    int GetHashCode()
+    {
+        return (W << 0) | (B << 4) | (WF << 8) | (BF << 12);
+    }
+
+private:
+    static int64_t factorial(int n)
+    {
+        if (n == 0)
+            return 1;
+        else
+            return n * factorial(n - 1);
+    }
+
+    static int64_t nCr(int n, int r)
+    {
+        return factorial(n) / (factorial(r) * factorial(n - r));
+    }
+
+public:
+    map<id, int> sector_sizes;
+    int size()
+    {
+        auto tn = tonat();
+        if (sector_sizes.count(tn) == 0) {
+            sector_sizes[tn] = static_cast<int>(nCr(24 - W, B)) * f_inv_count[W]; // f_inv_count must be defined somewhere
+        }
+        return sector_sizes[tn];
+    }
+
+    bool operator==(const WID& other) const
+    {
+        return W == other.W && B == other.B && WF == other.WF && BF == other.BF;
+    }
+
+    bool operator<(const WID& other) const
+    {
+        return std::tie(W, B, WF, BF) < std::tie(other.W, other.B, other.WF, other.BF);
+    }
+};
+
 
 // Note: Assuming 'board' and 'sec_val' are defined elsewhere in your code
 
@@ -79,7 +142,7 @@ struct gui_eval_elem2; // Assuming this struct is defined elsewhere
 class WSector {
 public:
     ::Sector* s;
-    WSector(id id)
+    WSector(WID id)
         : s(new ::Sector(id.tonat()))
     {
     }
@@ -225,23 +288,23 @@ public:
 
 class Nwu {
 public:
-    static std::vector<id> WuIds;
+    static std::vector<WID> WuIds;
     static void initWuGraph()
     {
         init_sector_graph();
-        WuIds = std::vector<id>();
+        WuIds = std::vector<WID>();
         for (auto it = wu_ids.begin(); it != wu_ids.end(); ++it)
-            WuIds.push_back(id(*it));
+            WuIds.push_back(WID(*it));
     }
-    static std::vector<id> wuGraphT(id u)
+    static std::vector<WID> wuGraphT(WID u)
     {
-        auto r = std::vector<id>();
+        auto r = std::vector<WID>();
         wu* w = wus[u.tonat()];
         for (auto it = w->parents.begin(); it != w->parents.end(); ++it)
-            r.push_back(id((*it)->id));
+            r.push_back(WID((*it)->id));
         return r;
     }
-    static bool twine(id w)
+    static bool twine(WID w)
     {
         return wus[w.tonat()]->twine;
     }

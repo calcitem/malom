@@ -23,11 +23,11 @@ Imports System.IO
 Imports Wrappers
 
 Public Class Sectors
-    Public Shared sectors As New Dictionary(Of id, WSector)
+    Public Shared sectors As New Dictionary(Of WID, WSector)
     Shared created As Boolean = False
 
     <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute>
-    Public Shared Function getsectors() As Dictionary(Of id, WSector)
+    Public Shared Function getsectors() As Dictionary(Of WID, WSector)
         Try
 
             If Not created Then
@@ -41,7 +41,7 @@ Public Class Sectors
                             For bf = 0 To Rules.MaxKSZ
                                 Dim fname = String.Format(Rules.VariantName & "_{0}_{1}_{2}_{3}.sec" & Constants.Fname_suffix, w, b, wf, bf)
                                 'Console.WriteLine("Looking for database file " & fname)
-                                Dim id As New id(w, b, wf, bf)
+                                Dim id As New WID(w, b, wf, bf)
                                 If File.Exists(fname) Then
                                     sectors(id) = New WSector(id)
                                 End If
@@ -71,7 +71,7 @@ End Class
 Public Class PerfectPlayer
     Inherits Player
 
-    Dim secs As New Dictionary(Of id, WSector)
+    Dim secs As New Dictionary(Of WID, WSector)
 
     Public Sub New()
         Debug.Assert(Sectors.HasDatabase)
@@ -91,7 +91,7 @@ Public Class PerfectPlayer
         Try
             If s.KLE Then Return Nothing
 
-            Dim id As New id(s.StoneCount(0), s.StoneCount(1), Rules.MaxKSZ - s.SetStoneCount(0), Rules.MaxKSZ - s.SetStoneCount(1))
+            Dim id As New WID(s.StoneCount(0), s.StoneCount(1), Rules.MaxKSZ - s.SetStoneCount(0), Rules.MaxKSZ - s.SetStoneCount(1))
 
             If s.SideToMove = 1 Then
                 id.negate()
@@ -368,7 +368,7 @@ Public Class PerfectPlayer
         Try
             SyncLock EvalLock 'ez azert kell, mert ha mindket jatekos hivogatja (az egyik esetleg OppTime), akkor a hash objektumokkal gond lehetne a dinamikus cserelgetes miatt
                 Debug.Assert(Not s.KLE)
-                Dim id As New id(s.StoneCount(0), s.StoneCount(1), Rules.MaxKSZ - s.SetStoneCount(0), Rules.MaxKSZ - s.SetStoneCount(1))
+                Dim id As New WID(s.StoneCount(0), s.StoneCount(1), Rules.MaxKSZ - s.SetStoneCount(0), Rules.MaxKSZ - s.SetStoneCount(1))
 
                 If FutureKorongCount(s) < 3 Then Return gui_eval_elem2.virt_loss_val
 

@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "wrappers.h"
 
+unordered_map<id, int> sector_sizes;
 
 // This manages the lookuptables of the hash function: it keeps them in memory for a few most recently accessed sectors.
 std::pair<int, Wrappers::gui_eval_elem2> Wrappers::WSector::hash(board a)
@@ -59,4 +60,31 @@ std::pair<int, Wrappers::gui_eval_elem2> Wrappers::WSector::hash(board a)
 
     auto e = s->hash->hash(a);
     return std::make_pair(e.first, Wrappers::gui_eval_elem2(e.second, s));
+}
+
+void Wrappers::WID::negate()
+{
+    int t = W;
+    W = B;
+    B = t;
+
+    t = WF;
+    WF = BF;
+    BF = t;
+}
+
+#if 0
+Wrappers::WID Wrappers::WID::operator-(Wrappers::WID s)
+{
+    WID r = WID(s);
+    r.negate();
+    return r;
+}
+#endif
+
+Wrappers::WID operator-(Wrappers::WID s)
+{
+    id r = s.tonat();
+    r.negate();
+    return Wrappers::WID(r);
 }

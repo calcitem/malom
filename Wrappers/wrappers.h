@@ -43,14 +43,14 @@ namespace Wrappers {
 	unordered_map<id, int> sector_sizes;
 	static int f_inv_count[] { 1, 4, 30, 158, 757, 2830, 8774, 22188, 46879, 82880, 124124, 157668, 170854 };
 
-	public value struct id{
+	public value struct WID{
 		int W,B,WF,BF;
-		id(int W, int B, int WF, int BF):W(W),B(B),WF(WF),BF(BF){}
+		WID(int W, int B, int WF, int BF):W(W),B(B),WF(WF),BF(BF){}
 		//id(id^ id):W(id->W),B(id->B),WF(id->WF),BF(id->BF){}
-		id(::id id):W(id.W),B(id.B),WF(id.WF),BF(id.BF){}
+		WID(::id id):W(id.W),B(id.B),WF(id.WF),BF(id.BF){}
 		::id tonat(){return ::id(W,B,WF,BF);}
 		void negate();
-		static id operator-(id s);
+		static WID operator-(WID s);
 		//virtual String^ ToString() override {return W.ToString()+"_"+B.ToString()+"_"+WF.ToString()+"_"+BF.ToString();}
 		virtual String^ ToString() override {string str=this->tonat().to_string(); return gcnew String(str.c_str());}
 		//String^ FileName(){return gcnew String(::id(W,B,WF,BF).file_name().c_str());}
@@ -91,7 +91,7 @@ namespace Wrappers {
 	public ref class WSector {
 	public:
 		::Sector *s;
-		WSector(id id) : s(new ::Sector(id.tonat())) {}
+		WSector(WID id) : s(new ::Sector(id.tonat())) {}
 
 		Tuple<int, gui_eval_elem2>^ hash(board a);
 
@@ -240,21 +240,21 @@ namespace Wrappers {
 
 	public ref class Nwu abstract sealed {
 	public:
-		static List<id>^ WuIds;
+		static List<WID>^ WuIds;
 		static void InitWuGraph(){
 			init_sector_graph();
-			WuIds=gcnew List<id>();
+			WuIds=gcnew List<WID>();
 			for(auto it=wu_ids.begin(); it!=wu_ids.end(); ++it)
-				WuIds->Add(id(*it));
+				WuIds->Add(WID(*it));
 		}
-		static List<id>^ WuGraphT(id u){
-			auto r=gcnew List<id>();
+		static List<WID>^ WuGraphT(WID u){
+			auto r=gcnew List<WID>();
 			wu *w=wus[u.tonat()];
 			for(auto it=w->parents.begin(); it!=w->parents.end(); ++it)
-				r->Add(id((*it)->id));
+				r->Add(WID((*it)->id));
 			return r;
 		}
-		static bool Twine(id w){
+		static bool Twine(WID w){
 			return wus[w.tonat()]->twine;
 		}
 	};
