@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.vcxproj": "cpp",
+        "locale": "cpp"
+    }
+}
