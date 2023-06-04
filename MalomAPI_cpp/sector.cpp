@@ -20,6 +20,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cstdio>
+#include <chrono>
 
 #include "common.h"
 #include "hash.h"
@@ -95,14 +97,38 @@ void Sector::write_header(FILE *f){
 #endif
 }
 
-void Sector::read_em_set(FILE *f){
-	int em_set_size;
-	fread(&em_set_size,4,1,f);
-	for(int i=0; i<em_set_size; i++){
-		int e[2];
-		fread(e,4,2,f);
-		em_set[e[0]]=e[1];
-	}
+void Sector::read_em_set(FILE* f)
+{
+        auto start = std::chrono::steady_clock::now(); // 记录开始时间
+
+        int em_set_size;
+        fread(&em_set_size, 4, 1, f);
+        for (int i = 0; i < em_set_size; i++) {
+            int e[2];
+            fread(e, 4, 2, f);
+            em_set[e[0]] = e[1];
+
+            // Calculate memory usage
+            float memoryUsageMB = ((i + 1) * 8.0f) / (1024 * 1024); // MB
+
+            // Calculate elapsed time
+            auto now = std::chrono::steady_clock::now();
+            auto elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>(now - start).count();
+            int hours = elapsed_seconds / 3600;
+            int minutes = (elapsed_seconds % 3600) / 60;
+            int seconds = elapsed_seconds % 60;
+
+            if (memoryUsageMB < 1024) {
+                printf("\rProgress: %.2f%%, Memory Usage: %.2fMB, Elapsed time: %02d:%02d:%02d",
+                    ((float)(i + 1) / em_set_size) * 100, memoryUsageMB, hours, minutes, seconds);
+            } else {
+                printf("\rProgress: %.2f%%, Memory Usage: %.2fGB, Elapsed time: %02d:%02d:%02d",
+                    ((float)(i + 1) / em_set_size) * 100, memoryUsageMB / 1024, hours, minutes, seconds);
+            }
+
+            fflush(stdout); // Flush the output buffer to immediately update the output
+        }
+        printf("\n"); // Print a new line after the loop ends to avoid subsequent outputs on the same line
 }
 
 #ifndef WRAPPER
