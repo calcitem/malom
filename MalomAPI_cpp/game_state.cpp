@@ -131,6 +131,8 @@ void GameState::makeMove(Move *M)
         }
     }
 
+    delete M;
+
     checkInvariants();
 }
 

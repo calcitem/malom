@@ -205,9 +205,9 @@ void Hash::check_hash_init_consistency()
 
 Hash::~Hash()
 {
-    delete f_inv_lookup;
-    delete g_lookup;
-    delete g_inv_lookup;
+    delete[] g_lookup;
+    delete[] f_inv_lookup;
+    delete[] g_inv_lookup;
 }
 
 pair<int, eval_elem2> Hash::hash(board a)
