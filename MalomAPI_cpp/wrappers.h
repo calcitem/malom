@@ -1,6 +1,7 @@
 /*
 Malom, a Nine Men's Morris (and variants) player and solver program.
 Copyright(C) 2007-2016  Gabor E. Gevay, Gabor Danner
+Copyright (C) 2023 The Sanmill developers (see AUTHORS file)
 
 See our webpage (and the paper linked from there):
 http://compalg.inf.elte.hu/~ggevay/mills/index.php
@@ -24,10 +25,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define WRAPPER_H_INCLUDED
 
 #include "common.h"
-#include "debug.h"
 #include "hash.h"
-#include "sector_graph.h"
 #include "symmetries.h"
+#include "debug.h"
+#include "sector.h"
+#include "sector_graph.h"
 
 #include <cassert>
 #include <cmath> // for factorial function
@@ -46,6 +48,8 @@ namespace Wrappers {
 class WSector;
 
 extern unordered_map<id, int> sector_sizes;
+static int f_inv_count[] {1,     4,     30,    158,    757,    2830,  8774,
+                          22188, 46879, 82880, 124124, 157668, 170854};
 
 struct WID
 {
@@ -62,7 +66,7 @@ struct WID
         , WF(id.WF)
         , BF(id.BF)
     { }
-    id tonat() { return id(W, B, WF, BF); }
+    ::id tonat() { return ::id(W, B, WF, BF); }
     void negate();
     WID operator-(WID s);
 
@@ -85,14 +89,12 @@ private:
     }
 
 public:
-    map<id, int> sector_sizes;
     int size()
     {
         auto tn = tonat();
         if (sector_sizes.count(tn) == 0) {
             sector_sizes[tn] = static_cast<int>(nCr(24 - W, B)) *
-                               f_inv_count[W]; // f_inv_count must be defined
-                                               // somewhere
+                               f_inv_count[W];
         }
         return sector_sizes[tn];
     }
@@ -109,8 +111,6 @@ public:
     }
 };
 
-// Note: Assuming 'board' and 'sec_val' are defined elsewhere in your code
-
 struct eval_elem
 {
     enum class cas { val, count, sym };
@@ -121,15 +121,13 @@ struct eval_elem
         : c(c)
         , x(x)
     { }
-
-    // Assuming ::eval_elem is a type defined in your code
     eval_elem(::eval_elem e)
         : c(static_cast<cas>(e.c))
         , x(e.x)
     { }
 };
 
-struct gui_eval_elem2; // Assuming this struct is defined elsewhere
+struct gui_eval_elem2;
 
 class WSector
 {
@@ -147,23 +145,27 @@ public:
 struct gui_eval_elem2
 {
 private:
+    // azert nem lehet val, mert az nem tarolhat countot (a ctoranak az assertje
+    // szerint)
     sec_val key1;
     int key2;
-    Sector *s;
+    ::Sector *s; // ez akkor null, ha virtualis nyeres/vesztes vagy KLE
+
     enum class Cas { Val, Count };
 
     eval_elem2 to_eval_elem2() const { return eval_elem2 {key1, key2}; }
 
 public:
+    // A key1 nezopontja az s. Viszont ha az s null, akkor meg a
+    // virt_unique_sec_val.
     gui_eval_elem2(sec_val key1, int key2, Sector *s)
         : key1 {key1}
         , key2 {key2}
         , s {s}
     { }
-    gui_eval_elem2(::eval_elem2 e, Sector *s)
+    gui_eval_elem2(::eval_elem2 e, ::Sector *s)
         : gui_eval_elem2 {e.key1, e.key2, s}
     { }
-    inline static const bool ignore_DD = false;
 
     gui_eval_elem2 undo_negate(WSector *s)
     {
@@ -171,27 +173,31 @@ public:
             (s ? s->sval() : virt_unique_sec_val()) +
             (this->s ? this->s->sval : virt_unique_sec_val()));
         a.key1 *= -1;
-        if (s)
+        if (s) // ha s null, akkor KLE-be negalunk
             a.key2++;
         return gui_eval_elem2(a, s ? s->s : nullptr);
     }
 
+    inline static const bool ignore_DD = false;
+
+private:
     static sec_val abs_min_value()
     {
         assert(::virt_loss_val != 0);
         return ::virt_loss_val - 2;
     }
-
     static void drop_DD(eval_elem2 &e)
     {
+        // absolute viewpoint
         assert(e.key1 >= abs_min_value());
         assert(e.key1 <= ::virt_win_val);
-        assert(e.key1 != ::virt_loss_val - 1);
+        assert(e.key1 != ::virt_loss_val - 1); // kiszedheto
         if (e.key1 != virt_win_val && e.key1 != ::virt_loss_val &&
             e.key1 != abs_min_value())
             e.key1 = 0;
     }
 
+public:
     int compare(const gui_eval_elem2 &o) const
     {
         assert(s == o.s);
@@ -243,7 +249,9 @@ public:
     }
 
     static gui_eval_elem2 virt_loss_val()
-    {
+    { // vigyazat: csak KLE-ben mukodik jol, mert ugye ahhoz, hogy jol mukodjon,
+      // valami ertelmeset kene kivonni, de mi mindig virt_unique_sec_val-t
+      // vonunk ki
         assert(::virt_loss_val);
         return gui_eval_elem2 {
             static_cast<sec_val>(::virt_loss_val - virt_unique_sec_val()), 0,
@@ -251,7 +259,7 @@ public:
     }
 
     static sec_val virt_unique_sec_val()
-    {
+    { // azert kell, hogy a KLE-s allasokban ne resetelodjon a tavolsag
         assert(::virt_loss_val);
 #ifdef DD
         return ::virt_loss_val - 1;
@@ -276,7 +284,7 @@ public:
 
         if (key1 == 0)
 #ifdef DD
-            s2 = "C";
+            s2 = "C"; // az akey2 itt mindig 0
 #else
             s2 = "";
 #endif

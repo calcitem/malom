@@ -27,4 +27,4 @@ void init_sym_lookuptables();
 board sym24(int op, board a);
 board sym48(int op, board a);
 
-int inv[]; // ezt at lehet irni extern-re talan???
+int inv[]; // can this be sent to extern???

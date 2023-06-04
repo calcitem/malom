@@ -28,18 +28,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class Hash
 {
-    int W, B; // ezeket cache-locality szempontbol talan erdemesebb lenne a nagy
-              // tombok utanra tenni
+    int W, B; // It might be worth to put these after the large arrays for cache
+              // locality reasons
 
-    int f_lookup[1 << 24];
-    char f_sym_lookup[1 << 24]; // atirva introl charra
-    int *f_inv_lookup;
-    int *g_lookup;
-    int *g_inv_lookup;
+    int f_lookup[1 << 24] {0};
+    char f_sym_lookup[1 << 24] {0}; // Converted from int to char
+    int *f_inv_lookup {nullptr};
+    int *g_lookup {nullptr};
+    int *g_inv_lookup {nullptr};
 
-    int f_count;
+    int f_count {0};
 
-    Sector *s;
+    Sector *s {nullptr};
 
 public:
     Hash(int W, int B, Sector *s);
@@ -47,7 +47,7 @@ public:
     pair<int, eval_elem2> hash(board a);
     board inv_hash(int h);
 
-    int hash_count;
+    int hash_count {0};
 
     unsigned short f_sym_lookup2[1 << 24]; ///
 

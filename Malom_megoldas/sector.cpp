@@ -27,6 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "sector.h"
 #include "symmetries.h"
 
+#include <chrono>
+
 Sector *sectors[max_ksz + 1][max_ksz + 1][max_ksz + 1][max_ksz + 1];
 
 vector<Sector *> sector_objs;
@@ -110,13 +112,67 @@ void Sector::write_header(FILE *f)
 
 void Sector::read_em_set(FILE *f)
 {
+    auto start = std::chrono::steady_clock::now(); // Record the start time
+    auto last_update = std::chrono::steady_clock::now(); // Record the last
+                                                         // update time
+
     int em_set_size;
     fread(&em_set_size, 4, 1, f);
     for (int i = 0; i < em_set_size; i++) {
         int e[2];
         fread(e, 4, 2, f);
         em_set[e[0]] = e[1];
+
+        auto now = std::chrono::steady_clock::now();
+        auto time_since_last_update =
+            std::chrono::duration_cast<std::chrono::seconds>(now - last_update)
+                .count();
+
+        // Only update the console every second
+        if (time_since_last_update >= 1) {
+            // Calculate memory usage
+            float memoryUsageMB = ((i + 1) * 8.0f) / (1024 * 1024); // MB
+
+            // Calculate elapsed time
+            auto elapsed_seconds =
+                std::chrono::duration_cast<std::chrono::seconds>(now - start)
+                    .count();
+            int hours = elapsed_seconds / 3600;
+            int minutes = (elapsed_seconds % 3600) / 60;
+            int seconds = elapsed_seconds % 60;
+
+            // Calculate remaining time
+            int remaining_iterations = em_set_size - (i + 1);
+            auto avg_seconds_per_iteration = elapsed_seconds / (float)(i + 1);
+            auto remaining_seconds = remaining_iterations *
+                                     avg_seconds_per_iteration;
+            int remaining_hours = remaining_seconds / 3600;
+            int remaining_minutes = ((unsigned int)remaining_seconds % 3600) /
+                                    60;
+            int remaining_secs = (unsigned int)remaining_seconds % 60;
+
+            if (memoryUsageMB < 1024) {
+                printf("\rProgress: %.2f%%, Memory Usage: %.2fMB, Elapsed "
+                       "time: %02d:%02d:%02d, Remaining time: %02d:%02d:%02d",
+                       ((float)(i + 1) / em_set_size) * 100, memoryUsageMB,
+                       hours, minutes, seconds, remaining_hours,
+                       remaining_minutes, remaining_secs);
+            } else {
+                printf("\rProgress: %.2f%%, Memory Usage: %.2fGB, Elapsed "
+                       "time: %02d:%02d:%02d, Remaining time: %02d:%02d:%02d",
+                       ((float)(i + 1) / em_set_size) * 100,
+                       memoryUsageMB / 1024, hours, minutes, seconds,
+                       remaining_hours, remaining_minutes, remaining_secs);
+            }
+
+            fflush(stdout); // Flush the output buffer to immediately update the
+                            // output
+
+            last_update = now;
+        }
     }
+    printf("\n"); // Print a new line after the loop ends to avoid subsequent
+                  // outputs on the same line
 }
 
 #ifndef WRAPPER

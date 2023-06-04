@@ -1,6 +1,7 @@
 /*
 Malom, a Nine Men's Morris (and variants) player and solver program.
 Copyright(C) 2007-2016  Gabor E. Gevay, Gabor Danner
+Copyright (C) 2023 The Sanmill developers (see AUTHORS file)
 
 See our webpage (and the paper linked from there):
 http://compalg.inf.elte.hu/~ggevay/mills/index.php
@@ -30,16 +31,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <unordered_map>
 
 using namespace std;
-
-// TODO: Need?
-//#define WRAPPER
-
-struct id;
-
-// extern std::unordered_map<id, int, Hash> sector_sizes;
-
-static int f_inv_count[] {1,     4,     30,    158,    757,    2830,  8774,
-                          22188, 46879, 82880, 124124, 157668, 170854};
 
 #define STANDARD 1
 #define MORABARABA 2
@@ -258,7 +249,6 @@ struct id
         , BF(BF)
     { }
     id() { }
-
     static id null() { return id {-1, -1, -1, -1}; }
 
     void negate()
@@ -278,7 +268,6 @@ struct id
 
     bool transient() const
     {
-// VARIANT, STANDARD, MORABARABA, and VARIANT_NAME need to be defined
 #if VARIANT == STANDARD || VARIANT == MORABARABA
         return !(WF == 0 && BF == 0);
 #else
@@ -294,37 +283,36 @@ struct id
     string file_name()
     {
         char b[255];
-        sprintf(b, "%s_%d_%d_%d_%d.sec", VARIANT_NAME, W, B, WF, BF);
-        return string(b);
+        sprintf_s(b, "%s_%d_%d_%d_%d.sec%s", VARIANT_NAME, W, B, WF, BF,
+                  FNAME_SUFFIX);
+        string r = string(b);
+        return r;
     }
 
-    bool operator<(const id &other) const
+    bool operator<(const id &o) const
     {
-        return std::tie(W, B, WF, BF) <
-               std::tie(other.W, other.B, other.WF, other.BF);
+        return make_pair(make_pair(W, B), make_pair(WF, BF)) <
+               make_pair(make_pair(o.W, o.B), make_pair(o.WF, o.BF));
+    }
+    bool operator>(const id &o) const
+    {
+        return make_pair(make_pair(W, B), make_pair(WF, BF)) >
+               make_pair(make_pair(o.W, o.B), make_pair(o.WF, o.BF));
     }
 
-    bool operator>(const id &other) const
+    bool operator==(const id &o) const
     {
-        return std::tie(W, B, WF, BF) >
-               std::tie(other.W, other.B, other.WF, other.BF);
+        return W == o.W && B == o.B && WF == o.WF && BF == o.BF;
     }
-
-    bool operator==(const id &other) const
+    bool operator!=(const id &o) const
     {
-        return std::tie(W, B, WF, BF) ==
-               std::tie(other.W, other.B, other.WF, other.BF);
-    }
-
-    bool operator!=(const id &other) const
-    {
-        return !(*this == other);
+        return !(*this == o);
     }
 
     string to_string()
     {
         char buf[255];
-        sprintf(buf, "%s_%d_%d_%d_%d", VARIANT_NAME, W, B, WF, BF);
+        sprintf_s(buf, "%s_%d_%d_%d_%d", VARIANT_NAME, W, B, WF, BF);
         return string(buf);
     }
 };

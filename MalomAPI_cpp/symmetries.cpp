@@ -1,6 +1,7 @@
 /*
 Malom, a Nine Men's Morris (and variants) player and solver program.
 Copyright(C) 2007-2016  Gabor E. Gevay, Gabor Danner
+Copyright (C) 2023 The Sanmill developers (see AUTHORS file)
 
 See our webpage (and the paper linked from there):
 http://compalg.inf.elte.hu/~ggevay/mills/index.php
@@ -20,8 +21,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "symmetries.h"
 #include "common.h"
+#include "symmetries.h"
 #include "symmetries_slow.h"
 
 // int (*slow[16])(int) = {id, rot90, rot180, rot270, tt_fuggoleges,

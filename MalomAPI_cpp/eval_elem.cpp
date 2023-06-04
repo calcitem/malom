@@ -1,6 +1,7 @@
 /*
 Malom, a Nine Men's Morris (and variants) player and solver program.
 Copyright(C) 2007-2016  Gabor E. Gevay, Gabor Danner
+Copyright (C) 2023 The Sanmill developers (see AUTHORS file)
 
 See our webpage (and the paper linked from there):
 http://compalg.inf.elte.hu/~ggevay/mills/index.php
@@ -238,3 +239,7 @@ bool eval_elem2::operator>=(const eval_elem2 &b) const
     auto &a = *this;
     return !(a < b);
 }
+
+// eval_elem2 eval_elem2::min_value(){
+//	return eval_elem2{ numeric_limits<sec_val>::min(), 0 };
+// }
