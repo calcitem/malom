@@ -22,6 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 
+using namespace std;
+
 template <class T>
 class auto_grow_vector : public vector<T>
 {

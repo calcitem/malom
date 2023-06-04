@@ -20,8 +20,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "sec_val.h"
 #include "stdafx.h"
+#include "sec_val.h"
 
 map<id, sec_val> sec_vals; // vigyazat: STONE_DIFF esetben vannak benne nagyon
                            // nem letezo szektorok is

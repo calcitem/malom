@@ -21,9 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "stdafx.h"
-
-#include "abstract_queue.h"
 #include "common.h"
+#include "abstract_queue.h"
 #include "retrograde.h"
 
 abstract_queue::abstract_queue()

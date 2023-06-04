@@ -21,10 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "stdafx.h"
-
+#include "common.h"
 #include "analyze.h"
 #include "auto_grow_vector.h"
-#include "common.h"
 #include "debug.h"
 #include "hash.h"
 #include "histogram.h"

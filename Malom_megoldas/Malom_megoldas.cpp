@@ -21,9 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "stdafx.h"
-
-#include "analyze.h"
 #include "common.h"
+#include "analyze.h"
 #include "hash.h"
 #include "movegen.h"
 #include "retrograde.h"

@@ -20,9 +20,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "common.h"
 #include "stdafx.h"
-
+#include "common.h"
 #include "hash.h"
 #include "movegen.h"
 #include "sector.h"
@@ -70,7 +69,7 @@ void verify(id main_id)
             for (int i = 0; i < num_chd; i++)
                 // a get_parents, get_chd, can_close_mill-nek illeszkedniuk kell
                 // egymashoz es a win_conditionhoz is pl. ld. std_can_close_mill
-                // elso sora, tovabba doc-ban "Nincs korong fönt problémák"
+                // elso sora, tovabba doc-ban "Nincs korong fé°Št problé–™é†Ÿ"
                 // szekcio
                 if (chd[i].s != nullptr) {
                     ma = max(ma, negate_eval_elem2(

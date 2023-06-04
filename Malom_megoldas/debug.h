@@ -22,6 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+#include "common.h"
+
 const char *toclp(board b);
 
 string toclp2(board b);

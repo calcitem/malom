@@ -22,8 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include "common.h"
 #include "stdafx.h"
+#include "common.h"
 
 extern map<id, sec_val> sec_vals;
 extern map<sec_val, id> inv_sec_vals;

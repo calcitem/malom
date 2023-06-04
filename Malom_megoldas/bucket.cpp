@@ -21,9 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "stdafx.h"
-
-#include "bucket.h"
 #include "common.h"
+#include "bucket.h"
 
 extern id run_params;
 string bucket_prefix()
