@@ -110,9 +110,10 @@ void GameState::makeMove(Move *M)
         lastIrrev = 0;
     }
 
-    if ((sk != nullptr || mk != nullptr) &&
-        Rules::malome((sk)->hov, *this) > -1 &&
-        stoneCount[1 - sideToMove] > 0) {
+    if ((sk != nullptr && Rules::malome(sk->hov, *this) > -1 &&
+         stoneCount[1 - sideToMove] > 0) ||
+        (mk != nullptr && Rules::malome(mk->hov, *this) > -1 &&
+         stoneCount[1 - sideToMove] > 0)) {
         kle = true;
     } else {
         sideToMove = 1 - sideToMove;
