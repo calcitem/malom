@@ -27,7 +27,7 @@
 
 std::vector<int> SetKorong::getMezok()
 {
-    return { hov };
+    return {hov};
 }
 
 std::string SetKorong::toString()
@@ -37,7 +37,7 @@ std::string SetKorong::toString()
 
 std::vector<int> MoveKorong::getMezok()
 {
-    return { hon, hov };
+    return {hon, hov};
 }
 
 std::string MoveKorong::toString()
@@ -47,7 +47,7 @@ std::string MoveKorong::toString()
 
 std::vector<int> LeveszKorong::getMezok()
 {
-    return { hon };
+    return {hon};
 }
 std::string LeveszKorong::toString()
 {

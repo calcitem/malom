@@ -20,34 +20,36 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #pragma once
 #include "common.h"
 
-#define HAS_SECTOR_GRAPH //(the Analyzer doesn't have the sector graph (init_sec_vals() has an ifdef for this))
+#define HAS_SECTOR_GRAPH //(the Analyzer doesn't have the sector graph
+                         //(init_sec_vals() has an ifdef for this))
 
-
-extern unordered_map<id, vector<id> > sector_graph_t;
-vector<id> graph_func(id u, bool elim_loops=true);
+extern unordered_map<id, vector<id>> sector_graph_t;
+vector<id> graph_func(id u, bool elim_loops = true);
 
 void init_sector_graph();
 
+struct wu
+{
+    id id;
+    bool twine;
+    set<wu *> parents;
+    int child_count;
 
-
-struct wu{
-	id id;
-	bool twine;
-	set<wu*> parents;
-	int child_count;
-
-	wu(::id id):id(id),twine(false),child_count(0){};
+    wu(::id id)
+        : id(id)
+        , twine(false)
+        , child_count(0) {};
 
 private:
-	wu(const wu &o){ assert(false); } //forbid copying
+    wu(const wu &o) { assert(false); } // forbid copying
 };
 
-extern unordered_map<id,wu*> wus;
+extern unordered_map<id, wu *> wus;
 
 extern vector<id> sector_list;
 
-extern set<id> wu_ids; //azok az id-k, amelyekre van olyan wu, aminek ez az id-je
+extern set<id> wu_ids; // azok az id-k, amelyekre van olyan wu, aminek ez az
+                       // id-je

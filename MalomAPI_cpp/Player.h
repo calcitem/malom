@@ -29,7 +29,8 @@
 #include "move.h"
 #include "rules.h"
 
-class Player {
+class Player
+{
 protected:
     Game *g; // Assuming Game is a pre-defined class
 
@@ -41,25 +42,28 @@ public:
     virtual void quit();
 
     // The object is informed that it is its turn to move
-    virtual void toMove(const GameState& s) = 0; // Assuming GameState is a pre-defined class
+    virtual void toMove(const GameState &s) = 0; // Assuming GameState is a
+                                                 // pre-defined class
 
     // Notifies about the opponent's move
-    virtual void followMove(Move*) { } // Assuming Object is a pre-defined class or built-in type
+    virtual void followMove(Move *) { } // Assuming Object is a pre-defined
+                                        // class or built-in type
 
     // The object is informed that it is the opponent's turn to move
-    virtual void oppToMove(const GameState&) { }
+    virtual void oppToMove(const GameState &) { }
 
     // Game is over
-    virtual void over(const GameState&) { }
+    virtual void over(const GameState &) { }
 
     // Cancel thinking
     virtual void cancelThinking() { }
 
     // Determine the opponent player
 protected:
-    Player* opponent()
+    Player *opponent()
     {
-        return (g->ply(0) == this) ? g->ply(1) : g->ply(0); // Assuming Game has a ply function
+        return (g->ply(0) == this) ? g->ply(1) : g->ply(0); // Assuming Game has
+                                                            // a ply function
     }
 };
 

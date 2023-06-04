@@ -22,13 +22,12 @@
 #ifndef MAIN_H_INCLUDED
 #define MAIN_H_INCLUDED
 
+#include <cassert>
 #include <list>
-#include <stdexcept>
 #include <sstream>
 #include <stdexcept>
-#include <vector>
-#include <cassert>
 #include <string>
+#include <vector>
 
 #include "PerfectPlayer.h"
 #include "Player.h"
@@ -36,26 +35,28 @@
 #include "rules.h"
 
 class Player; // forward declaration, implement this
-class Move; // forward declaration, implement this
+class Move;   // forward declaration, implement this
 
-class Game {
+class Game
+{
 private:
-    Player* _ply[2]; // players in the game
+    Player *_ply[2];              // players in the game
     std::list<GameState> history; // GameStates in this (and previous) games
-    std::list<GameState>::iterator current; // the node of the current GameState in history
+    std::list<GameState>::iterator current; // the node of the current GameState
+                                            // in history
 
 public:
-    GameState& s() const;
+    GameState &s() const;
 
-    Game(Player* p1, Player* p2);
+    Game(Player *p1, Player *p2);
 
-    Player** plys();
+    Player **plys();
 
-    Player* ply(int i) const;
+    Player *ply(int i) const;
 
-    void set_ply(int i, Player* p);
+    void set_ply(int i, Player *p);
 
-    void makeMove(Move* M);
+    void makeMove(Move *M);
 
     void applySetup(GameState toSet);
 

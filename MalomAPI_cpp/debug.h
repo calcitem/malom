@@ -20,7 +20,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef DEBUG_H_INCLUDED
 #define DEBUG_H_INCLUDED
 
@@ -28,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-const char* toclp(board b);
+const char *toclp(board b);
 
 string toclp2(board b);
 

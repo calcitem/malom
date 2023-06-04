@@ -36,7 +36,8 @@
 
 class Move; // forward declaration, implement this
 
-class GameState {
+class GameState
+{
 public:
     // The board (-1: empty, 0: white piece, 1: black piece)
     std::vector<int> T = std::vector<int>(24, -1);
@@ -54,39 +55,41 @@ public:
 
     GameState() { } // start of game
 
-    GameState(const GameState& s);
+    GameState(const GameState &s);
 
     int futureStoneCount(int p);
 
-    // Sets the state for Setup Mode: the placed stones are unchanged, but we switch to phase 2.
+    // Sets the state for Setup Mode: the placed stones are unchanged, but we
+    // switch to phase 2.
     void initSetup();
 
-    void makeMove(Move* M);
+    void makeMove(Move *M);
 
-    void checkValidMove(Move* M);
+    void checkValidMove(Move *M);
 
     void checkInvariants();
 
-    // Called when applying a free setup. It sets over and checks whether the position is valid. Returns "" if valid, reason str otherwise.
-    // Also called when pasting a position.
+    // Called when applying a free setup. It sets over and checks whether the
+    // position is valid. Returns "" if valid, reason str otherwise. Also called
+    // when pasting a position.
     std::string setOverAndCheckValidSetup();
 
     // to paste from clipboard
-    GameState(const std::string& s);
+    GameState(const std::string &s);
 
     // for clipboard
     std::string toString();
 };
 
-class InvalidGameStateException : public std::exception {
+class InvalidGameStateException : public std::exception
+{
 public:
     std::string mymsg;
-    InvalidGameStateException(const std::string& msg)
+    InvalidGameStateException(const std::string &msg)
         : mymsg(msg)
-    {
-    }
+    { }
 
-    virtual const char* what() const noexcept override;
+    virtual const char *what() const noexcept override;
 };
 
 #endif // GAME_STATE_H_INCLUDED

@@ -28,20 +28,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <set>
 #include <unordered_map>
 
-#define HAS_SECTOR_GRAPH //(the Analyzer doesn't have the sector graph (init_sec_vals() has an ifdef for this))
+#define HAS_SECTOR_GRAPH //(the Analyzer doesn't have the sector graph
+                         //(init_sec_vals() has an ifdef for this))
 
-
-extern unordered_map<id, vector<id> > sector_graph_t;
-vector<id> graph_func(id u, bool elim_loops=true);
+extern unordered_map<id, vector<id>> sector_graph_t;
+vector<id> graph_func(id u, bool elim_loops = true);
 
 void init_sector_graph();
 
-
-
-struct wu {
+struct wu
+{
     id id;
     bool twine;
-    set<wu*> parents;
+    set<wu *> parents;
     int child_count;
 
     wu(::id id)
@@ -49,15 +48,15 @@ struct wu {
         , twine(false)
         , child_count(0) {};
 
-    wu(const wu& o) = delete;
-    wu& operator=(const wu& o) = delete;
+    wu(const wu &o) = delete;
+    wu &operator=(const wu &o) = delete;
 };
 
-
-extern unordered_map<id,wu*> wus;
+extern unordered_map<id, wu *> wus;
 
 extern vector<id> sector_list;
 
-extern set<id> wu_ids; //azok az id-k, amelyekre van olyan wu, aminek ez az id-je
+extern set<id> wu_ids; // azok az id-k, amelyekre van olyan wu, aminek ez az
+                       // id-je
 
 #endif // SECTOR_GRAPH_H_INCLUDED

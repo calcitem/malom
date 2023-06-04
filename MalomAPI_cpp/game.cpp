@@ -34,16 +34,16 @@
 #include "move.h"
 #include "rules.h"
 
-class Player; // forward declaration, implement this
+class Player;    // forward declaration, implement this
 class GameState; // forward declaration, implement this
-class Move; // forward declaration, implement this
+class Move;      // forward declaration, implement this
 
-GameState& Game::s() const
+GameState &Game::s() const
 { // wrapper of current.value
     return *current;
 }
 
-Game::Game(Player* p1, Player* p2)
+Game::Game(Player *p1, Player *p2)
 {
     history.push_back(GameState());
     current = std::prev(history.end());
@@ -51,31 +51,32 @@ Game::Game(Player* p1, Player* p2)
     _ply[1] = p2;
 }
 
-Player** Game::plys()
+Player **Game::plys()
 {
     return _ply;
 }
 
-Player* Game::ply(int i) const
+Player *Game::ply(int i) const
 { // get players in the game
     return _ply[i];
 }
 
-void Game::set_ply(int i, Player* p)
+void Game::set_ply(int i, Player *p)
 { // set players in the game
     if (p == nullptr) {
         _ply[i] = nullptr;
         return;
     }
 
-    p->quit(); // we exit p to see if it was in a game (e.g. NewGame in the previous one)
+    p->quit(); // we exit p to see if it was in a game (e.g. NewGame in the
+               // previous one)
     if (_ply[i] != nullptr)
         _ply[i]->quit(); // the player replaced by p is kicked out
     _ply[i] = p;
     p->enter(this);
 }
 
-void Game::makeMove(Move* M)
+void Game::makeMove(Move *M)
 { // called by player objects when they want to move
     try {
         ply(1 - s().sideToMove)->followMove(M);
@@ -84,10 +85,9 @@ void Game::makeMove(Move* M)
         current++;
 
         s().makeMove(M);
-    } catch (std::exception& ex) {
+    } catch (std::exception &ex) {
         // If TypeOf ex Is KeyNotFoundException Then Throw
-        std::cerr << "Exception in makeMove\n"
-                  << ex.what() << std::endl;
+        std::cerr << "Exception in makeMove\n" << ex.what() << std::endl;
     }
 }
 

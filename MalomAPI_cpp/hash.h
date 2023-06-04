@@ -20,43 +20,42 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef HASH_H_INCLUDED
 #define HASH_H_INCLUDED
 
 #include "sector.h"
 
+// void init_hash_lookuptables();
 
-//void init_hash_lookuptables();
+class Hash
+{
+    int W, B; // It might be worth to put these after the large arrays for cache
+              // locality reasons
 
-class Hash{	
-	int W,B; // It might be worth to put these after the large arrays for cache locality reasons
+    int f_lookup[1 << 24] {0};
+    char f_sym_lookup[1 << 24] {0}; // Converted from int to char
+    int *f_inv_lookup {nullptr};
+    int *g_lookup {nullptr};
+    int *g_inv_lookup {nullptr};
 
-	int f_lookup[1<<24] {0};
-	char f_sym_lookup[1<<24] { 0 }; // Converted from int to char
-	int *f_inv_lookup {nullptr};
-	int *g_lookup { nullptr };
-	int *g_inv_lookup { nullptr };
+    int f_count {0};
 
-	int f_count {0};
-
-	Sector*s { nullptr };
+    Sector *s {nullptr};
 
 public:
-	Hash(int W, int B, Sector *s);
+    Hash(int W, int B, Sector *s);
 
-	pair<int, eval_elem2> hash(board a);
-	board inv_hash(int h);
+    pair<int, eval_elem2> hash(board a);
+    board inv_hash(int h);
 
-	int hash_count {0};
+    int hash_count {0};
 
-	unsigned short f_sym_lookup2[1<<24]; ///
+    unsigned short f_sym_lookup2[1 << 24]; ///
 
-	void check_hash_init_consistency();
+    void check_hash_init_consistency();
 
-	~Hash();
+    ~Hash();
 };
-
 
 int collapse(board a);
 board uncollapse(board a);

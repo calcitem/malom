@@ -41,5 +41,3 @@ void Player::quit()
         return;
     g = nullptr;
 }
-
-

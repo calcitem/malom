@@ -20,12 +20,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #pragma once
 
-#include "stdafx.h"
 #include "common.h"
-
+#include "stdafx.h"
 
 extern map<id, sec_val> sec_vals;
 extern map<sec_val, id> inv_sec_vals;

@@ -33,15 +33,21 @@
 #include "move.h"
 #include "rules.h"
 
-class MalomSolutionAccess {
+class MalomSolutionAccess
+{
 private:
-    static PerfectPlayer* pp;
-    static std::exception* lastError;
+    static PerfectPlayer *pp;
+    static std::exception *lastError;
 
 public:
-    static int getBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace, int blackStonesToPlace, int playerToMove, bool onlyStoneTaking);
+    static int getBestMove(int whiteBitboard, int blackBitboard,
+                           int whiteStonesToPlace, int blackStonesToPlace,
+                           int playerToMove, bool onlyStoneTaking);
 
-    static int getBestMoveNoException(int whiteBitboard, int blackBitboard, int whiteStonesToPlace, int blackStonesToPlace, int playerToMove, bool onlyStoneTaking);
+    static int getBestMoveNoException(int whiteBitboard, int blackBitboard,
+                                      int whiteStonesToPlace,
+                                      int blackStonesToPlace, int playerToMove,
+                                      bool onlyStoneTaking);
 
     static std::string getLastError();
 
@@ -49,7 +55,8 @@ public:
 
     static void initializeIfNeeded();
 
-    static void mustBeBetween(std::string paramName, int value, int min, int max);
+    static void mustBeBetween(std::string paramName, int value, int min,
+                              int max);
 
     static void setVariantStripped();
 };

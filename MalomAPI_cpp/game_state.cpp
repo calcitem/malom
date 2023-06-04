@@ -33,11 +33,11 @@
 #include "move.h"
 #include "rules.h"
 
-class Player; // forward declaration, implement this
+class Player;    // forward declaration, implement this
 class GameState; // forward declaration, implement this
-class Move; // forward declaration, implement this
+class Move;      // forward declaration, implement this
 
-GameState::GameState(const GameState& s)
+GameState::GameState(const GameState &s)
 { // copy constructor
     T = s.T;
     phase = s.phase;
@@ -57,17 +57,19 @@ int GameState::futureStoneCount(int p)
     return stoneCount[p] + Rules::maxKSZ - setStoneCount[p];
 }
 
-// Sets the state for Setup Mode: the placed stones are unchanged, but we switch to phase 2.
+// Sets the state for Setup Mode: the placed stones are unchanged, but we switch
+// to phase 2.
 void GameState::initSetup()
 {
-    moveCount = 10; // Nearly all the same, just don't be too small, see other comments
+    moveCount = 10; // Nearly all the same, just don't be too small, see other
+                    // comments
     over = false;
     // Winner can be undefined, as over = False
     block = false;
     lastIrrev = 0;
 }
 
-void GameState::makeMove(Move* M)
+void GameState::makeMove(Move *M)
 {
     if (M == nullptr) {
         throw std::invalid_argument("M is null");
@@ -78,9 +80,9 @@ void GameState::makeMove(Move* M)
 
     moveCount++;
 
-    SetKorong* sk = dynamic_cast<SetKorong*>(M);
-    MoveKorong* mk = dynamic_cast<MoveKorong*>(M);
-    LeveszKorong* lk = dynamic_cast<LeveszKorong*>(M);
+    SetKorong *sk = dynamic_cast<SetKorong *>(M);
+    MoveKorong *mk = dynamic_cast<MoveKorong *>(M);
+    LeveszKorong *lk = dynamic_cast<LeveszKorong *>(M);
 
     if (sk != nullptr) {
         T[sk->hov] = sideToMove;
@@ -99,24 +101,30 @@ void GameState::makeMove(Move* M)
         T[lk->hon] = -1;
         stoneCount[1 - sideToMove]--;
         kle = false;
-        if (stoneCount[1 - sideToMove] + Rules::maxKSZ - setStoneCount[1 - sideToMove] < 3) {
+        if (stoneCount[1 - sideToMove] + Rules::maxKSZ -
+                setStoneCount[1 - sideToMove] <
+            3) {
             over = true;
             winner = sideToMove;
         }
         lastIrrev = 0;
     }
 
-    if ((sk != nullptr || mk != nullptr) && Rules::malome((sk)->hov, *this) > -1 && stoneCount[1 - sideToMove] > 0) {
+    if ((sk != nullptr || mk != nullptr) &&
+        Rules::malome((sk)->hov, *this) > -1 &&
+        stoneCount[1 - sideToMove] > 0) {
         kle = true;
     } else {
         sideToMove = 1 - sideToMove;
-        if (setStoneCount[0] == Rules::maxKSZ && setStoneCount[1] == Rules::maxKSZ && phase == 1)
+        if (setStoneCount[0] == Rules::maxKSZ &&
+            setStoneCount[1] == Rules::maxKSZ && phase == 1)
             phase = 2;
         if (!Rules::youCanMove(*this)) {
             over = true;
             block = true;
             winner = 1 - sideToMove;
-            if (Wrappers::Constants::FBD && stoneCount[0] == 12 && stoneCount[1] == 12) {
+            if (Wrappers::Constants::FBD && stoneCount[0] == 12 &&
+                stoneCount[1] == 12) {
                 winner = -1;
             }
         }
@@ -125,14 +133,16 @@ void GameState::makeMove(Move* M)
     checkInvariants();
 }
 
-void GameState::checkValidMove(Move* M)
+void GameState::checkValidMove(Move *M)
 {
-    // Hard to ensure that the 'over and winner = -1' case never occurs. For example, the WithTaking case of PerfectPlayer.MakeMoveInState is tricky, because the previous makeMove may have already made it a draw.
+    // Hard to ensure that the 'over and winner = -1' case never occurs. For
+    // example, the WithTaking case of PerfectPlayer.MakeMoveInState is tricky,
+    // because the previous makeMove may have already made it a draw.
     assert(!over || winner == -1);
 
-    SetKorong* sk = dynamic_cast<SetKorong*>(M);
-    MoveKorong* mk = dynamic_cast<MoveKorong*>(M);
-    LeveszKorong* lk = dynamic_cast<LeveszKorong*>(M);
+    SetKorong *sk = dynamic_cast<SetKorong *>(M);
+    MoveKorong *mk = dynamic_cast<MoveKorong *>(M);
+    LeveszKorong *lk = dynamic_cast<LeveszKorong *>(M);
 
     if (sk != nullptr) {
         assert(phase == 1);
@@ -154,34 +164,54 @@ void GameState::checkInvariants()
     assert(setStoneCount[0] <= Rules::maxKSZ);
     assert(setStoneCount[1] >= 0);
     assert(setStoneCount[1] <= Rules::maxKSZ);
-    assert(phase == 1 || (phase == 2 && setStoneCount[0] == Rules::maxKSZ && setStoneCount[1] == Rules::maxKSZ));
+    assert(phase == 1 || (phase == 2 && setStoneCount[0] == Rules::maxKSZ &&
+                          setStoneCount[1] == Rules::maxKSZ));
 }
 
-// Called when applying a free setup. It sets over and checks whether the position is valid. Returns "" if valid, reason str otherwise.
-// Also called when pasting a position.
+// Called when applying a free setup. It sets over and checks whether the
+// position is valid. Returns "" if valid, reason str otherwise. Also called
+// when pasting a position.
 std::string GameState::setOverAndCheckValidSetup()
 {
     assert(!over && !block);
 
     // Validity checks:
-    // Note: this should be before setting over, because we will deny applying the setup if the state is not valid, and we want to maintain the 'Not over and Not block' invariants.
+    // Note: this should be before setting over, because we will deny applying
+    // the setup if the state is not valid, and we want to maintain the 'Not
+    // over and Not block' invariants.
 
     int toBePlaced0 = Rules::maxKSZ - setStoneCount[0];
     if (stoneCount[0] + toBePlaced0 > Rules::maxKSZ) {
-        return "Too many white stones (on the board + to be placed). Please remove some white stones from the board and/or decrease the number of white stones to be placed.";
+        return "Too many white stones (on the board + to be placed). Please "
+               "remove some white stones from the board and/or decrease the "
+               "number of white stones to be placed.";
     }
     int toBePlaced1 = Rules::maxKSZ - setStoneCount[1];
     if (stoneCount[1] + toBePlaced1 > Rules::maxKSZ) {
-        return "Too many black stones (on the board + to be placed). Please remove some black stones from the board and/or decrease the number of black stones to be placed.";
+        return "Too many black stones (on the board + to be placed). Please "
+               "remove some black stones from the board and/or decrease the "
+               "number of black stones to be placed.";
     }
 
     assert(!(phase == 1 && toBePlaced0 == 0 && toBePlaced1 == 0));
     assert(!(phase == 2 && (toBePlaced0 > 0 || toBePlaced1 > 0)));
 
-    if (Wrappers::Constants::variant != (int)Wrappers::Constants::Variants::lask && !Wrappers::Constants::extended) {
+    if (Wrappers::Constants::variant !=
+            (int)Wrappers::Constants::Variants::lask &&
+        !Wrappers::Constants::extended) {
         if (phase == 1) {
-            if (toBePlaced0 != toBePlaced1 - ((sideToMove == 0) ^ kle ? 0 : 1)) {
-                return "If Black is to move in the placement phase, then the number of black stones to be placed should be one more than the number of white stones to placed. If White is to move in the placement phase, then the number of white and black stones to be placed should be equal. (Except in a stone taking position, where these conditions are reversed.)\n\nNote: The Lasker variant (and the extended solutions) doesn't have these constraints.\n\nNote: You can switch the side to move by the \"Switch STM\" button in position setup mode.";
+            if (toBePlaced0 !=
+                toBePlaced1 - ((sideToMove == 0) ^ kle ? 0 : 1)) {
+                return "If Black is to move in the placement phase, then the "
+                       "number of black stones to be placed should be one more "
+                       "than the number of white stones to placed. If White is "
+                       "to move in the placement phase, then the number of "
+                       "white and black stones to be placed should be equal. "
+                       "(Except in a stone taking position, where these "
+                       "conditions are reversed.)\n\nNote: The Lasker variant "
+                       "(and the extended solutions) doesn't have these "
+                       "constraints.\n\nNote: You can switch the side to move "
+                       "by the \"Switch STM\" button in position setup mode.";
             }
         } else {
             assert(phase == 2);
@@ -190,7 +220,8 @@ std::string GameState::setOverAndCheckValidSetup()
     }
 
     if (kle && stoneCount[1 - sideToMove] == 0) {
-        return "A position where the opponent doesn't have any stones cannot be a stone taking position.";
+        return "A position where the opponent doesn't have any stones cannot "
+               "be a stone taking position.";
     }
 
     // Set over if needed:
@@ -214,16 +245,21 @@ std::string GameState::setOverAndCheckValidSetup()
             }
         }
     }
-    if (!kle && !Rules::youCanMove(*this)) { // youCanMove doesn't handle the kle case. However, we should always have a move in kle, see the validity check above.
+    if (!kle && !Rules::youCanMove(*this)) { // youCanMove doesn't handle the
+                                             // kle case. However, we should
+                                             // always have a move in kle, see
+                                             // the validity check above.
         over = true;
         block = true;
         winner = 1 - sideToMove;
-        if (Wrappers::Constants::FBD && stoneCount[0] == 12 && stoneCount[1] == 12) {
+        if (Wrappers::Constants::FBD && stoneCount[0] == 12 &&
+            stoneCount[1] == 12) {
             winner = -1;
         }
     }
 
-    // Even though lastIrrev is always 0 while in free setup mode, it can be non-0 when pasting
+    // Even though lastIrrev is always 0 while in free setup mode, it can be
+    // non-0 when pasting
     if (lastIrrev >= Rules::lastIrrevLimit) {
         over = true;
         winner = -1;
@@ -233,7 +269,7 @@ std::string GameState::setOverAndCheckValidSetup()
 }
 
 // to paste from clipboard
-GameState::GameState(const std::string& s)
+GameState::GameState(const std::string &s)
 {
     std::vector<std::string> ss;
     std::string temp;
@@ -245,7 +281,9 @@ GameState::GameState(const std::string& s)
     }
 
     try {
-        if (ss[33] == "malom" || ss[34] == "malom" || ss[35] == "malom" || ss[37] == "malom2") { // you need to be able to interpret older formats as well
+        if (ss[33] == "malom" || ss[34] == "malom" || ss[35] == "malom" ||
+            ss[37] == "malom2") { // you need to be able to interpret older
+                                  // formats as well
             for (int i = 0; i < 24; i++) {
                 T[i] = std::stoi(ss[i]);
             }
@@ -257,20 +295,23 @@ GameState::GameState(const std::string& s)
             stoneCount[1] = std::stoi(ss[31]);
             kle = (ss[32] == "True" || ss[32] == "true");
             moveCount = (ss[33] != "malom") ? std::stoi(ss[33]) : 10;
-            lastIrrev = ((ss[33] != "malom") && (ss[34] != "malom")) ? std::stoi(ss[34]) : 0;
+            lastIrrev = ((ss[33] != "malom") && (ss[34] != "malom")) ?
+                            std::stoi(ss[34]) :
+                            0;
 
             // ensure correct count of stones
             int count0 = std::count(T.begin(), T.end(), 0);
             int count1 = std::count(T.begin(), T.end(), 1);
             if (stoneCount[0] != count0 || stoneCount[1] != count1) {
-                throw InvalidGameStateException("Number of stones is incorrect.");
+                throw InvalidGameStateException("Number of stones is "
+                                                "incorrect.");
             }
         } else {
             throw std::invalid_argument("Invalid Format");
         }
-    } catch (InvalidGameStateException& ex) {
+    } catch (InvalidGameStateException &ex) {
         throw ex;
-    } catch (std::exception& ex) {
+    } catch (std::exception &ex) {
         throw std::invalid_argument("Invalid Format");
     }
 }
@@ -282,13 +323,14 @@ std::string GameState::toString()
     for (int i = 0; i < 24; i++) {
         s << T[i] << ",";
     }
-    s << sideToMove << "," << 0 << "," << 0 << "," << phase << "," << setStoneCount[0]
-      << "," << setStoneCount[1] << "," << stoneCount[0] << "," << stoneCount[1]
-      << "," << (kle ? "True" : "False") << "," << moveCount << "," << lastIrrev;
+    s << sideToMove << "," << 0 << "," << 0 << "," << phase << ","
+      << setStoneCount[0] << "," << setStoneCount[1] << "," << stoneCount[0]
+      << "," << stoneCount[1] << "," << (kle ? "True" : "False") << ","
+      << moveCount << "," << lastIrrev;
     return s.str();
 }
 
-const char* InvalidGameStateException::what() const noexcept
+const char *InvalidGameStateException::what() const noexcept
 {
     return mymsg.c_str();
 }

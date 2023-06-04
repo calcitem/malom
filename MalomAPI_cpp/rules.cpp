@@ -33,14 +33,14 @@
 
 uint8_t Rules::millPos[20][3];
 uint8_t Rules::stdLaskerMillPos[16][3];
-int* Rules::stdLaskerInvMillPos[24] = { nullptr };
-bool Rules::stdLaskerBoardGraph[24][24] = { { false } };
-uint8_t Rules::stdLaskerALBoardGraph[24][5] = { { 0 } };
+int *Rules::stdLaskerInvMillPos[24] = {nullptr};
+bool Rules::stdLaskerBoardGraph[24][24] = {{false}};
+uint8_t Rules::stdLaskerALBoardGraph[24][5] = {{0}};
 uint8_t Rules::moraMillPos[20][3];
-int* Rules::moraInvMillPos[24];
+int *Rules::moraInvMillPos[24];
 bool Rules::moraBoardGraph[24][24];
 uint8_t Rules::moraALBoardGraph[24][5];
-int* Rules::invMillPos[24];
+int *Rules::invMillPos[24];
 size_t Rules::invMillPosLengths[24];
 bool Rules::boardGraph[24][24];
 uint8_t Rules::aLBoardGraph[24][5];
@@ -74,7 +74,9 @@ void Rules::initRules()
         stdLaskerMillPos[i][1] = stdLaskerMillPos[i][0] + 8;
         stdLaskerMillPos[i][2] = stdLaskerMillPos[i][0] + 16;
     }
-    // Since C++ arrays cannot be resized dynamically, we'll need to allocate memory for stdLaskerInvMillPos beforehand, and then populate it in this function.
+    // Since C++ arrays cannot be resized dynamically, we'll need to allocate
+    // memory for stdLaskerInvMillPos beforehand, and then populate it in this
+    // function.
     bool kell;
     for (int i = 0; i <= 23; i++) {
         std::vector<int> l;
@@ -143,14 +145,17 @@ void Rules::initRules()
     }
 }
 
-// Returns -1 if there is no mill on the given field, otherwise returns the sequence number in StdLaskerMalomPoz
+// Returns -1 if there is no mill on the given field, otherwise returns the
+// sequence number in StdLaskerMalomPoz
 int Rules::malome(int m, GameState s)
 {
     int result = -1;
     // Use the stored length instead of sizeof
     int length = invMillPosLengths[m]; // TODO: Right?
     for (int i = 0; i < length; i++) {
-        if (s.T[millPos[invMillPos[m][i]][0]] == s.T[m] && s.T[millPos[invMillPos[m][i]][1]] == s.T[m] && s.T[millPos[invMillPos[m][i]][2]] == s.T[m]) {
+        if (s.T[millPos[invMillPos[m][i]][0]] == s.T[m] &&
+            s.T[millPos[invMillPos[m][i]][1]] == s.T[m] &&
+            s.T[millPos[invMillPos[m][i]][2]] == s.T[m]) {
             result = invMillPos[m][i];
         }
     }
@@ -161,7 +166,8 @@ int Rules::malome(int m, GameState s)
 bool Rules::youCanMove(const GameState &s)
 {
     assert(!s.kle);
-    if (s.setStoneCount[s.sideToMove] == maxKSZ && s.stoneCount[s.sideToMove] > 3) {
+    if (s.setStoneCount[s.sideToMove] == maxKSZ &&
+        s.stoneCount[s.sideToMove] > 3) {
         for (int i = 0; i <= 23; i++) {
             if (s.T[i] == s.sideToMove) {
                 for (int j = 1; j <= aLBoardGraph[i][0]; j++) {
@@ -188,31 +194,40 @@ bool Rules::mindenEllensegesKorongMalomban(GameState s)
 // Checking if AlphaBeta is available
 bool Rules::alphaBetaAvailable()
 {
-    return Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::std && !Wrappers::Constants::extended;
+    return Wrappers::Constants::variant ==
+               (int)Wrappers::Constants::Variants::std &&
+           !Wrappers::Constants::extended;
 }
 
 void Rules::setVariant()
 {
     // Part of this is copy-pasted in MalomAPI
-    if (Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::std) {
+    if (Wrappers::Constants::variant ==
+        (int)Wrappers::Constants::Variants::std) {
         std::memcpy(millPos, stdLaskerMillPos, sizeof(stdLaskerMillPos));
         for (int i = 0; i < 24; ++i) {
             invMillPos[i] = stdLaskerInvMillPos[i];
         }
-        std::memcpy(boardGraph, stdLaskerBoardGraph, sizeof(stdLaskerBoardGraph));
-        std::memcpy(aLBoardGraph, stdLaskerALBoardGraph, sizeof(stdLaskerALBoardGraph));
+        std::memcpy(boardGraph, stdLaskerBoardGraph,
+                    sizeof(stdLaskerBoardGraph));
+        std::memcpy(aLBoardGraph, stdLaskerALBoardGraph,
+                    sizeof(stdLaskerALBoardGraph));
         maxKSZ = 9;
         variantName = "std";
-    } else if (Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::lask) {
+    } else if (Wrappers::Constants::variant ==
+               (int)Wrappers::Constants::Variants::lask) {
         std::memcpy(millPos, stdLaskerMillPos, sizeof(stdLaskerMillPos));
         for (int i = 0; i < 24; ++i) {
             invMillPos[i] = stdLaskerInvMillPos[i];
         }
-        std::memcpy(boardGraph, stdLaskerBoardGraph, sizeof(stdLaskerBoardGraph));
-        std::memcpy(aLBoardGraph, stdLaskerALBoardGraph, sizeof(stdLaskerALBoardGraph));
+        std::memcpy(boardGraph, stdLaskerBoardGraph,
+                    sizeof(stdLaskerBoardGraph));
+        std::memcpy(aLBoardGraph, stdLaskerALBoardGraph,
+                    sizeof(stdLaskerALBoardGraph));
         maxKSZ = 10;
         variantName = "lask";
-    } else if (Wrappers::Constants::variant == (int)Wrappers::Constants::Variants::mora) {
+    } else if (Wrappers::Constants::variant ==
+               (int)Wrappers::Constants::Variants::mora) {
         std::memcpy(millPos, moraMillPos, sizeof(moraMillPos));
         for (int i = 0; i < 24; ++i) {
             invMillPos[i] = moraInvMillPos[i];

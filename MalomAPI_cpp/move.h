@@ -27,45 +27,48 @@
 //#include "main.h"
 #include "rules.h"
 
-class Move { // Step
+class Move
+{ // Step
 public:
-    virtual std::vector<int> getMezok() = 0; // Returns the fields included in the step
+    virtual std::vector<int> getMezok() = 0; // Returns the fields included in
+                                             // the step
 protected:
-    std::string mezoToString[24] = { "a4", "a7", "d7", "g7", "g4", "g1", "d1", "a1",
-        "b4", "b6", "d6", "f6", "f4", "f2", "d2", "b2",
-        "c4", "c5", "d5", "e5", "e4", "e3", "d3", "c3" };
+    std::string mezoToString[24] = {"a4", "a7", "d7", "g7", "g4", "g1",
+                                    "d1", "a1", "b4", "b6", "d6", "f6",
+                                    "f4", "f2", "d2", "b2", "c4", "c5",
+                                    "d5", "e5", "e4", "e3", "d3", "c3"};
 };
 
-class SetKorong : public Move {
+class SetKorong : public Move
+{
 public:
     int hov;
     SetKorong(int m)
         : hov(m)
-    {
-    }
+    { }
     std::vector<int> getMezok() override;
     std::string toString();
 };
 
-class MoveKorong : public Move {
+class MoveKorong : public Move
+{
 public:
     int hon, hov; // from, to
     MoveKorong(int m1, int m2)
         : hon(m1)
         , hov(m2)
-    {
-    }
+    { }
     std::vector<int> getMezok() override;
     std::string toString();
 };
 
-class LeveszKorong : public Move {
+class LeveszKorong : public Move
+{
 public:
     int hon;
     LeveszKorong(int m)
         : hon(m)
-    {
-    }
+    { }
     std::vector<int> getMezok() override;
     std::string toString();
 };

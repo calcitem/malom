@@ -20,37 +20,36 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #pragma once
 
 #include "targetver.h"
 
-#define NOMINMAX //http://social.msdn.microsoft.com/Forums/vstudio/en-US/e94865f7-84cd-4912-8339-6ee95fb58825/numericlimitsdoublemax-not-recognized?forum=vcgeneral
+#define NOMINMAX // http://social.msdn.microsoft.com/Forums/vstudio/en-US/e94865f7-84cd-4912-8339-6ee95fb58825/numericlimitsdoublemax-not-recognized?forum=vcgeneral
 
-#include <cstdio>
-#include <cstring>
-#include <cstdlib>
 #include <cassert>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <ctime>
 
-#include <iostream>
-#include <fstream>
-#include <vector>
 #include <algorithm>
-#include <queue>
-#include <map>
-#include <set>
-#include <utility>
-#include <string>
-#include <sstream>
-#include <intrin.h>
-#include <limits>
-#include <functional>
-#include <iterator>
+#include <array>
 #include <codecvt>
+#include <fstream>
+#include <functional>
+#include <intrin.h>
+#include <iostream>
+#include <iterator>
+#include <limits>
+#include <map>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <array>
+#include <utility>
+#include <vector>
 
 #include <Windows.h>
 #undef VARIANT

@@ -28,39 +28,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 
 //#ifndef WRAPPER
-	struct Log{ //ez azert nincs a masik agban, mert a wrapper projektben nincs benne a log.cpp (de amugy semmi akadalya nem lenne belerakni)
-		static bool log_to_file;
-		static FILE *logfile;
-        static void setup_logfile(std::string fname, std::string extension);
-		static std::string fname, fnamelogging, donefname;
-		static void close();
-	};
+struct Log
+{ // ez azert nincs a masik agban, mert a wrapper projektben nincs benne a
+  // log.cpp (de amugy semmi akadalya nem lenne belerakni)
+    static bool log_to_file;
+    static FILE *logfile;
+    static void setup_logfile(std::string fname, std::string extension);
+    static std::string fname, fnamelogging, donefname;
+    static void close();
+};
 //#endif
 
-        template <typename... Args>
-        void LOG(const char* format, Args... args)
-        {
+template <typename... Args>
+void LOG(const char *format, Args... args)
+{
 #ifndef WRAPPER
 #if defined(_WIN32)
-                printf_s(format, args...);
-                fflush(stdout);
-                if (Log::log_to_file) {
-                    fprintf_s(Log::logfile, format, args...);
-                    fflush(Log::logfile);
-                }
+    printf_s(format, args...);
+    fflush(stdout);
+    if (Log::log_to_file) {
+        fprintf_s(Log::logfile, format, args...);
+        fflush(Log::logfile);
+    }
 #elif defined(__linux__)
-                printf(format, args...);
-                fflush(stdout);
-                if (Log::log_to_file) {
-                    fprintf(Log::logfile, format, args...);
-                    fflush(Log::logfile);
-                }
+    printf(format, args...);
+    fflush(stdout);
+    if (Log::log_to_file) {
+        fprintf(Log::logfile, format, args...);
+        fflush(Log::logfile);
+    }
 #endif
 #else
-                char buf[255];
-                snprintf(buf, sizeof(buf), format, args...);
-                std::cerr << buf;
+    char buf[255];
+    snprintf(buf, sizeof(buf), format, args...);
+    std::cerr << buf;
 #endif
-        }
+}
 
 #endif // LOG_H_INCLUDED

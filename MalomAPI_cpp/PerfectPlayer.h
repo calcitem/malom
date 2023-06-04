@@ -22,28 +22,28 @@
 #ifndef PERFECT_PLAYER_H_INCLUDED
 #define PERFECT_PLAYER_H_INCLUDED
 
-#include <fstream>
-#include <iostream>
-#include <map>
-#include <stdexcept>
-#include <string>
 #include <bitset>
-#include <vector>
-#include <cassert> // for assert
-#include <cstdint> // for int64_t
-#include <cstdlib> // for std::exit
+#include <cassert>   // for assert
+#include <cstdint>   // for int64_t
+#include <cstdlib>   // for std::exit
 #include <exception> // for std::exception
-#include <iostream> // for std::cerr
-#include <mutex> // for std::mutex and std::lock_guard
-#include <stdexcept> // for std::out_of_range
+#include <fstream>
 #include <functional>
+#include <iostream>
+#include <iostream> // for std::cerr
+#include <map>
+#include <mutex> // for std::mutex and std::lock_guard
+#include <stdexcept>
+#include <stdexcept> // for std::out_of_range
+#include <string>
+#include <vector>
 
 #include "Player.h"
 //#include "main.h"
+#include "common.h"
 #include "move.h"
 #include "rules.h"
 #include "sector.h"
-#include "common.h"
 #include "wrappers.h"
 
 enum class MoveType {
@@ -51,10 +51,12 @@ enum class MoveType {
     SlideMove // should be renamed to SlideOrJumpMove
 };
 
-struct ExtMove {
+struct ExtMove
+{
     int hon, hov;
     MoveType moveType;
-    bool withTaking, onlyTaking; // withTaking includes the steps in mill closure, onlyTaking only includes removal
+    bool withTaking, onlyTaking; // withTaking includes the steps in mill
+                                 // closure, onlyTaking only includes removal
     int takeHon;
 
     int toBitBoard()
@@ -73,7 +75,8 @@ struct ExtMove {
     }
 };
 
-class Sectors {
+class Sectors
+{
 public:
     static std::map<Wrappers::WID, Wrappers::WSector> sectors;
     static bool created;
@@ -83,70 +86,72 @@ public:
     static bool hasDatabase();
 };
 
-class PerfectPlayer : public Player {
+class PerfectPlayer : public Player
+{
 public:
     std::map<Wrappers::WID, Wrappers::WSector> secs;
 
     PerfectPlayer();
 
-    void enter(Game* _g) override;
+    void enter(Game *_g) override;
 
-    void quit() override
-    {
-        Player::quit();
-    }
+    void quit() override { Player::quit(); }
 
-    Wrappers::WSector* getSec(const GameState s);
+    Wrappers::WSector *getSec(const GameState s);
 
     std::string toHumanReadableEval(Wrappers::gui_eval_elem2 e);
 
-    int futureKorongCount(const GameState& s);
+    int futureKorongCount(const GameState &s);
 
-    bool makesMill(const GameState& s, int hon, int hov);
+    bool makesMill(const GameState &s, int hon, int hov);
 
-    bool isMill(const GameState& s, int m);
+    bool isMill(const GameState &s, int m);
 
-    std::vector<ExtMove> setMoves(const GameState& s);
+    std::vector<ExtMove> setMoves(const GameState &s);
 
-    std::vector<ExtMove> slideMoves(const GameState& s);
+    std::vector<ExtMove> slideMoves(const GameState &s);
 
-    // m has a withTaking step, where takeHon is not filled out. This function creates a list, the elements of which are copies of m supplemented with one possible removal each.
-    std::vector<ExtMove> withTakingMoves(const GameState& s, ExtMove& m);
+    // m has a withTaking step, where takeHon is not filled out. This function
+    // creates a list, the elements of which are copies of m supplemented with
+    // one possible removal each.
+    std::vector<ExtMove> withTakingMoves(const GameState &s, ExtMove &m);
 
-    std::vector<ExtMove> onlyTakingMoves(const GameState& s);
+    std::vector<ExtMove> onlyTakingMoves(const GameState &s);
 
-    std::vector<ExtMove> getMoveList(const GameState& s);
+    std::vector<ExtMove> getMoveList(const GameState &s);
 
-    GameState makeMoveInState(const GameState& s, ExtMove& m);
+    GameState makeMoveInState(const GameState &s, ExtMove &m);
 
     // Assuming gui_eval_elem2 and getSec functions are defined somewhere
-    Wrappers::gui_eval_elem2 moveValue(const GameState& s, ExtMove& m);
+    Wrappers::gui_eval_elem2 moveValue(const GameState &s, ExtMove &m);
 
     template <typename T, typename K>
-    std::vector<T> allMaxBy(std::function<K(T)> f, const std::vector<T>& l, K minValue);
+    std::vector<T> allMaxBy(std::function<K(T)> f, const std::vector<T> &l,
+                            K minValue);
 
     // Assuming the definition of gui_eval_elem2::min_value function
-    std::vector<ExtMove> goodMoves(const GameState& s);
+    std::vector<ExtMove> goodMoves(const GameState &s);
 
-    int NGMAfterMove(const GameState& s, ExtMove& m);
+    int NGMAfterMove(const GameState &s, ExtMove &m);
 
     template <typename T>
-    T chooseRandom(const std::vector<T>& l);
+    T chooseRandom(const std::vector<T> &l);
 
     void sendMoveToGUI(ExtMove m);
 
-    void toMove(const GameState& s) override;
+    void toMove(const GameState &s) override;
 
-    int numGoodMoves(const GameState& s);
+    int numGoodMoves(const GameState &s);
 
     int cp;
 
-    struct MoveValuePair {
+    struct MoveValuePair
+    {
         ExtMove m;
         double val;
     };
 
-    //const double WRGMInf = 2; // Is this good?
+    // const double WRGMInf = 2; // Is this good?
 
     std::mutex evalLock;
 

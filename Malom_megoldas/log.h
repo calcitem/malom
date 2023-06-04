@@ -20,33 +20,34 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #pragma once
 
-
 #ifndef WRAPPER
-	struct Log{ //ez azert nincs a masik agban, mert a wrapper projektben nincs benne a log.cpp (de amugy semmi akadalya nem lenne belerakni)
-		static bool log_to_file;
-		static FILE *logfile;
-		static void setup_logfile(string fname, string extension);
-		static string fname, fnamelogging, donefname;
-		static void close();
-	};
+struct Log
+{ // ez azert nincs a masik agban, mert a wrapper projektben nincs benne a
+  // log.cpp (de amugy semmi akadalya nem lenne belerakni)
+    static bool log_to_file;
+    static FILE *logfile;
+    static void setup_logfile(string fname, string extension);
+    static string fname, fnamelogging, donefname;
+    static void close();
+};
 #endif
 
-
-template<typename... Args>
-void LOG(Args... args){
+template <typename... Args>
+void LOG(Args... args)
+{
 #ifndef WRAPPER
-	printf_s(args...);
-	fflush(stdout);
-	if(Log::log_to_file){
-		fprintf(Log::logfile, args...);
-		fflush(Log::logfile);
-	}
-#else //azert kell ez a hokuszpokusz, mert az alul levo debug ablakban csak az jelenik meg normalisan, amit ezzel irunk ki
-	char buf[255];
-	sprintf_s(buf, args...);
-	System::Diagnostics::Debug::Write(gcnew System::String(buf));
+    printf_s(args...);
+    fflush(stdout);
+    if (Log::log_to_file) {
+        fprintf(Log::logfile, args...);
+        fflush(Log::logfile);
+    }
+#else // azert kell ez a hokuszpokusz, mert az alul levo debug ablakban csak az
+      // jelenik meg normalisan, amit ezzel irunk ki
+    char buf[255];
+    sprintf_s(buf, args...);
+    System::Diagnostics::Debug::Write(gcnew System::String(buf));
 #endif
 }

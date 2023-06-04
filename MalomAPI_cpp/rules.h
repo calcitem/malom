@@ -32,9 +32,10 @@
 class GameState;
 
 // Define byte as unsigned char
-//typedef unsigned char byte;
+// typedef unsigned char byte;
 
-class Rules {
+class Rules
+{
 public:
     // Define your byte arrays
     static uint8_t millPos[20][3]; // TODO: Initial: [16][3];
@@ -42,10 +43,10 @@ public:
     static uint8_t moraMillPos[20][3];
 
     // Define your integer arrays
-    static int* invMillPos[24];
+    static int *invMillPos[24];
     static size_t invMillPosLengths[24];
-    static int* stdLaskerInvMillPos[24];
-    static int* moraInvMillPos[24];
+    static int *stdLaskerInvMillPos[24];
+    static int *moraInvMillPos[24];
 
     // Define your boolean arrays
     static bool boardGraph[24][24];
@@ -67,7 +68,8 @@ public:
 
     static void initRules();
 
-    // Returns -1 if there is no mill on the given field, otherwise returns the sequence number in StdLaskerMalomPoz
+    // Returns -1 if there is no mill on the given field, otherwise returns the
+    // sequence number in StdLaskerMalomPoz
     static int malome(int m, GameState s);
 
     // Tells whether the next player can move '(doesn't handle the kle case)
